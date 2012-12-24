@@ -41,7 +41,7 @@ end
 ---------------------------------------------------------------------
 --- Login. 
 ---------------------------------------------------------------------
-LOGIN_FILE    = 'LOGININFO'  -- The file of login info of user.
+LOGIN_FILE    = 'logininfo'  -- The file of login info of user.
 ACTIONID_FILE = 'ACTIONID'   -- The file of the newest action id.
 UPDATE_TIME   = 300000       -- Check the new action every five minute.
 CLOSE_TIME    = 30000        -- Close the nofity window after show.
