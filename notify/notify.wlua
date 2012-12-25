@@ -24,7 +24,7 @@ end
 ---------------------------------------------------------------------
 --- Detect if the notify is running.
 ---------------------------------------------------------------------
-PROCESS_EXIT = 'EXIT'
+PROCESS_EXIT = '.\\tmp\\exit'
 processIsRunning = io.open(PROCESS_EXIT, 'r')
 if processIsRunning then showPromptDlg(lang.prompt.processIsRunning) processIsRunning:close() os.exit() end
 processIsRunning = io.open(PROCESS_EXIT, 'w')
@@ -42,9 +42,12 @@ end
 --- Login. 
 ---------------------------------------------------------------------
 LOGIN_FILE    = 'logininfo'  -- The file of login info of user.
-ACTIONID_FILE = 'ACTIONID'   -- The file of the newest action id.
+ACTIONID_FILE = '.\\tmp\\actionid'   -- The file of the newest action id.
+OK_FILE       = '.\\tmp\\ok'
+TMP_FILE      = '.\\tmp\\tmp'
+TMP_BAT       = '.\\tmp\\tmp.bat'
 UPDATE_TIME   = 300000       -- Check the new action every five minute.
-CLOSE_TIME    = 30000        -- Close the nofity window after show.
+CLOSE_TIME    = 30000        -- Close the nofity window after show 30 seconds.
 MOUSE_LEFT    = 49           -- The code represent left mouse.
 MOUSE_PRESSED = 1            -- The code when mouse pressed.
 KEY_ENTER     = 13           -- The code of key enter.
@@ -52,9 +55,9 @@ KEY_ESC       = 141          -- The code of key esc.
 VERSION       = 'notify_0.1' -- The version of notify.
 OS_VERSION    = '4.0'        -- The least supported version of open source.
 PRO_VERSION   = '1.3'        -- The least supported version of pro.
-LOGIN_BG      = iup.LoadImage("login.jpg")
-LOGINBUTTON_BG    = iup.LoadImage("loginButton.png")
-LOGINBUTTON_PRESS = iup.LoadImage("loginButton_press.png")
+LOGIN_BG      = iup.LoadImage(".\\images\\login.jpg")
+LOGINBUTTON_BG    = iup.LoadImage(".\\images\\loginButton.png")
+LOGINBUTTON_PRESS = iup.LoadImage(".\\images\\loginButton_press.png")
 
 rightVersion = true
 isLogin      = false         -- The flag if login.
@@ -63,6 +66,24 @@ session      = {}            -- The session info.
 pagerInfo    = {}            -- The pager info, including recTotal,recPerPage,pageID,totalPage.
 currentTab   = {}            -- Current tab.
 dialogIcon   = iup.LoadImage("favicon.ico")
+
+---------------------------------------------------------------------
+--- Rewrite ex.spawn method.
+---------------------------------------------------------------------
+function exSpawn(command) 
+    os.remove(OK_FILE)
+    command = command .. ' > ' .. TMP_FILE .. ' 2>&1 & echo ok > ' .. OK_FILE
+    local batFile = io.open(TMP_BAT, 'w')
+    batFile:write(command)
+    batFile:close()
+    ex.spawn{"wscript.exe", "spawn.vbs", TMP_BAT}
+
+    local okFile = io.open(OK_FILE, 'r') 
+    while not okFile do os.sleep(0.1) okFile = io.open(OK_FILE, 'r') end
+    okFile:close()
+    os.remove(OK_FILE)
+    return true
+end
 
 ------------------------------------------
 --- Get the infomation of login.
@@ -378,22 +399,6 @@ function getAPIa(object, type, pageID)
             return (zentaoRoot .. "/my-" .. object .. ".json?" .. session.data.sessionName .. "=" .. session.data.sessionID)
         end
     end
-
---[[
-    if pagerInfo[object] and pagerInfo[object][type] then
-        if type then
-            return (zentaoRoot .. "/my-" .. object .. "-" .. type .. "-" .. pagerInfo[object][type].recTotal .. "-" .. pagerInfo[object][type].recPerPage .. "-" .. pageID .. ".json?" .. session.data.sessionName .. "=" .. session.data.sessionID)
-        else
-            return (zentaoRoot .. "/my-" .. object .. "-" .. pagerInfo[object][type].recTotal .. "-" .. pagerInfo[object][type].recPerPage .. "-" .. pageID .. ".json?" .. session.data.sessionName .. "=" .. session.data.sessionID)
-        end
-    else
-        if type then
-            return (zentaoRoot .. "/my-" .. object .. "-" .. type .. ".json?" .. session.data.sessionName .. "=" .. session.data.sessionID)
-        else
-            return (zentaoRoot .. "/my-" .. object .. ".json?" .. session.data.sessionName .. "=" .. session.data.sessionID)
-        end
-    end
-    ]]
 end
 
 ------------------------------------------
@@ -439,7 +444,7 @@ function createList(object, tab, pageID)
         tab.dblclick_cb = function(arg1, arg2, title) 
             local objectID = string.sub(title, string.find(title, '%d+'))
             local viewAPI = getAPI{object, 'view', [object] = objectID}          
-            os.execute('start "" ' .. '"' .. viewAPI .. '"')
+            exSpawn('start "" ' .. '"' .. viewAPI .. '"')
         end
     end
 
