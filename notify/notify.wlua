@@ -22,15 +22,6 @@ function showPromptDlg(message, wrong, dialogType)
 end
 
 ---------------------------------------------------------------------
---- Detect if the notify is running.
----------------------------------------------------------------------
-PROCESS_EXIT = '.\\tmp\\exit'
-processIsRunning = io.open(PROCESS_EXIT, 'r')
-if processIsRunning then showPromptDlg(lang.prompt.processIsRunning) processIsRunning:close() os.exit() end
-processIsRunning = io.open(PROCESS_EXIT, 'w')
-processIsRunning:close()
-
----------------------------------------------------------------------
 --- Exit process.
 ---------------------------------------------------------------------
 function exitProcess() 
@@ -85,6 +76,31 @@ function exSpawn(command)
     return true
 end
 
+----------------------------------------------------------------------------------
+-- Adjust a process running or not.
+----------------------------------------------------------------------------------
+function processIsRunning(process)
+    local processCount = 0
+    exSpawn('tasklist')
+    local file = io.open(TMP_FILE, 'r')
+    if(file == nil) then return processCount end
+
+    tasklist = file:read('*a')
+    for s in string.gfind(tasklist, process) do processCount = processCount + 1 end
+
+    return processCount
+end
+
+---------------------------------------------------------------------
+--- Detect if the notify is running.
+---------------------------------------------------------------------
+PROCESS_EXIT = '.\\tmp\\exist'
+processFile  = io.open(PROCESS_EXIT, 'r')
+if processFile and processIsRunning('notify.exe') > 1 then showPromptDlg(lang.prompt.processIsRunning) processFile:close() os.exit() end
+processFile = io.open(PROCESS_EXIT, 'w')
+processFile:close()
+
+
 ------------------------------------------
 --- Get the infomation of login.
 ------------------------------------------
@@ -117,7 +133,7 @@ function checkPmsVersion()
     version = string.sub(version, string.find(version, '%d%.%d'))
 
     if isPro then
-        if version < PRO_VERSION then rightVersion = false showPromptDlg(string.format(lang.prompt.versionUnmatch, config.version, PRO_VERSION)) end
+        if version <= PRO_VERSION then rightVersion = false showPromptDlg(string.format(lang.prompt.versionUnmatch, config.version, PRO_VERSION)) end
     else
         if version < OS_VERSION then rightVersion = false showPromptDlg(string.format(lang.prompt.versionUnmatch, config.version, OS_VERSION)) end
     end
@@ -274,27 +290,29 @@ end
 
 
 function showLoginDialog()
+    local labelColor     = '200 214 255'
     local inputBgColor   = '0 165 226'
     local inputFontColor = '255 255 255'
-    local inputFont      = 'Times, Bold 12'
-    local inputMaxSize   = '200x30'
-    --urlLabel = iup.label{title = lang.login.url .. '£º', size = lang.login.labelSize}
-    urlInput = iup.text{size = lang.login.inputSize, maxsize = '200x30', border = 'NO', value = zentaoRoot, bgcolor = inputBgColor, FGCOLOR = inputFontColor, FONT = inputFont}
-    urlBox   = iup.hbox{iup.fill{size = '50x1'}, urlInput, iup.fill{}}
+    local inputFont      = 'Tahoma, 12'
+    local labelFont      = 'Tahoma, 9'
+    local inputMaxSize   = '200x25'
+    urlLabel = iup.label{title = ' ' .. lang.login.url .. '£º', maxsize=inputMaxSize, readonly='yes', border = 'NO', size = lang.login.labelSize, font=labelFont, fgcolor=labelColor}
+    urlInput = iup.text{size = lang.login.inputSize, border = 'NO', maxsize=inputMaxSize, value = zentaoRoot, bgcolor = inputBgColor, FGCOLOR = inputFontColor, font=inputFont}
+    urlBox   = iup.hbox{iup.fill{}, urlLabel, urlInput, iup.fill{}}
 
-    --accountLabel = iup.label{title = lang.login.account .. '£º', size = lang.login.labelSize}
-    accountInput = iup.text{size = lang.login.inputSize, maxsize = '200x30', border = 'NO', value = account, bgcolor = inputBgColor, FGCOLOR = inputFontColor, FONT = inputFont}
-    accountBox   = iup.hbox{iup.fill{size = '50x1'}, accountInput, iup.fill{}}
+    accountLabel = iup.label{title = ' ' .. lang.login.account .. '£º', maxsize=inputMaxSize, readonly='yes', border = 'NO', size = lang.login.labelSize, font=labelFont, fgcolor=labelColor}
+    accountInput = iup.text{size = lang.login.inputSize, border = 'NO', maxsize=inputMaxSize, value = account, bgcolor = inputBgColor, FGCOLOR = inputFontColor, font=inputFont}
+    accountBox   = iup.hbox{iup.fill{}, accountLabel, accountInput, iup.fill{}}
 
-    --passwordLabel = iup.label{title = lang.login.password .. '£º', size = lang.login.labelSize}
-    passwordInput = iup.text{size = lang.login.inputSize, maxsize = '200x30', border = 'NO', password = 'YES', bgcolor = inputBgColor, FGCOLOR = inputFontColor, FONT = inputFont}
-    passwordBox   = iup.hbox{iup.fill{size = '50x1'}, passwordInput, iup.fill{}}
+    passwordLabel = iup.label{title = ' ' .. lang.login.password .. '£º', maxsize=inputMaxSize, readonly='yes', border = 'NO', size = lang.login.labelSize, font=labelFont, fgcolor=labelColor}
+    passwordInput = iup.text{size = lang.login.inputSize, border = 'NO', maxsize=inputMaxSize, password = 'YES', bgcolor = inputBgColor, FGCOLOR = inputFontColor, font=inputFont}
+    passwordBox   = iup.hbox{iup.fill{}, passwordLabel, passwordInput, iup.fill{}}
 
     loginButton = iup.hbox{
         iup.fill{}, 
         iup.button
         {
-            size = '67x25',
+            size = '60x20',
             image = LOGINBUTTON_BG,
             impress = LOGINBUTTON_PRESS,
             IMPRESSBORDER = 'YES',
@@ -308,17 +326,18 @@ function showLoginDialog()
         iup.fill{}
     }
 
-    loginBox = iup.vbox{iup.fill{size = '1x160'}, urlBox, accountBox, passwordBox, iup.fill{size = '1x10'}, loginButton, margin = '5x8'}
+    loginBox = iup.vbox{iup.fill{}, urlBox, accountBox, passwordBox, iup.fill{size = '1x10'}, loginButton, margin = '5x8', iup.fill{}}
     loginDialog = iup.dialog
     {
         loginBox,
-        BORDER = 'NO',
-        title = notifyTitle.loginPanel,
-        SIZE    = "200x400",
+        BORDER  = 'NO',
+        title   = notifyTitle.loginPanel,
+        SIZE    = "QUARTERxFULL",
         RESIZE  = 'NO',
         MINBOX  = 'NO',
         icon = dialogIcon,
         background = LOGIN_BG,
+        bgcolor = inputBgColor,
     }
     loginDialog:showxy(iup.RIGHT, iup.CENTER)
 
@@ -559,7 +578,12 @@ welcomeLabel = iup.label{title = string.format(lang.header.welcome, account)}
 logoutLabel  = iup.label{title = lang.header.logout}
 function logoutLabel:button_cb(btn, press)
     if(btn ~= MOUSE_LEFT or press ~= MOUSE_PRESSED) then return false end
-    os.remove(LOGIN_FILE)
+
+    local data = {['zentaoRoot'] = zentaoRoot, ['account'] = account}
+    local f = io.open(LOGIN_FILE, 'w')
+    f:write(json.encode(data))
+    f:close()
+
     os.remove(PROCESS_EXIT)
     mainDialog.tray = 'NO'
     exitProcess()
@@ -569,7 +593,7 @@ headerBox = iup.hbox{iup.fill{size='10x1'}, welcomeLabel, iup.fill{}, logoutLabe
 ------------------------------------------
 --- Create and show main Dialog.
 ------------------------------------------
-mainTabs = iup.tabs{todoBox, taskBox, bugBox}
+mainTabs = iup.tabs{taskBox, bugBox, todoBox}
 mainDialog = iup.dialog
 {
     iup.vbox
@@ -579,7 +603,7 @@ mainDialog = iup.dialog
         pagerBox
     },
     title = notifyTitle.mainPanel,
-    size  = "200x400",
+    size  = "QUARTERxFULL",
     resize = 'NO',
     icon = dialogIcon,
     tray = 'YES',
@@ -619,7 +643,7 @@ end
 
 if loginDialog then loginDialog.visible = 'NO' end
 mainDialog:showxy(iup.RIGHT, iup.CENTER)
-createList('todo', todoTabs.today)
+createList('task', taskTabs.assignedto)
 
 ---------------------------------------------------------------------
 --- Timer.

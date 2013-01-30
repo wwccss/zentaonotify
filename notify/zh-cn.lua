@@ -31,11 +31,11 @@ lang.item = {}
 lang.item.exit = '退出'
 
 lang.login = {}
-lang.login.labelSize   = '50x15'
+lang.login.labelSize   = '58x20'
 lang.login.inputSize   = '120x20'
 lang.login.url         = '禅道地址'
-lang.login.account     = '用户名'
-lang.login.password    = '密 码'
+lang.login.account     = '用  户  名'
+lang.login.password    = '密      码'
 lang.login.loginButton = '登录'
 
 lang.prompt = {}

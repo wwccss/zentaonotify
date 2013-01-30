@@ -1,5 +1,12 @@
 zip:
-	mkdir -p tmp
-	cp -rf ../notify/* tmp/
-	rm ./tmp/makefile
-	rm ./tmp/notify/notify.wlua
+	mv notify notify.bak
+	mkdir -p ./notify/notify
+	cp -rf notify.bak/* ./notify/notify/
+	cp notify.bat ./notify/
+	rm ./notify/notify/build.bat;
+	rm ./notify/notify/notify.wlua; 
+	rm ./notify/notify/wsrlua.exe; 
+	rm ./notify/notify/glue.exe; 
+	zip -ru notify.zip notify;
+	rm -rf notify
+	mv notify.bak notify

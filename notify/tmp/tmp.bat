@@ -1,1 +1,1 @@
-start "" "http://demo.zentao.net/task-view-482.html?sid=98daa1e95b9f170d7636c31d1789bfd5" > .\tmp\tmp 2>&1 & echo ok > .\tmp\ok
+start "" "http://pms.zentao.net/task-view-1069.html?sid=0u10mnfmka2u57iuic4o5tc8o4" > .\tmp\tmp 2>&1 & echo ok > .\tmp\ok
