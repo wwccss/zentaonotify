@@ -54,4 +54,4 @@ lang.pager.summary = '共%d条记录，每页%d条 %d/%d'
 
 lang.header = {}
 lang.header.welcome = '欢迎你，%s'
-lang.header.logout  = '退出'
+lang.header.logout  = '注销'

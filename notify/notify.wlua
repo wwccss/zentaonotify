@@ -635,7 +635,7 @@ function mainDialog:trayclick_cb(b, press)
     if b == 1 and press == 1 then mainDialog:show() end
     
     if b == 3 and press == 1 then 
-        local rightMenu = iup.menu{iup.item {title = lang.item.exit, action = function() mainDialog.tray = "NO" exitProcess() end}}
+        local rightMenu = iup.menu{iup.item {title = lang.item.exit, action = function() mainDialog.tray = "NO" os.exit() end}}
         rightMenu:popup(iup.MOUSEPOS, iup.MOUSEPOS)
     end
     return iup.DEFAULT
