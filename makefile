@@ -7,6 +7,7 @@ zip:
 	rm ./notify/notify/notify.wlua; 
 	rm ./notify/notify/wsrlua.exe; 
 	rm ./notify/notify/glue.exe; 
+	rm ./notify/notify/tmp/*
 	zip -ru notify.zip notify;
 	rm -rf notify
 	mv notify.bak notify

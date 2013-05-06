@@ -293,9 +293,9 @@ function showLoginDialog()
     local labelColor     = '200 214 255'
     local inputBgColor   = '0 165 226'
     local inputFontColor = '255 255 255'
-    local inputFont      = 'Tahoma, 12'
+    local inputFont      = 'Tahoma, 10'
     local labelFont      = 'Tahoma, 9'
-    local inputMaxSize   = '200x25'
+    local inputMaxSize   = '220x20'
     urlLabel = iup.label{title = ' ' .. lang.login.url .. '£º', maxsize=inputMaxSize, readonly='yes', border = 'NO', size = lang.login.labelSize, font=labelFont, fgcolor=labelColor}
     urlInput = iup.text{size = lang.login.inputSize, border = 'NO', maxsize=inputMaxSize, value = zentaoRoot, bgcolor = inputBgColor, FGCOLOR = inputFontColor, font=inputFont}
     urlBox   = iup.hbox{iup.fill{}, urlLabel, urlInput, iup.fill{}}
@@ -421,12 +421,37 @@ function getAPIa(object, type, pageID)
 end
 
 ------------------------------------------
+--- Process data api for task/bug/todo.
+------------------------------------------
+function processDataAPI(dataAPI, object)
+    table.foreach(lang[object], function(type, v) 
+        if string.find(dataAPI, type) then 
+            if config.requestType == 'GET' then 
+                if object == 'todo' then 
+                    dataAPI = string.gsub(dataAPI, type, type .. '&account=' .. account .. '&status=all&orderBy="date,status,begin"') 
+                else 
+                    dataAPI = string.gsub(dataAPI, type, type .. '&orderBy=id_desc') 
+                end
+            else
+                if object == 'todo' then 
+                    dataAPI = string.gsub(dataAPI, type, type .. '-' .. account .. '-all-date,status,begin') 
+                else 
+                    dataAPI = string.gsub(dataAPI, type, type .. '-id_desc') 
+                end
+            end
+        end 
+    end)
+
+    return dataAPI
+end
+
+------------------------------------------
 --- Get data of object-type.
 ------------------------------------------
 function getData(object, type, pageID)
     local dataAPI
 
-    dataAPI = getAPI{'my', object, ['type'] = type, ['pageID'] = pageID}
+    dataAPI = processDataAPI(getAPI{'my', object, ['type'] = type, ['pageID'] = pageID}, object)
 
     local data = httpRequest(dataAPI)
     if table.getn(data) == 0 then return {} end
@@ -614,8 +639,8 @@ mainDialog = iup.dialog
 }
 
 function mainTabs:tabchange_cb(newTab, oldTab)
-    if newTab.tabtitle == lang.taskTab then createList('task', taskTabs.assignedto) end
-    if newTab.tabtitle == lang.bugTab then createList('bug', bugTabs.assigntome) end
+    if newTab.tabtitle == lang.bugTab  then createList('bug', bugTabs.assigntome) end
+    if newTab.tabtitle == lang.todoTab then createList('todo', todoTabs.today) end
 end
 
 function mainDialog:k_any(k)

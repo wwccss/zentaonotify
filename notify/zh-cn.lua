@@ -1,6 +1,6 @@
 notifyTitle = {}
-notifyTitle.loginPanel = '禅道桌面提醒-登录'
-notifyTitle.mainPanel  = '禅道桌面提醒工具'
+notifyTitle.loginPanel = '禅道桌面提醒1.0-登录'
+notifyTitle.mainPanel  = '禅道桌面提醒工具1.0'
 notifyTitle.notify     = '消息提醒'
 
 lang = {}
@@ -32,7 +32,7 @@ lang.item.exit = '退出'
 
 lang.login = {}
 lang.login.labelSize   = '58x20'
-lang.login.inputSize   = '120x20'
+lang.login.inputSize   = '180x20'
 lang.login.url         = '禅道地址'
 lang.login.account     = '用  户  名'
 lang.login.password    = '密      码'
