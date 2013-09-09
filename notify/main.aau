@@ -1,0 +1,225 @@
+import win.ui;
+import web.form;
+import web.json;
+import web.script;
+import inet.http;
+import process;
+var winform = ..win.form( bgcolor=4333824;bottom=544;parent=...;right=350;sysmenu=1;min=1;text="Web Form";title=1;mode="popup";max=1;cls="AAU_WEBFORM" )
+var wb = web.form( winform ,0x4 /*_UIFLAG_NO3DBORDER*/ , ,);
+winform.wndproc = function(hwnd,message,wParam,lParam)
+{
+  select( message ) 
+  { 
+    case 0x205/*_WM_RBUTTONUP*/
+    {
+      var x,y = win.getMessagePos(lParam);
+
+    }
+    else
+    {
+
+    }
+  }
+}
+
+
+http = inet.http()
+user = {}
+user.role      = 'qa'
+user.zentaourl = "http://congzhi.5upm.com"
+user.account   = "azhi"
+user.password  = "chencongzhi@azhi"
+var zentaoConfig
+var session 
+
+langFile = loadcode("../lang/zh-cn.aau");
+langFile("../lang/zh-cn");
+configFile = loadcode("../config/config.aau");
+configFile("../config/config.aau");
+
+function initModuleMenu()
+{
+  moduleMenu = '';
+  if(user.role == 'qa' or user.role == 'qd') config.order.menu = {"todo"; "bug"; "task"}
+  if(user.role == 'po' or user.role == 'pd') config.order.menu = {"todo"; "story"; "bug"}
+  for(i=1; #config.order.menu; 1)
+  {
+  		var module = config.order.menu[i];
+  		moduleMenu += "<li id='" + module + "Tab'>";
+  		moduleMenu += "<a href='#" + module + "Page' onclick=loadFeatureBar('" + module +"')>";
+  		moduleMenu += lang.moduleMenu[module] + "</a></li>";
+  }
+}
+initModuleMenu();
+
+function loadFeatureBar(module)
+{
+  featureBar = ''
+  for(i=1; #config.order[module]; 1)
+  {	
+  	var browseType = config.order[module][i];
+  	 featureBar += "<span><a id='" + browseType + "Tab' onclick=loadList('" + module + "','" + browseType + "')>" + lang.featureBar[module][browseType] + "</a></span> ";
+  }
+  if(wb.external) wb.external.featureBar = featureBar;
+}
+loadFeatureBar('todo');
+	
+wb.go("/layout/index.html")
+wb.wait(""); 
+wb.external = { msgbox = win.msgbox; loadFeatureBar = loadFeatureBar; moduleMenu = moduleMenu; featureBar = featureBar; }
+
+function exit()
+{
+	winform.close();
+}
+
+function log(content)
+{
+	string.save("d:\aa.txt", content + '\n', true);
+}
+
+function getAPI(param)
+{
+	var moduleName = param[1]
+	var methodName = param[2]
+	var api = ''
+	var viewType = param.viewType ? param.viewType : "json"; 
+    if(zentaoConfig.requestType == 'GET')
+	{
+		
+	}
+	else 
+	{
+		api = user.zentaourl + "/"
+		if(moduleName == 'user' and methodName == 'login')
+		{
+			api += "user-login.json?account=" + user.account + "&password=" + user.password; 
+			log(api)
+		 	return api;
+		 }
+
+		for(i=1; #param; 1) 
+		{
+			api += param[i]; 
+			if(param[i+1]) api += "-";
+		}
+		if(param.pageID)
+		{ 
+			if(methodName == 'todo') api += "--all-date_desc,status,begin-";
+			if(methodName != 'todo') api += "-id_desc-";
+			api += pager.recTotal + "-" + pager.recPerPage + "-" + param.pageID;
+		}
+		api += "." + viewType;
+		if(session) api += "?" + session.data.sessionName + "=" + session.data.sessionID;
+	}
+	log(api)
+	return api;
+}
+
+function getConfig()
+{
+	zentaoConfig = http.get(user.zentaourl + "/index.php?mode=getconfig");
+	zentaoConfig = web.json.parse(zentaoConfig); 
+}
+getConfig();
+
+function getSession()
+{
+	session = http.get(getAPI({'api'; 'getsessionid'}))
+	session = web.json.parse(session);
+	if(session.data) session.data = web.json.parse(session.data);
+}
+getSession()
+
+function login()
+{
+	var response = http.get(getAPI({'user'; 'login'}))
+}
+login();
+
+function viewObject(object, id)
+{	
+	process.execute(getAPI({object; 'view'; id; viewType='html'}));
+}
+if(wb.external) wb.external.viewObject = viewObject;	
+
+function loadList(object, browseType, pageID)
+{
+	var list = "<tr class='colhead'><th class='w-id'>ID</th><th class='w-title'>" + lang.list.title + "</th></tr>"
+	var response = http.get(getAPI({'my'; object; browseType; pageID = pageID}));
+	response = web.json.parse(response);
+	response = web.json.parse(response.data);
+	pager = response.pager;
+	for(k,v in response[object + "s"]) 
+	{
+		var title = v.title ? v.title : v.name; 
+		title = string.replace(title,"\\","")
+		list += "<tr><td>" + v.id + "</td><td><a href='#' onclick=viewObject('" + object + "','" + v.id + "')>" + title + "</a></td></tr>";
+	}
+	list += "<tr><td colspan=2 align='right'><div class='pager'>";
+	list += string.format(lang.pager.summary, pager.recTotal, pager.recPerPage, pager.pageID, pager.recTotal/pager.recPerPage);
+	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + (pager.pageID - 1) + "')>" + lang.pager.pre + "</a>";
+	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + (pager.pageID + 1) + "')>" + lang.pager.next + "</a>";
+	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + pager.recTotal/pager.recPerPage + "')>" + lang.pager.last + "</a>";
+	list += "</div></td></tr>";
+	if(wb.external) wb.external.list = list;
+}
+
+if(wb.external) wb.external.loadList   = loadList;		
+
+jQueryReady = /*
+	function viewObject(module, id)
+	{
+		external.viewObject(module, id);
+	}
+	
+	function loadList(module, browseType, pageID)
+	{
+		external.loadList(module, browseType, pageID);
+		$('#' + module +'List').html(external.list);
+		
+		$("#featureBar span a").css({"color":"black", "font-weight":"normal"});
+		$("#featureBar #" + browseType + "Tab").css({"font-weight":"bold", "color":"#009900"});
+		
+		$('table').css({"border-spacing":"0", "border-collapse":"collapse"})
+		$('.colhead th').css({background:"#efefef", "font-size":"12px", "font-weight":"bold", "height":"24px", "border-bottom":"1px solid #e4e4e4"});
+		$('.w-id').css({"width":"30"});
+		$('.w-title').css({"width":"300px"});
+		$("tr td").css({"font-size":"12px"});
+		$("tr td a").css({"text-decoration":"none"});
+		
+		$(".pager").css({"font-size":"12px"})	
+	}
+	
+    function loadFeatureBar(module)
+    {
+   		external.loadFeatureBar(module);
+    	$('#featureBar').html(external.featureBar);
+    	
+    	$("#moduleMenu li").css({"background":"#1A4F85"});
+    	$("#moduleMenu li a").css({"font-weight":"normal", "color":"white"});
+    	$("#moduleMenu #" + module + "Tab").css({"background":"e5e5e5"});
+   		$("#moduleMenu #" + module + "Tab a").css({"font-weight":"bold", "color":"#009900"});
+    	
+    	var browseType = module == 'todo' ? 'today' : 'assignedTo';
+    	loadList(module, browseType);
+    }
+
+    $('#moduleMenu').html(external.moduleMenu);
+    $('#featureBar').html(external.featureBar);
+    loadList('todo', 'today');
+    
+    $("#moduleMenu #todoTab").css({"background":"e5e5e5"});
+    $("#moduleMenu #todoTab a").css({"font-weight":"bold", "color":"#009900"});
+    
+    $(".pager").css({"font-size":"12px"})
+    
+    $('#tabs').tabs();
+    $("#accordion").accordion();
+*/
+
+wb.doScript(jQueryReady);
+
+winform.show() 
+win.loopMessage();
+return winform,wb;
