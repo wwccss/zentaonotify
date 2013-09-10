@@ -1,0 +1,153 @@
+import win.ui;
+import web.form;
+import web.json;
+import web.script;
+import process;
+import win.util.round;
+
+var winform = ..win.form( bgcolor=16777215;bottom=696;right=318;parent=...;text="禅道桌面提醒工具";)
+var wb = web.form( winform ,0x4 /*_UIFLAG_NO3DBORDER*/ , ,);
+winform.wndproc = function(hwnd,message,wParam,lParam)
+{
+  select( message ) 
+  { 
+    case 0x205/*_WM_RBUTTONUP*/
+    {
+      var x,y = win.getMessagePos(lParam);
+    }
+    else
+    {
+    }
+  }
+}
+
+function initModuleMenu()
+{
+  moduleMenu = '';
+  if(user.role == 'qa' or user.role == 'qd') config.order.menu = {"todo"; "bug"; "task"}
+  if(user.role == 'po' or user.role == 'pd') config.order.menu = {"todo"; "story"; "bug"}
+  for(i=1; #config.order.menu; 1)
+  {
+  		var module = config.order.menu[i];
+  		moduleMenu += "<li id='" + module + "Tab'>";
+  		moduleMenu += "<a href='#" + module + "Page' onclick=loadFeatureBar('" + module +"')>";
+  		moduleMenu += lang.moduleMenu[module] + "</a></li>";
+  }
+}
+initModuleMenu();
+
+function loadFeatureBar(module)
+{
+  featureBar = ''
+  for(i=1; #config.order[module]; 1)
+  {	
+  	var browseType = config.order[module][i];
+  	 featureBar += "<span><a id='" + browseType + "Tab' onclick=loadList('" + module + "','" + browseType + "')>" + lang.featureBar[module][browseType] + "</a></span> ";
+  }
+  if(wb.external) wb.external.featureBar = featureBar;
+}
+loadFeatureBar('todo');
+	
+wb.go("/layout/index.html")
+wb.wait(""); 
+wb.external = 
+{ 
+	msgbox = win.msgbox; 
+	loadFeatureBar = loadFeatureBar; 
+	moduleMenu = moduleMenu; 
+	featureBar = featureBar; 
+}
+
+function exit()
+{
+	winform.close();
+}
+
+function viewObject(object, id)
+{	
+	process.execute(getAPI({object; 'view'; id; viewType='html'}));
+}
+if(wb.external) wb.external.viewObject = viewObject;	
+
+function loadList(object, browseType, pageID)
+{
+	var list = "<tr class='colhead'><th class='w-id'>ID</th><th class='w-title'>" + lang.list.title + "</th></tr>"
+	var response = http.get(getAPI({'my'; object; browseType; pageID = pageID}));
+	response = web.json.parse(response);
+	response = web.json.parse(response.data);
+	pager = response.pager;
+	var index = object == "story" ? "stories" : object + "s";
+	for(k,v in response[index]) 
+	{
+		var title = v.title ? v.title : v.name; 
+		title = string.replace(title,"\\","")
+		list += "<tr><td>" + v.id + "</td><td><a href='#' onclick=viewObject('" + object + "','" + v.id + "')>" + title + "</a></td></tr>";
+	}
+	list += "<tr><td colspan=2 align='right'><div class='pager'>";
+	list += string.format(lang.pager.summary, pager.recTotal, pager.recPerPage, pager.pageID, pager.pageTotal);
+	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + (pager.pageID - 1) + "')>" + lang.pager.pre + "</a>";
+	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + (pager.pageID + 1) + "')>" + lang.pager.next + "</a>";
+	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + pager.pageTotal + "')>" + lang.pager.last + "</a>";
+	list += "</div></td></tr>";
+	if(wb.external) wb.external.list = list;
+}
+
+if(wb.external) wb.external.loadList   = loadList;		
+
+jQueryReady = /*
+	function viewObject(module, id)
+	{
+		external.viewObject(module, id);
+	}
+	
+	function loadList(module, browseType, pageID)
+	{
+		external.loadList(module, browseType, pageID);
+		$('#' + module +'List').html(external.list);
+		
+		$("#featureBar span a").css({"color":"black", "font-weight":"normal"});
+		$("#featureBar #" + browseType + "Tab").css({"font-weight":"bold", "color":"#009900"});
+		
+		$('table').css({"border-spacing":"0", "border-collapse":"collapse"})
+		$('.colhead th').css({background:"#efefef", "font-size":"12px", "font-weight":"bold", "height":"24px", "border-bottom":"1px solid #e4e4e4"});
+		$('.w-id').css({"width":"30"});
+		$('.w-title').css({"width":"300px"});
+		$("tr td").css({"font-size":"12px"});
+		$("tr td a").css({"text-decoration":"none"});
+		
+		$(".pager").css({"font-size":"12px"})	
+	}
+	
+    function loadFeatureBar(module)
+    {
+   		external.loadFeatureBar(module);
+    	$('#featureBar').html(external.featureBar);
+    	
+    	$("#moduleMenu li").css({"background":"#1A4F85"});
+    	$("#moduleMenu li a").css({"font-weight":"normal", "color":"white"});
+    	$("#moduleMenu #" + module + "Tab").css({"background":"e5e5e5"});
+   		$("#moduleMenu #" + module + "Tab a").css({"font-weight":"bold", "color":"#009900"});
+    	
+    	var browseType = module == 'todo' ? 'today' : 'assignedTo';
+    	loadList(module, browseType);
+    }
+
+    $('#moduleMenu').html(external.moduleMenu);
+    $('#featureBar').html(external.featureBar);
+    loadList('todo', 'today');
+    
+    $("#moduleMenu #todoTab").css({"background":"e5e5e5"});
+    $("#moduleMenu #todoTab a").css({"font-weight":"bold", "color":"#009900"});
+    
+    $(".pager").css({"font-size":"12px"})
+    
+    $('#tabs').tabs();
+    $("#accordion").accordion();
+*/
+
+wb.doScript(jQueryReady);
+
+win.util.round(winform);
+winform.show();
+win.loopMessage();
+return winform,wb;

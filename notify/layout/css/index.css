@@ -1,0 +1,11 @@
+html {margin:20px 0px 0px 0px; padding:0px}
+body, #tab{ font-size: 9pt; margin 0px; padding: 0; position:relative}
+#tabs {border:none;}
+#tabs ul {background:003366}
+#tabs ul li{background:#1A4F85; border:#1A4F85; border-right: 3px solid #002242;}
+#tabs ul li a {color:white;}
+#featureBar { height: 28px; line-height: 28px; cursor: pointer; background:#e5e5e5 }
+#featureBar a { text-decoration: none; border-right: 1px solid #ddd; padding: 4px 4px 4px 4px; color: #003366; font-size: 14px; }
+#todoPage,#storyPage,#taskPage,#bugPage {padding-left:0px; padding-right:0px}
+table {border:1px solid #e4e4e4}
+
