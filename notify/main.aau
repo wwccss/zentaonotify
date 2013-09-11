@@ -41,14 +41,14 @@ wbLayout.onButtonClick =
 ..http = inet.http();
 now = time();
 now.format="%Y-%m-%d";
-var LOG_FILE    = "../log/" + tostring(now) + '.txt';
-var INFO_FILE   = "../tmp/.logininfo";
-ACTION_FILE = "../tmp/actionID";
+var LOG_FILE    = "/log/" + tostring(now) + '.txt';
+var INFO_FILE   = "/tmp/.logininfo";
+ACTION_FILE = "/tmp/actionID";
 
-langFile = loadcode("../lang/zh-cn.aau");
-langFile("../lang/zh-cn");
-configFile = loadcode("../config/config.aau");
-configFile("../config/config.aau");
+langFile = loadcode("/lang/zh-cn.aau");
+langFile();
+configFile = loadcode("/config/config.aau");
+configFile();
 
 function log(content)
 {
@@ -70,7 +70,8 @@ function getAPI(param)
 		api = user.zentaourl + "/"
 		if(moduleName == 'user' and methodName == 'login')
 		{
-			api += "user-login.json?account=" + user.account + "&password=" + user.password; 
+			if(#user.password) var password = string.md5(user.password + tostring(session.data.rand), true);	
+			api += "user-login.json?account=" + user.account + "&password=" + password; 
 			log(api)
 		 	return api;
 		 }
@@ -140,8 +141,7 @@ function getSession()
 	session = http.get(getAPI({'api'; 'getsessionid'}));
 	if(!session or session == '') return false;
 	session = web.json.parse(session);
-	session.data = web.json.parse(session.data);
-	if(#user.password) user.password = string.md5(user.password + tostring(session.data.rand), true);	
+	session.data = web.json.parse(session.data);	
 	return true;
 }
 
@@ -176,7 +176,7 @@ function init()
 
 function enter()
 {
-	indexFile = assert(loadcode("../index.aau"));	
+	indexFile = assert(loadcode("index.aau"));	
 	indexFile();
 	loginform.close();
 }

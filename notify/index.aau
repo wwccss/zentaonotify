@@ -200,7 +200,7 @@ function getActions()
 	}
 	
 	string.save(ACTION_FILE, actionID);
-	notifyFile = assert(loadcode("../notify.aau"));	
+	notifyFile = assert(loadcode("/notify.aau"));	
 	notifyFile();
 }
 getActions();
