@@ -1,8 +1,12 @@
-config = {}
+..config = {}
 config.order = {}
 config.order.menu  = {"todo"; "task"; "bug"}
 config.order.todo  = {"today"; "yesterday"; "thisweek"; "lastweek"}
 config.order.story = {"assignedTo"; "openedBy"; "reviewedBy"; "closedBy"}
 config.order.task  = {"assignedTo"; "openedBy"; "finishedBy"; "closedBy"}
 config.order.bug   = {"assignedTo"; "openedBy"; "resolvedBy"; "closedBy"}
+
+config.sys = {}
+config.sys.updateInterval = 300000 // 300000
+config.sys.closeInterval  = 30000 // 30000
 

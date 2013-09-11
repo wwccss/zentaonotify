@@ -1,24 +1,61 @@
 import win.ui;
+import win.ui.menu;
 import web.form;
 import web.json;
 import web.script;
 import process;
 import win.util.round;
+import win.util.tray;
 
 var winform = ..win.form( bgcolor=16777215;bottom=696;right=318;parent=...;text="禅道桌面提醒工具";)
 var wb = web.form( winform ,0x4 /*_UIFLAG_NO3DBORDER*/ , ,);
+
+alignRight(winform);
+tray         = win.util.tray(winform);
+tray.message = 0x400+9981/*_WM_TRAYMESSAGE*/
+tray.tip     = lang.prompt.softName;
+winform.popmenu = win.ui.popmenu(winform);
+winform.popmenu.add(lang.popmenu.exit, function(id){ exit()});
+
 winform.wndproc = function(hwnd,message,wParam,lParam)
 {
-  select( message ) 
-  { 
-    case 0x205/*_WM_RBUTTONUP*/
-    {
-      var x,y = win.getMessagePos(lParam);
-    }
-    else
-    {
-    }
-  }
+	select(message) 
+	{
+		case( 0x400+9981/*_WM_TRAYMESSAGE*/ ) 
+		{ 
+			if(lParam = 0x203/*_WM_LBUTTONDBLCLK*/)
+			{
+				winform.show(); 
+			}
+		
+	    	if( lParam = 0x205/*_WM_RBUTTONUP*/ )
+	    	{
+	    		import mouse;
+	    		x,y = mouse.getPos();	    		
+	    		win.setForeground(winform.hwnd)
+	    		winform.popmenu.popup( x,y,true )
+	    	}
+		} 
+		case( 0x112/*_WM_SYSCOMMAND*/ ) 
+		{ 		
+			if( wParam == 0xF020/*_SC_MINIMIZE*/ )
+			{		
+				winform.show(false); 
+				tray.pop(lang.prompt.minToTray, lang.prompt.common);
+  			}
+  			if( wParam == 0xF060/*_SC_CLOSE*/) 
+  			{
+  				exit();
+  			}
+		}
+	}	
+}
+
+function exit()
+{
+	tray.delete();
+ 	winform.close();
+ 	win.quitMessage();
 }
 
 function initModuleMenu()
@@ -56,11 +93,6 @@ wb.external =
 	loadFeatureBar = loadFeatureBar; 
 	moduleMenu = moduleMenu; 
 	featureBar = featureBar; 
-}
-
-function exit()
-{
-	winform.close();
 }
 
 function viewObject(object, id)
@@ -146,6 +178,32 @@ jQueryReady = /*
 */
 
 wb.doScript(jQueryReady);
+
+winform.addtimer(config.sys.updateInterval, function(){getActions()});
+function getActions()
+{
+	actions  = {}
+	var actionID = string.load(ACTION_FILE) or 0;
+	var response  = http.get(getAPI({"api"; "getmodel"; "action"; "getUnreadActions"; "actionID=" + actionID}));
+	response      = web.json.parse(response);
+	response.data = web.json.parse(web.json.parse(response.data));
+	
+	if(!table.count(response.data)) return;
+	for(object,list in response.data)
+	{
+		for(k,action in list)
+		{
+			if(action.actionID > actionID) actionID = action.actionID;
+			action.action = string.replace(action.action,"\\","")
+			actions[action.actionID] = action;
+		}		
+	}
+	
+	string.save(ACTION_FILE, actionID);
+	notifyFile = assert(loadcode("../notify.aau"));	
+	notifyFile();
+}
+getActions();
 
 win.util.round(winform);
 winform.show();

@@ -1,0 +1,38 @@
+import win.ui;
+import win.util.popup;
+import web.json;
+/*DSG{{*/
+var notifyForm = ..win.form( exmode="toolwindow";bgcolor=15780518;bottom=263;parent=...;right=279;border="none";topmost=1 )
+notifyForm.add( 
+button={ bottom=18;color=0;text="r";left=259;top=1;font=LOGFONT( name='Marlett';charset=2;weight=500 );z=1;right=281;cls="button" };
+listbox={ bgcolor=16777215;bottom=253;right=267;left=7;top=23;z=2;vscroll=1;
+items={  };edge=1;cls="listbox" }
+)
+/*}}*/
+
+var list = {}
+notifyForm.listbox.oncommand = function(id,event)
+{
+	if(event == 0x2/*_LBN_DBLCLK*/)
+	{
+		var index = notifyForm.listbox.selIndex;
+		viewObject(actions[list[index]].objectType, actions[list[index]].objectID);
+	}
+}
+
+pop = win.util.popup(notifyForm, config.sys.closeInterval);
+
+var i = 1;
+for(actionID,action in actions)
+{	
+	notifyForm.listbox.add(action.action,-1);
+	list[i] = actionID;
+	i++;
+}
+
+notifyForm.button.oncommand = function(id,event){ notifyForm.close();}
+
+notifyForm.show(true) 
+notifyForm.setTimeout(function(){notifyForm.close()}, config.sys.closeInterval);
+win.loopMessage();
+return notifyForm;  

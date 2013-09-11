@@ -13,44 +13,42 @@ win.util.round(loginform)
 wbLayout = web.layout(loginform)  
 wbLayout.go("/layout/login.html") 
 
+function alignRight(form)
+{
+	clientRect = form.getClientRect();
+	deskRect   = form.getRect();
+	deskWidth  = deskRect.left + deskRect.right;
+	deskHeight = deskRect.top  + deskRect.bottom;
+	form.setPos(deskWidth - clientRect.right - 8, deskHeight - clientRect.bottom - 35);
+}
+alignRight(loginform);
+
+..user = {}
 wbLayout.onButtonClick = 
 {
 	login = function(ltTarget,ltEle,x,y,ltMousePara)
 	{	
-		..user = {}
 		user.zentaourl = wbLayout.getEle("zentaourl").value;
 		user.account   = wbLayout.getEle("account").value;
 		user.password  = wbLayout.getEle("password").value;
 		if(#user.password != 32) user.password = string.md5(user.password, true);
 		if(!init()) return;
-		indexFile = loadcode("../index.aau");	
-		indexFile("../index");
-		loginform.close();
+		enter();
+
 	}
 }
-
 
 ..http = inet.http();
 now = time();
 now.format="%Y-%m-%d";
-var LOG_FILE  = "../log/" + tostring(now) + '.txt';
-var INFO_FILE = "../tmp/.logininfo";
+var LOG_FILE    = "../log/" + tostring(now) + '.txt';
+var INFO_FILE   = "../tmp/.logininfo";
+ACTION_FILE = "../tmp/actionID";
 
 langFile = loadcode("../lang/zh-cn.aau");
 langFile("../lang/zh-cn");
 configFile = loadcode("../config/config.aau");
 configFile("../config/config.aau");
-
-function loadUserInfo()
-{
-	var userInfo = string.load(INFO_FILE);
-	if(!userInfo) return;
-	userInfo = web.json.parse(userInfo);
-	wbLayout.getEle("zentaourl").value = userInfo.zentaourl;
-	wbLayout.getEle("account").value   = userInfo.account;
-	wbLayout.getEle("password").value  = userInfo.password;	
-}
-loadUserInfo();
 
 function log(content)
 {
@@ -103,13 +101,47 @@ function getConfig()
 	return true;
 }
 
+function checkVersion()
+{
+    var version = zentaoConfig.version;
+    var isPro   = false;
+    if(string.find(string.lower(version), 'pro'))
+    {
+    	isPro = true;
+    	version = string.sub(version, (#'pro') + 1);
+    }
+    else 
+    { 
+    	version = tonumber(version);
+    }
+
+    if(isPro)
+    {
+    	if(tonumber(version) <= 1.3)
+    	{
+    		 win.msgbox(string.format(lang.prompt.versionUnmatch, zentaoConfig.version, 'pro1.3'), lang.prompt.warning); 
+    		 return false;
+    	}
+    } 
+    else 
+    {    
+    	if(tonumber(version) < 4.0)
+    	{
+   			 win.msgbox(string.format(lang.prompt.versionUnmatch, zentaoConfig.version, '4.0'), lang.prompt.warning);
+   			 return false;
+   		}    
+    }
+
+	return true;
+}
+
 function getSession()
 {
 	session = http.get(getAPI({'api'; 'getsessionid'}));
 	if(!session or session == '') return false;
 	session = web.json.parse(session);
 	session.data = web.json.parse(session.data);
-	user.password = string.md5(user.password + tostring(session.data.rand), true);	
+	if(#user.password) user.password = string.md5(user.password + tostring(session.data.rand), true);	
 	return true;
 }
 
@@ -133,13 +165,37 @@ function getRole()
 
 function init()
 {
-	if(!getConfig())  {win.msgbox(lang.prompt.wrongUrl, lang.prompt.warning); return false} 
-	if(!getSession()) {win.msgbox(lang.prompt.wrongUrl, lang.prompt.warning); return false} 
-	if(!login())      {win.msgbox(lang.prompt.wrongInfo, lang.prompt.warning); return false} 
-	if(!getRole())    {win.msgbox(lang.prompt.wrongInfo, lang.prompt.warning); return false}
+	if(!getConfig())    {win.msgbox(lang.prompt.wrongUrl, lang.prompt.warning); return false} 
+	if(!checkVersion()) return false;
+	if(!getSession())   {win.msgbox(lang.prompt.wrongUrl, lang.prompt.warning); return false} 
+	if(!login())        {win.msgbox(lang.prompt.wrongInfo, lang.prompt.warning); return false} 
+	if(!getRole())      {win.msgbox(lang.prompt.wrongInfo, lang.prompt.warning); return false}
 	string.save(INFO_FILE, web.json.stringify(user, true));
 	return true;
 }
+
+function enter()
+{
+	indexFile = assert(loadcode("../index.aau"));	
+	indexFile();
+	loginform.close();
+}
+
+function loadUserInfo()
+{
+	var userInfo = string.load(INFO_FILE);
+	if(!userInfo) return;
+	user = web.json.parse(userInfo);
+	if(getConfig() and checkVersion() and getSession() and login() and getRole())
+	{
+		string.save(INFO_FILE, web.json.stringify(user, true));
+		return enter();
+	}
+	wbLayout.getEle("zentaourl").value = user.zentaourl;
+	wbLayout.getEle("account").value   = user.account;
+	wbLayout.getEle("password").value  = user.password;	
+}
+loadUserInfo();
 
 loginform.show() 
 win.loopMessage();

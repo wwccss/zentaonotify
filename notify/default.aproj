@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="gb2312"?>
 <project ver="0.60" name="notify" libEmbed="true" icon="layout\images\notify.ico" CompanyName="" FileDescription="" LegalCopyright="" ProductName="" InternalName="" FileVersion="0.0.1.001" ProductVersion="0.0.1.001" publishDir="/Publish/" ui="win" output="notify.exe">
+	<file name="notify.aau" path="notify.aau" comment="notify.aau"/>
 	<file name="index.aau" path="index.aau" comment="index.aau"/>
 	<file name="main.aau" path="main.aau"/>
 	<folder name="资源文件(web.layout)" path="layout" comment="" embed="true">

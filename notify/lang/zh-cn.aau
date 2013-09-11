@@ -31,24 +31,19 @@ lang.featureBar.bug.openedBy   = "由我创建"
 lang.featureBar.bug.resolvedBy = "由我解决"
 lang.featureBar.bug.closedBy   = "由我关闭"
 
-lang.item = {}
-lang.item.exit = '退出'
-
-lang.login = {}
-lang.login.labelSize   = '58x20'
-lang.login.inputSize   = '180x20'
-lang.login.url         = '禅道地址'
-lang.login.account     = '用  户  名'
-lang.login.password    = '密      码'
-lang.login.loginButton = '登录'
+lang.popmenu = {}
+lang.popmenu.exit = '退出'
 
 lang.prompt = {}
-lang.prompt.warning            = '提示'
+lang.prompt.softName           = "禅道桌面提醒工具";
+lang.prompt.common             = "提示"
+lang.prompt.warning            = "警告"
 lang.prompt.processIsRunning   = '程序已经启动'
 lang.prompt.versionUnmatch     = '您当前版本是%s，请升级至%s以上版本'
 lang.prompt.wrongUrl           = '您填写的禅道地址有误，请重新填写！'
 lang.prompt.wrongInfo          = '您填写的信息有误，请重新填写！'
 lang.prompt.notEmpty           = '%s不能为空, 请重新填写！'
+lang.prompt.minToTray          = "最小化到托盘了";
 
 lang.pager = {}
 lang.pager.pre     = '上一页'
