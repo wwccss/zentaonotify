@@ -1,0 +1,8 @@
+table   {width:100%;  border-collapse: collapse; border-spacing: 0; } 
+caption {font-size: 14px; padding: 5px 5px 5px 10px; height: 20px; border: 1px solid #e4e4e4; background: #edf3fe; margin: 0; border-bottom: none; text-align: left; font-weight: bold;}
+tr      {border: none; background: #fcfcfc; padding: 4px 3px;}
+th      {font-size: 12px; border: none; padding: 4px 3px; text-align: right; width: 60px; }
+td      {padding: 4px 3px; border:none;}
+.w-p90 {width:90%}
+.hidden {display:none}
+"input,textarea,select {border:1px solid #bbb;}

@@ -6,6 +6,8 @@ import web.script;
 import process;
 import win.util.round;
 import win.util.tray;
+import win.clip;
+import win.clip.viewer;
 
 var winform = ..win.form( bgcolor=16777215;bottom=696;right=318;parent=...;text="禅道桌面提醒工具";)
 var wb = web.form( winform ,0x4 /*_UIFLAG_NO3DBORDER*/ , ,);
@@ -205,6 +207,12 @@ function getActions()
 }
 getActions();
 
+win.clip.viewer(winform).onDrawClipboard = function() 
+{ 
+	createFile = assert(loadcode("/create.aau"));	
+	createFile();
+}
+	
 win.util.round(winform);
 winform.show();
 win.loopMessage();

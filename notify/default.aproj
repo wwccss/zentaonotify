@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="gb2312"?>
-<project ver="0.60" name="notify" libEmbed="true" icon="layout\images\notify.ico" CompanyName="" FileDescription="" LegalCopyright="" ProductName="" InternalName="" FileVersion="0.0.1.001" ProductVersion="0.0.1.001" publishDir="/Publish/" ui="win" output="notify.exe">
+<project ver="0.60" name="notify" libEmbed="true" icon="layout\images\notify.ico" CompanyName="青岛易软天创网络科技有限公司" FileDescription="" LegalCopyright="易软-阿智" ProductName="禅道桌面提醒工具" InternalName="notify" FileVersion="1.0.0.2" ProductVersion="1.1.0.3" publishDir="D:\AAuto\project\notify+login" ui="win" output="notify.exe">
+	<file name="create.aau" path="create.aau" comment="clip.aau"/>
 	<file name="notify.aau" path="notify.aau" comment="notify.aau"/>
 	<file name="index.aau" path="index.aau" comment="index.aau"/>
 	<file name="main.aau" path="main.aau"/>
 	<folder name="资源文件(web.layout)" path="layout" comment="" embed="true">
+		<file name="create.html" path="layout\create.html" comment="layout\create.html"/>
 		<file name="login.html" path="layout\login.html" comment="layout\login.html"/>
 		<file name="index.html" path="layout\index.html" comment="layout\index.html"/>
 		<folder name="css" path="layout\css" comment="layout\css" embed="false">
@@ -29,6 +31,9 @@
 			<file name="button5.png" path="layout\images\button5.png" comment="layout\images\button5.png"/>
 			<file name="button4.png" path="layout\images\button4.png" comment="layout\images\button4.png"/>
 			<file name="background.png" path="layout\images\background.png" comment="layout\images\background.png"/>
+		</folder>
+		<folder name="js" path="layout\js" comment="layout\js">
+			<file name="jquery.min.js" path="layout\js\jquery.min.js" comment="layout\js\jquery.min.js"/>
 		</folder>
 	</folder>
 	<folder name="config" path="config" comment="config">

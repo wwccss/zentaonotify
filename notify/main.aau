@@ -176,7 +176,7 @@ function init()
 
 function enter()
 {
-	indexFile = assert(loadcode("index.aau"));	
+	indexFile = assert(loadcode("../../index.aau"));	
 	indexFile();
 	loginform.close();
 }

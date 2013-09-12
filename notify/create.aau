@@ -1,0 +1,133 @@
+import win.ui;
+import web.layout;
+import web.form;
+import web.json;
+import win.clip;
+import inet.http;
+
+var WIN_WIDTH  = 500;
+var WIN_HEIGHT = 500;
+var createForm  = ..win.form( right=WIN_WIDTH;bottom=WIN_HEIGHT;parent=...;max=false;border="thin";text="新建";mode="popup" )
+
+var wb = web.form(createForm ,0x4 /*_UIFLAG_NO3DBORDER*/ , ,);
+wb.external = {clippedData = win.clip.read(); msgbox = win.msgbox}
+
+wb.go("/layout/create.html")
+wb.wait(""); 
+
+..http = inet.http();
+function loadProducts()
+{
+var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
+	var response = http.get("http://congzhi.5upm.com/api-getmodel-product-getPairs.json");
+	response = web.json.parse(response);
+	response.data = web.json.parse(response.data);
+	var products = "";
+	for(productID,productName in response.data)
+	{
+		productName = string.replace(productName, "\\", "");
+		products += "<option value='" + productID + "'>" + productName + "</option>";
+	}
+	
+    wb.external.products = products;
+}
+wb.external.loadProducts = loadProducts;
+
+function loadProjects()
+{
+var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
+	var response = http.get("http://congzhi.5upm.com/api-getmodel-project-getPairs.json");
+	response = web.json.parse(response);
+	response.data = web.json.parse(response.data);
+	var projects = "";
+	for(projectID,projectName in response.data)
+	{
+		projectName = string.replace(projectName, "\\", "");
+		projects += "<option value='" + projectID + "'>" + projectName + "</option>";
+	}
+	
+    wb.external.projects = projects;
+}
+wb.external.loadProjects = loadProjects;
+
+function submit(objectType, product, project, name, desc)
+{
+	user = {}
+	user.account   = "azhi"
+	user.zentaourl = "http://congzhi.5upm.com";
+	
+	encodedName = inet.url.encode(name, true);
+	encodedDesc = inet.url.encode(desc, true);
+	var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
+	
+	var post = "";
+	var postApi = string.concat(user.zentaourl, "/api-getmodel-", objectType, "-create.html")
+	select(objectType)
+	{
+		case "todo"  {post = string.concat("type=custom&name=", encodedName, "&desc=", encodedDesc);}
+		case "story" {post = string.concat("product=", product, "&title=", encodedName, "&spec=", encodedDesc);}
+		case "task"  
+		{
+			post = string.concat("type=design&assignedTo=", "&title=", encodedName, "&desc=", encodedDesc);
+			postApi = string.concat(user.zentaourl, "/api-getmodel-", objectType, "-create-", "projectID=", project, ".html")
+		}
+		case "bug"   {post = string.concat("product=", product, "&title=", encodedName, "&steps=", encodedDesc);}
+	}
+
+	response = http.post(postApi, post);
+	response = web.json.parse(response);
+	if(response.status == 'success') 
+	{
+		return win.msgbox("成功创建" + objectType + "#" + string.replace(response.data, """", "") + " " + name, "提示");
+	}
+	return win.msgbox("创建失败");
+}
+
+wb.external.submit = submit;
+var js = /*
+function loadRelated(objectType)
+{
+	if(objectType == 'story' || objectType == 'bug') return loadProducts();
+	if(objectType == 'task')  return loadProjects();
+	if(objectType == 'todo')
+	{ 
+	 	$("#products").addClass('hidden');
+		$("#projects").addClass('hidden');
+	}
+}
+
+function loadProducts()
+{
+	external.loadProducts();
+	$("#projects").addClass('hidden');
+	$("#products").removeClass('hidden');
+	$("#products select").html(external.products);	
+}
+
+function loadProjects()
+{	
+	external.loadProjects();
+	$("#products").addClass('hidden');
+	$("#projects").removeClass('hidden');
+	$("#projects select").html(external.projects);	
+}
+
+function submit()
+{
+	var name       = $("#name").val();
+	if(!name) return external.msgbox("标题不能为空", "提示");
+	var objectType = $("#objectType").val();
+	var product    = $("#product").val();
+	var project    = $("#project").val();
+	var name       = $("#name").val();
+	var desc       = $("#desc").val();
+	external.submit(objectType, product, project, name ,desc);
+}
+*/
+wb.doScript(js);
+
+wb.doScript("$('textarea').val(external.clippedData)");
+
+createForm.show();
+win.loopMessage();
+return createForm;

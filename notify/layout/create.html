@@ -1,0 +1,39 @@
+<html>
+<head>
+<script type="text/javascript" src="js/jquery.min.js"></script> 
+<link rel="stylesheet" href="css/create.css" />
+</head>
+
+<body>
+<table align='center'> 
+  <tr>
+    <th>类型</th>
+    <td>
+      <select id='objectType' onchange='loadRelated(this.value)'>
+         <option value='todo' selected='selected'>待办</option>
+         <option value='story'>需求</option>
+         <option value='task'>任务</option>
+         <option value='bug'>Bug</option>
+      </select>
+    </td>
+  </tr>  
+  <tr class='hidden' id='products'>
+    <th>所属产品</th>
+    <td><select id='product' class='w-p90'></select></td>
+  </tr>  
+  <tr class='hidden' id='projects'>
+    <th>所属项目</th>
+    <td><select id='project' class='w-p90'></select></td>
+  </tr>  
+  <tr>
+    <th>名称</th>
+    <td> <input type='text' name='name' id='name' value='' class='w-p90' /></td>
+  </tr>
+  <tr>
+    <th>描述</th>
+    <td><textarea name='desc' id='desc' rows='20' class='w-p90'></textarea></td>
+  </tr>  
+  <tr><td colspan='2' align='center'><input type='submit' onclick='submit()' value='保存'></td></tr>
+</table>
+</body>
+</html>
