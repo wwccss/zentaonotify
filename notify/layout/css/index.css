@@ -1,11 +1,55 @@
-html {margin:20px 0px 0px 0px; padding:0px}
-body, #tab{ font-size: 9pt; margin 0px; padding: 0; position:relative}
-#tabs {border:none;}
-#tabs ul {background:003366}
-#tabs ul li{background:#1A4F85; border:#1A4F85; border-right: 3px solid #002242;}
-#tabs ul li a {color:white;}
-#featureBar { height: 28px; line-height: 28px; cursor: pointer; background:#e5e5e5 }
-#featureBar a { text-decoration: none; border-right: 1px solid #ddd; padding: 4px 4px 4px 4px; color: #003366; font-size: 14px; }
-#todoPage,#storyPage,#taskPage,#bugPage {padding-left:0px; padding-right:0px}
-table {border:1px solid #e4e4e4}
+html {background: url(../images/index_background.png) no-repeat; background-color:rgb(104,196,255); width:305px; height:605px;  margin:20px 0px 0px 0px; padding:0px}
+body {margin: 0px; padding: 0px;}
 
+#window-buttons   { behavior:windowCommand; position: absolute; right: 2px; top: 1; height: 26px; }
+#window-buttons a { float: left; height: 26px; width: 26px; padding: 0px; background-repeat:no-repeat; transition: blend; }
+[command=window-setting]       { background-position: -0px 0; background-image:url( ../images/win-buttons.png); }  
+[command=window-setting]:hover { background-image: url( ../images/setting-button-hover.png); }  
+[command=window-min]           { background-position: -30px 0; background-image:url( ../images/win-buttons.png); }  
+[command=window-min]:hover     { background-image: url( ../images/min-button-hover.png); }
+[command=window-close]         { background-position: -56px 0; background-image:url( ../images/win-buttons.png); }
+[command=window-close]:hover   { background-image: url( ../images/close-button-hover.png); }  
+
+#outer {border:none; padding-top:38px;}
+.tabs { behavior:tabs; width:287px; margin:1px auto; height:555px; margin-left:9px}
+
+/* 选项卡列表 */
+.tabs > #moduleMenu { flow: horizontal; height:45px; margin-bottom:-1px; list-style:none; background:rgb(20, 91, 204); }
+
+/* 选项卡按钮*/
+.tabs > #moduleMenu > [panel] 
+{
+  padding: 15px 8px;
+  margin-bottom:1px;
+  max-width: auto; /* 内容最宽度:自动  */
+  min-width: 60px;
+  text-align: center;
+  background-repeat:stretch;
+  padding-bottom:0px;
+  margin-bottom:0px;
+}
+
+.tabs > #moduleMenu > [panel] div {padding-left:10px}
+.tabs > #moduleMenu > [panel] span { color:white; font-weight:bold; line-height:30px; }
+
+/* 鼠标悬停在选项卡按钮上*/
+.tabs > #moduleMenu > [panel]:hover span { color:rgb(16,184,44); } 
+
+/*当前选项卡按钮的样式*/
+.tabs > #moduleMenu > [panel]:current  div { background:rgb(235,242,249); border-radius:3px 3px 0px 0px; position:relative; }
+.tabs > #moduleMenu > [panel]:current  span { color:rgb(20,91,204); }
+
+/*当前选项卡控件得到焦点时:选项卡按钮的样式*/
+.tabs:focus #moduleMenu [panel]:current { background-image:url(theme:tab-item-focused); } 
+
+/*选项内容面板 默认隐藏*/
+.tabs > [name] { display:none; }
+
+/*选项内容面板 展开显示状态*/
+.tabs > [name]:expanded 
+{ 
+  display:block; 
+  padding:4px 0px; 
+  height:100%%; 
+  width:100%%;
+}

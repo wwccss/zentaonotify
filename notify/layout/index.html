@@ -1,19 +1,43 @@
 <html>
-<head>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script> 
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
-  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/base/jquery.ui.all.css" type="text/css" rel="Stylesheet" />
-  <link rel="stylesheet" href="css/index.css" />
-</head>
+<head><link rel="stylesheet" href="css/index.css" /></head>
+<body>
+	<div id='window-buttons'>  
+		<a command="window-setting"></a>
+		<a command="window-min" ></a>
+		<a command="window-close" ></a> 
+	</div> 
 
-<body> 
-  <div id="tabs" >
-    <ul id="moduleMenu"></ul>
-    <div id="featureBar"></div>
-    <div id='todoPage' class='listPage'><table id='todoList'></table></div> 
-    <div id='storyPage' class='listPage'><table id='storyList'></table></div> 
-    <div id='taskPage' class='listPage'><table id='taskList'></table></div> 
-    <div id='bugPage' class='listPage'><table id='bugList'></table></div> 
+  <div id='outer'>
+    <div class="tabs">
+      <div class='strip' id="moduleMenu" >  
+         <div panel="todo" selected>
+           <div><a id='icon-todo'></a><span>待办</span></div>
+         </div>
+         <div panel="story">
+           <div><span id='icon-story'></span><span>需求</span></div>
+         </div>
+         <div panel="task">
+           <div><span id='icon-task'></span><span>任务</span></div>
+         </div>         
+      </div>
+
+      <div name="todo">
+      <div class='featureBar'></div>
+      我是待办
+      </div>
+
+      <div name="story">
+      <div class='featureBar'></div>
+      我是需求
+      </div>
+
+      <div name="task">
+      <div class='featureBar'></div>
+      我是任务
+      </div> 
+    </div> 
   </div>
-</body>
-</html>
+</body>   
+</html>   
+
+

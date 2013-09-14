@@ -8,9 +8,14 @@ import win.util.round;
 import win.util.tray;
 import win.clip;
 import win.clip.viewer;
+import web.layout;
+import web.layout.debug; 
+import web.layout.behavior.windowCommand; 
+import web.layout.behavior.tabs; 
 
-var winform = ..win.form( bgcolor=16777215;bottom=696;right=318;parent=...;text="禅道桌面提醒工具";)
-var wb = web.form( winform ,0x4 /*_UIFLAG_NO3DBORDER*/ , ,);
+var winform = ..win.form(bottom=605;parent=...;right=305;border="none";text="禅道桌面提醒工具";)
+wbLayout = web.layout(winform)  
+wbLayout.go("/layout/index.html") 
 
 alignRight(winform);
 tray         = win.util.tray(winform);
@@ -60,6 +65,7 @@ function exit()
  	win.quitMessage();
 }
 
+/*
 function initModuleMenu()
 {
   moduleMenu = '';
@@ -87,8 +93,6 @@ function loadFeatureBar(module)
 }
 loadFeatureBar('todo');
 	
-wb.go("/layout/index.html")
-wb.wait(""); 
 wb.external = 
 { 
 	msgbox = win.msgbox; 
@@ -127,7 +131,7 @@ function loadList(object, browseType, pageID)
 }
 
 if(wb.external) wb.external.loadList   = loadList;		
-
+*/
 jQueryReady = /*
 	function viewObject(module, id)
 	{
@@ -176,10 +180,14 @@ jQueryReady = /*
     $(".pager").css({"font-size":"12px"})
     
     $('#tabs').tabs();
-    $("#accordion").accordion();
 */
 
-wb.doScript(jQueryReady);
+/*
+win.clip.viewer(winform).onDrawClipboard = function() 
+{ 
+	createFile = assert(loadcode("/create.aau"));	
+	createFile();
+}
 
 winform.addtimer(config.sys.updateInterval, function(){getActions()});
 function getActions()
@@ -206,14 +214,8 @@ function getActions()
 	notifyFile();
 }
 getActions();
+*/
 
-win.clip.viewer(winform).onDrawClipboard = function() 
-{ 
-	createFile = assert(loadcode("/create.aau"));	
-	createFile();
-}
-	
-win.util.round(winform);
 winform.show();
 win.loopMessage();
 return winform,wb;

@@ -18,7 +18,7 @@ wb.wait("");
 ..http = inet.http();
 function loadProducts()
 {
-var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
+//var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
 	var response = http.get("http://congzhi.5upm.com/api-getmodel-product-getPairs.json");
 	response = web.json.parse(response);
 	response.data = web.json.parse(response.data);
@@ -35,7 +35,7 @@ wb.external.loadProducts = loadProducts;
 
 function loadProjects()
 {
-var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
+   //var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
 	var response = http.get("http://congzhi.5upm.com/api-getmodel-project-getPairs.json");
 	response = web.json.parse(response);
 	response.data = web.json.parse(response.data);
@@ -52,10 +52,11 @@ wb.external.loadProjects = loadProjects;
 
 function submit(objectType, product, project, name, desc)
 {
+	/*
 	user = {}
 	user.account   = "azhi"
 	user.zentaourl = "http://congzhi.5upm.com";
-	
+	*/
 	encodedName = inet.url.encode(name, true);
 	encodedDesc = inet.url.encode(desc, true);
 	var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
@@ -68,17 +69,27 @@ function submit(objectType, product, project, name, desc)
 		case "story" {post = string.concat("product=", product, "&title=", encodedName, "&spec=", encodedDesc);}
 		case "task"  
 		{
-			post = string.concat("type=design&assignedTo=", "&title=", encodedName, "&desc=", encodedDesc);
+			post = string.concat("type=design&assignedTo%5B%5D=", "&name=", encodedName, "&desc=", encodedDesc);
 			postApi = string.concat(user.zentaourl, "/api-getmodel-", objectType, "-create-", "projectID=", project, ".html")
 		}
-		case "bug"   {post = string.concat("product=", product, "&title=", encodedName, "&steps=", encodedDesc);}
+		case "bug"   {post = string.concat("openedBuild%5B%5D=Trunk&product=", product, "&title=", encodedName, "&steps=", encodedDesc);}
 	}
 
 	response = http.post(postApi, post);
 	response = web.json.parse(response);
 	if(response.status == 'success') 
 	{
-		return win.msgbox("成功创建" + objectType + "#" + string.replace(response.data, """", "") + " " + name, "提示");
+		if(objectType == 'task') 
+		{
+			response.data = web.json.parse(response.data);
+			objectID = response.data[''];
+		}
+		else 
+		{
+			objectID = string.replace(response.data, """", "");
+		}
+	
+		return win.msgbox("成功创建" + objectType + "#" + objectID + " " + name, "提示");
 	}
 	return win.msgbox("创建失败");
 }

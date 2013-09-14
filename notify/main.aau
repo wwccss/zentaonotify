@@ -3,13 +3,11 @@ import web.layout;
 import web.layout.behavior.windowSizer;
 import web.layout.behavior.windowCommand;
 import web.layout.behavior.keyboard;
-import win.util.round;
 import string.md5
 import inet.http;
 import web.json;
 
-var loginform = ..win.form( bgcolor=16777215;bottom=696;parent=...;right=318;border="none";text="禅道桌面提醒工具" )
-win.util.round(loginform)
+var loginform = ..win.form(bottom=605;parent=...;right=305;border="none";scroll="none";text="禅道桌面提醒工具" )
 wbLayout = web.layout(loginform)  
 wbLayout.go("/layout/login.html") 
 
@@ -19,7 +17,7 @@ function alignRight(form)
 	deskRect   = form.getRect();
 	deskWidth  = deskRect.left + deskRect.right;
 	deskHeight = deskRect.top  + deskRect.bottom;
-	form.setPos(deskWidth - clientRect.right - 8, deskHeight - clientRect.bottom - 35);
+	form.setPos(deskWidth - clientRect.right - 28, deskHeight - clientRect.bottom - 35);
 }
 alignRight(loginform);
 
@@ -176,7 +174,7 @@ function init()
 
 function enter()
 {
-	indexFile = assert(loadcode("../../index.aau"));	
+	indexFile = assert(loadcode("/index.aau"));	
 	indexFile();
 	loginform.close();
 }
