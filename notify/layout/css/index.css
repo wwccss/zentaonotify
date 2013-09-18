@@ -1,16 +1,9 @@
-html {background: url(../images/index_background.png) no-repeat; background-color:rgb(104,196,255); width:305px; height:605px;  margin:20px 0px 0px 0px; padding:0px}
-body {margin: 0px; padding: 0px;}
+html {background: url(../images/index.png) no-repeat; background-color:rgb(104,196,255); }
+body {margin:10px 0px 0px 0px;}
+#window-buttons {right: 10px;}
+a, #moduleMenu div div {cursor:pointer}
 
-#window-buttons   { behavior:windowCommand; position: absolute; right: 2px; top: 1; height: 26px; }
-#window-buttons a { float: left; height: 26px; width: 26px; padding: 0px; background-repeat:no-repeat; transition: blend; }
-[command=window-setting]       { background-position: -0px 0; background-image:url( ../images/win-buttons.png); }  
-[command=window-setting]:hover { background-image: url( ../images/setting-button-hover.png); }  
-[command=window-min]           { background-position: -30px 0; background-image:url( ../images/win-buttons.png); }  
-[command=window-min]:hover     { background-image: url( ../images/min-button-hover.png); }
-[command=window-close]         { background-position: -56px 0; background-image:url( ../images/win-buttons.png); }
-[command=window-close]:hover   { background-image: url( ../images/close-button-hover.png); }  
-
-#outer {border:none; padding-top:38px;}
+#wrap{border:none;}
 .tabs { behavior:tabs; width:287px; margin:1px auto; height:555px; margin-left:9px}
 
 /* 选项卡列表 */
@@ -20,13 +13,11 @@ body {margin: 0px; padding: 0px;}
 .tabs > #moduleMenu > [panel] 
 {
   padding: 15px 8px;
-  margin-bottom:1px;
   max-width: auto; /* 内容最宽度:自动  */
   min-width: 60px;
   text-align: center;
   background-repeat:stretch;
   padding-bottom:0px;
-  margin-bottom:0px;
 }
 
 .tabs > #moduleMenu > [panel] div {padding-left:10px}
@@ -36,7 +27,7 @@ body {margin: 0px; padding: 0px;}
 .tabs > #moduleMenu > [panel]:hover span { color:rgb(16,184,44); } 
 
 /*当前选项卡按钮的样式*/
-.tabs > #moduleMenu > [panel]:current  div { background:rgb(235,242,249); border-radius:3px 3px 0px 0px; position:relative; }
+.tabs > #moduleMenu > [panel]:current  div { background:rgb(235,242,249); position:relative; }
 .tabs > #moduleMenu > [panel]:current  span { color:rgb(20,91,204); }
 
 /*当前选项卡控件得到焦点时:选项卡按钮的样式*/
@@ -49,7 +40,22 @@ body {margin: 0px; padding: 0px;}
 .tabs > [name]:expanded 
 { 
   display:block; 
-  padding:4px 0px; 
   height:100%%; 
   width:100%%;
+  margin-right:1px;
+  padding:1px 0px;
 }
+
+.featureBar { background:rgb(235,242,249); height:40px; border-bottom: 1px solid rgb(215,215,215)}
+.featureBar span a { line-height:40px; font-size:14px; padding:0px 4px; color:rgb(112,112,112)}
+.featureBar span a:hover  { color:rgb(16,184,44); } 
+.featureBar span a:active { color:red; } 
+
+table {width:100%}
+table tbody{max-height:420px; overflow-y:auto}
+table tbody tr {border-bottom: 1px solid rgb(215,215,215);}
+table tr td {color:black; height:25px}
+table tr td a{line-height:25px; color:black; text-decoration:none}
+table tr td.id {width:40px}
+
+.pager {font-size:12px}

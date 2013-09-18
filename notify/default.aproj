@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="gb2312"?>
-<project ver="0.60" name="notify" libEmbed="true" icon="layout\images\notify.ico" CompanyName="青岛易软天创网络科技有限公司" FileDescription="" LegalCopyright="易软-阿智" ProductName="禅道桌面提醒工具" InternalName="notify" FileVersion="1.0.0.2" ProductVersion="1.1.0.3" publishDir="D:\AAuto\project\notify+login" ui="win" output="notify.exe">
+<project ver="0.60" name="notify" libEmbed="true" icon="layout\images\notify.ico" CompanyName="青岛易软天创网络科技有限公司" FileDescription="" LegalCopyright="易软-阿智" ProductName="禅道桌面提醒工具" InternalName="notify" FileVersion="1.0.0.3" ProductVersion="1.1.0.4" publishDir="D:\AAuto\project\notify+login" ui="win" output="notify.exe">
 	<file name="create.aau" path="create.aau" comment="clip.aau"/>
 	<file name="notify.aau" path="notify.aau" comment="notify.aau"/>
 	<file name="index.aau" path="index.aau" comment="index.aau"/>

@@ -1,25 +1,27 @@
 import win.ui;
-import web.layout;
-import web.form;
 import web.json;
 import win.clip;
 import inet.http;
+import web.layout;
+import web.layout.debug; 
+import web.layout.behavior.windowCommand; 
 
-var WIN_WIDTH  = 500;
-var WIN_HEIGHT = 500;
-var createForm  = ..win.form( right=WIN_WIDTH;bottom=WIN_HEIGHT;parent=...;max=false;border="thin";text="新建";mode="popup" )
+var WIN_WIDTH  = 498;
+var WIN_HEIGHT = 495;
+var createForm  = ..win.form( right=WIN_WIDTH;bottom=WIN_HEIGHT;parent=...;border="none";scroll="none";text="新建")
 
-var wb = web.form(createForm ,0x4 /*_UIFLAG_NO3DBORDER*/ , ,);
-wb.external = {clippedData = win.clip.read(); msgbox = win.msgbox}
-
-wb.go("/layout/create.html")
-wb.wait(""); 
+createLayout = web.layout(createForm)  
+createLayout.go("/layout/create.html") 
+createLayout.queryEle("#typeBox th").innerText    = lang.create.objectType;
+createLayout.queryEle("#productBox th").innerText = lang.create.product;
+createLayout.queryEle("#projectBox th").innerText = lang.create.project;
+createLayout.queryEle("#titleBox th").innerText   = lang.create.title;
+createLayout.queryEle("#descBox th").innerText    = lang.create.desc;
 
 ..http = inet.http();
 function loadProducts()
 {
-//var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
-	var response = http.get("http://congzhi.5upm.com/api-getmodel-product-getPairs.json");
+	var response = http.get(getAPI({"api"; "getmodel"; "product"; "getPairs"}));
 	response = web.json.parse(response);
 	response.data = web.json.parse(response.data);
 	var products = "";
@@ -28,15 +30,13 @@ function loadProducts()
 		productName = string.replace(productName, "\\", "");
 		products += "<option value='" + productID + "'>" + productName + "</option>";
 	}
-	
-    wb.external.products = products;
+	createLayout.queryEle("#productBox").style.display = "block";
+	createLayout.queryEle("#products").innerHTML = products;
 }
-wb.external.loadProducts = loadProducts;
 
 function loadProjects()
 {
-   //var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
-	var response = http.get("http://congzhi.5upm.com/api-getmodel-project-getPairs.json");
+	var response = http.get(getAPI({"api"; "getmodel"; "project"; "getPairs"}));
 	response = web.json.parse(response);
 	response.data = web.json.parse(response.data);
 	var projects = "";
@@ -45,24 +45,47 @@ function loadProjects()
 		projectName = string.replace(projectName, "\\", "");
 		projects += "<option value='" + projectID + "'>" + projectName + "</option>";
 	}
-	
-    wb.external.projects = projects;
+	createLayout.queryEle("#projectBox").style.display = "block";
+	createLayout.queryEle("#projects").innerHTML = projects;
 }
-wb.external.loadProjects = loadProjects;
+
+selectListener = createLayout.queryEle("#objectType");
+selectListener.onSelectSelectionChanged = function( ltTarget,ltEle,x,y,mouseParams ) 
+{
+	objectType = ltTarget.value;
+	if(objectType == 'story' || objectType == 'bug') 
+	{
+		createLayout.queryEle("#projectBox").style.display = "none";
+		return loadProducts();
+	}
+	if(objectType == 'task') 
+	{
+		createLayout.queryEle("#productBox").style.display = "none";
+	 	return loadProjects();
+	}
+	if(objectType == 'todo') 
+	{ 
+		createLayout.queryEle("#productBox").style.display = "none";
+		createLayout.queryEle("#projectBox").style.display = "none";
+	}
+}
+selectListener.attachEventHandler();
+
+function showResult(result, output)
+{
+	if(result == 'success') output = "<span style='color:green'>" + output + "</span>";
+	if(result == 'failed')  output = "<span style='color:red'>" + output + "</span>";
+	createLayout.queryEle("#result").innerHTML = output;
+	createForm.setTimeout(function(){createLayout.queryEle("#result").innerHTML = "";}, 5000); 
+}
 
 function submit(objectType, product, project, name, desc)
 {
-	/*
-	user = {}
-	user.account   = "azhi"
-	user.zentaourl = "http://congzhi.5upm.com";
-	*/
 	encodedName = inet.url.encode(name, true);
 	encodedDesc = inet.url.encode(desc, true);
-	var response = http.get("http://congzhi.5upm.com/user-login.json?account=azhi&password=chencongzhi@azhi");
 	
 	var post = "";
-	var postApi = string.concat(user.zentaourl, "/api-getmodel-", objectType, "-create.html")
+	var postApi = getAPI({"api"; "getmodel"; objectType; "create"; viewType='html'});
 	select(objectType)
 	{
 		case "todo"  {post = string.concat("type=custom&name=", encodedName, "&desc=", encodedDesc);}
@@ -70,7 +93,7 @@ function submit(objectType, product, project, name, desc)
 		case "task"  
 		{
 			post = string.concat("type=design&assignedTo%5B%5D=", "&name=", encodedName, "&desc=", encodedDesc);
-			postApi = string.concat(user.zentaourl, "/api-getmodel-", objectType, "-create-", "projectID=", project, ".html")
+			postApi = getAPI({"api"; "getmodel"; objectType; "create"; "projectID=" + project; viewType='html'})
 		}
 		case "bug"   {post = string.concat("openedBuild%5B%5D=Trunk&product=", product, "&title=", encodedName, "&steps=", encodedDesc);}
 	}
@@ -88,56 +111,29 @@ function submit(objectType, product, project, name, desc)
 		{
 			objectID = string.replace(response.data, """", "");
 		}
-	
-		return win.msgbox("成功创建" + objectType + "#" + objectID + " " + name, "提示");
+		
+		return showResult("success", lang.create.success + objectType + "#" + objectID + " " + name);
 	}
-	return win.msgbox("创建失败");
+	return showResult("failed", lang.create.failed);
 }
 
-wb.external.submit = submit;
-var js = /*
-function loadRelated(objectType)
-{
-	if(objectType == 'story' || objectType == 'bug') return loadProducts();
-	if(objectType == 'task')  return loadProjects();
-	if(objectType == 'todo')
+submitListener = createLayout.queryEle("input[type='submit']");
+submitListener.onButtonClick = function (ltTarget,ltEle,reason,behaviorParams) {
+	var name = createLayout.queryEle("#name").value;
+	if(name == '') 
 	{ 
-	 	$("#products").addClass('hidden');
-		$("#projects").addClass('hidden');
+		showResult("failed", string.format(lang.prompt.notEmpty, lang.create.title));
+		return; 
 	}
+	var objectType = createLayout.queryEle("#objectType").value;
+	var product    = createLayout.queryEle("#productBox select").value;
+	var project    = createLayout.queryEle("#projectBox select").value
+	var desc       = createLayout.queryEle("#desc").value;
+	submit(objectType, product, project, name ,desc);	
 }
+submitListener.attachEventHandler();
 
-function loadProducts()
-{
-	external.loadProducts();
-	$("#projects").addClass('hidden');
-	$("#products").removeClass('hidden');
-	$("#products select").html(external.products);	
-}
-
-function loadProjects()
-{	
-	external.loadProjects();
-	$("#products").addClass('hidden');
-	$("#projects").removeClass('hidden');
-	$("#projects select").html(external.projects);	
-}
-
-function submit()
-{
-	var name       = $("#name").val();
-	if(!name) return external.msgbox("标题不能为空", "提示");
-	var objectType = $("#objectType").val();
-	var product    = $("#product").val();
-	var project    = $("#project").val();
-	var name       = $("#name").val();
-	var desc       = $("#desc").val();
-	external.submit(objectType, product, project, name ,desc);
-}
-*/
-wb.doScript(js);
-
-wb.doScript("$('textarea').val(external.clippedData)");
+createLayout.queryEle("textarea").value = win.clip.read() ? win.clip.read() : "";
 
 createForm.show();
 win.loopMessage();

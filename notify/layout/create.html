@@ -1,39 +1,50 @@
 <html>
 <head>
 <script type="text/javascript" src="js/jquery.min.js"></script> 
+<link rel="stylesheet" href="css/common.css" />
 <link rel="stylesheet" href="css/create.css" />
 </head>
 
 <body>
-<table align='center'> 
-  <tr>
-    <th>ÀàÐÍ</th>
-    <td>
-      <select id='objectType' onchange='loadRelated(this.value)'>
-         <option value='todo' selected='selected'>´ý°ì</option>
-         <option value='story'>ÐèÇó</option>
-         <option value='task'>ÈÎÎñ</option>
-         <option value='bug'>Bug</option>
-      </select>
-    </td>
-  </tr>  
-  <tr class='hidden' id='products'>
-    <th>ËùÊô²úÆ·</th>
-    <td><select id='product' class='w-p90'></select></td>
-  </tr>  
-  <tr class='hidden' id='projects'>
-    <th>ËùÊôÏîÄ¿</th>
-    <td><select id='project' class='w-p90'></select></td>
-  </tr>  
-  <tr>
-    <th>Ãû³Æ</th>
-    <td> <input type='text' name='name' id='name' value='' class='w-p90' /></td>
-  </tr>
-  <tr>
-    <th>ÃèÊö</th>
-    <td><textarea name='desc' id='desc' rows='20' class='w-p90'></textarea></td>
-  </tr>  
-  <tr><td colspan='2' align='center'><input type='submit' onclick='submit()' value='±£´æ'></td></tr>
-</table>
+	<div id='header' command="window-caption">  
+    <div id='window-buttons'>
+      <span command="window-setting">6</span>
+      <span command="window-min">0</span>
+      <span command="window-close">r</span> 
+    </div>
+	</div> 
+
+  <div id='wrap'>
+    <table align='center'> 
+      <tr id='typeBox'>
+        <th></th>
+        <td>
+          <select id='objectType'>
+             <option value='todo' selected='selected'>å¾…åŠž</option>
+             <option value='story'>éœ€æ±‚</option>
+             <option value='task'>ä»»åŠ¡</option>
+             <option value='bug'>Bug</option>
+          </select>
+        </td>
+      </tr>  
+      <tr class='hidden' id='productBox'>
+        <th></th>
+        <td><select class='w-p95'><div id='products'></div></select></td>
+      </tr>  
+      <tr class='hidden' id='projectBox'>
+        <th></th>
+        <td><select class='w-p95'><div id='projects'></div></select></td>
+      </tr>  
+      <tr id='titleBox'>
+        <th></th>
+        <td> <input type='text' name='name' id='name' value='' class='w-p95' /></td>
+      </tr>
+      <tr id='descBox'>
+        <th></th>
+        <td><textarea name='desc' id='desc' rows='20' class='w-p95'></textarea></td>
+      </tr>  
+      <tr><td></td><td><input type='submit' onclick='submit()' value='ä¿å­˜'><div id='result'></div></td></tr>
+    </table>
+  </div>
 </body>
 </html>

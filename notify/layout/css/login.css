@@ -1,14 +1,5 @@
 ﻿html { background: url(../images/background.png) no-repeat; background-color:rgb(104,196,255);}
 
-#window-buttons   { behavior:windowCommand; position: absolute; right: 2px; top: 1; height: 26px; }
-#window-buttons a { float: left; height: 26px; width: 26px; padding: 0px; background-repeat:no-repeat; transition: blend; }
-[command=window-setting]       { background-position: -0px 0; background-image:url( ../images/win-buttons.png); }  
-[command=window-setting]:hover { background-image: url( ../images/setting-button-hover.png); }  
-[command=window-min]           { background-position: -30px 0; background-image:url( ../images/win-buttons.png); }  
-[command=window-min]:hover     { background-image: url( ../images/min-button-hover.png); }
-[command=window-close]         { background-position: -56px 0; background-image:url( ../images/win-buttons.png); }
-[command=window-close]:hover   { background-image: url( ../images/close-button-hover.png); }  
-
 #wrap{ width:200px; height:84px; margin:0px auto; margin-top:250px; background-repeat:no-repeat; flow: vertical;}
 #form input {    
     border-radius:2px;
@@ -36,9 +27,8 @@
     background-repeat: expand stretch-top stretch-left stretch-middle stretch-bottom;
 }
 
-#login {color:white; width:136px; height:30px; margin:10px auto; background-image:url(../images/login.png); background-position: 5px 6px 7px 8px; background-repeat: expand stretch-top stretch-left stretch-middle stretch-right stretch-bottom; padding-left:12px; }
-#login:hover  { background-image:url(../images/login-hover.png); color:black}
-#login:active { background-image:url(../images/login-active.png); }
+#login {cursor:pointer; color:white; width:136px; height:30px; margin:10px auto; background-image:url(../images/login.png); background-position: 5px 6px 7px 8px; background-repeat: expand stretch-top stretch-left stretch-middle stretch-right stretch-bottom; padding-left:12px; }
+#login:hover { outline:5px glow #11b92d 2px; foreground-image-transformation: contrast-brightness-gamma(0.5,0.6, 1.5); }
 
 div#password-box{ flow:horizontal; }
 button#pop-keyboard
@@ -79,3 +69,5 @@ line-height:14px;
 #pop-keyboard popup button:hover{ background-image:url("../images/button5.png"); }
 #pop-keyboard popup button:active{ background-image:url("../images/button6.png"); }
 #pop-keyboard popup button sup{ font-size:10px; color:#666; }
+
+#result {font-size:14px; padding-left:50px}

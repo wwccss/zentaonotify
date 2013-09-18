@@ -1,43 +1,42 @@
 <html>
+<head><link rel="stylesheet" href="css/common.css" /></head>
 <head><link rel="stylesheet" href="css/index.css" /></head>
 <body>
-	<div id='window-buttons'>  
-		<a command="window-setting"></a>
-		<a command="window-min" ></a>
-		<a command="window-close" ></a> 
+	<div id='header' command="window-caption">  
+    <div id='window-buttons'>
+      <span command="window-setting">6</span>
+      <span command="window-min">0</span>
+      <span command="window-close">r</span> 
+    </div>
 	</div> 
 
-  <div id='outer'>
+  <div id='wrap'>
     <div class="tabs">
       <div class='strip' id="moduleMenu" >  
-         <div panel="todo" selected>
-           <div><a id='icon-todo'></a><span>待办</span></div>
-         </div>
-         <div panel="story">
-           <div><span id='icon-story'></span><span>需求</span></div>
-         </div>
-         <div panel="task">
-           <div><span id='icon-task'></span><span>任务</span></div>
-         </div>         
+         <div panel="todo" selected><div><a id='icon-todo'></a><span></span></div></div>
       </div>
 
-      <div name="todo">
-      <div class='featureBar'></div>
-      我是待办
+      <div name="todo" id='todo' class='outer'>
+        <div class='featureBar'></div>
+        <table id='todoList' class='dataList'></table>
       </div>
 
-      <div name="story">
-      <div class='featureBar'></div>
-      我是需求
+      <div name="story" id='story' class='outer'>
+        <div class='featureBar'></div>
+        <table id='storyList' class='dataList'></table>
       </div>
 
-      <div name="task">
-      <div class='featureBar'></div>
-      我是任务
+      <div name="task" id='task' class='outer'>
+        <div class='featureBar' class='dataList'></div>
+        <table id='taskList'></table>
       </div> 
+
+      <div name="bug" id='bug' class='outer'>
+        <div class='featureBar'></div>
+        <table id='bugList' class='dataList'></table>
+      </div> 
+
     </div> 
   </div>
 </body>   
 </html>   
-
-

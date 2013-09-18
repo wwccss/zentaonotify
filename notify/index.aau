@@ -65,51 +65,110 @@ function exit()
  	win.quitMessage();
 }
 
-/*
+function viewObject(object, id)
+{	
+	process.execute(getAPI({object; 'view'; id; viewType='html'}));
+}
+
+currentModule = 'todo';
+function listener()
+{
+	menuListener = wbLayout.queryEles("#moduleMenu > div");
+	for (i,moduleTab in menuListener)
+	{
+		moduleTab.onMouseClick = function( ltTarget,ltEle,x,y,mouseParams )
+		{
+			currentModule = ltEle.panel;
+			loadFeatureBar(currentModule);	
+			var browseType = currentModule == 'todo' ? 'today' : 'assignedTo';
+    		loadList(currentModule, browseType);		
+		}
+		moduleTab.attachEventHandler();
+	}
+
+	featureBarListener = wbLayout.queryEles(".featureBar a");
+	for(i, typeTab in featureBarListener)
+	{
+		typeTab.onMouseClick = function( ltTarget,ltEle,x,y,mouseParams )
+		{
+			currentBrowseType = ltEle.id;
+   		 	loadList(currentModule, currentBrowseType);		
+		}
+		typeTab.attachEventHandler();
+	}
+	
+	listListener = wbLayout.queryEles(".dataList a");
+	for(k,item in listListener)
+	{
+		item.onMouseClick = function( ltTarget,ltEle,x,y,mouseParams )
+		{
+			objectID = ltEle.id;
+			viewObject(currentModule, objectID);
+		}
+		item.attachEventHandler();
+	}
+	
+	pagerListener = wbLayout.queryEles(".pager a");
+	for(k,link in pagerListener)
+	{	
+		link.onMouseClick = function( ltTarget,ltEle,x,y,mouseParams )
+		{
+			if(ltEle.id = 'pre')  loadList(currentModule, currentBrowseType, pager.pageID - 1);
+			if(ltEle.id = 'next') loadList(currentModule, currentBrowseType, pager.pageID + 1);
+			if(ltEle.id = 'last') loadList(currentModule, currentBrowseType, pager.pageTotal);
+		}
+		link.attachEventHandler();
+	}		
+}
+
+function setTodoStatus(active)
+{
+	if(active)
+	{
+  		wbLayout.queryEle("div[panel='todo'] div").style.background = "rgb(235,242,249)";
+  		wbLayout.queryEle("div[panel='todo'] span").style.color = "rgb(20,91,204)";
+  	}
+  	else 
+  	{
+  	  	wbLayout.queryEle("div[panel='todo'] div").style.background = "rgb(20, 91, 204);";
+		wbLayout.queryEle("div[panel='todo'] span").style.color = "white";
+  	}	
+}
+
 function initModuleMenu()
 {
-  moduleMenu = '';
-  if(user.role == 'qa' or user.role == 'qd') config.order.menu = {"todo"; "bug"; "task"}
-  if(user.role == 'po' or user.role == 'pd') config.order.menu = {"todo"; "story"; "bug"}
-  for(i=1; #config.order.menu; 1)
-  {
+	moduleMenu = '';
+ 	if(user.role == 'qa' or user.role == 'qd') config.order.menu = {"todo"; "bug"; "task"}
+ 	if(user.role == 'po' or user.role == 'pd') config.order.menu = {"todo"; "story"; "bug"}
+  	for(i=1; #config.order.menu; 1)
+  	{
   		var module = config.order.menu[i];
-  		moduleMenu += "<li id='" + module + "Tab'>";
-  		moduleMenu += "<a href='#" + module + "Page' onclick=loadFeatureBar('" + module +"')>";
-  		moduleMenu += lang.moduleMenu[module] + "</a></li>";
-  }
+  		moduleMenu += "<div panel='" + module + "'>";
+  		moduleMenu += "<div><a id='icon-" + module + "'></a><span>";
+  		moduleMenu += lang.moduleMenu[module] + "</span></div></div>";		
+ 	 }
+  	wbLayout.queryEle("#moduleMenu").innerHTML = moduleMenu;
+	setTodoStatus(true);
 }
 initModuleMenu();
 
 function loadFeatureBar(module)
 {
-  featureBar = ''
-  for(i=1; #config.order[module]; 1)
-  {	
-  	var browseType = config.order[module][i];
-  	 featureBar += "<span><a id='" + browseType + "Tab' onclick=loadList('" + module + "','" + browseType + "')>" + lang.featureBar[module][browseType] + "</a></span> ";
-  }
-  if(wb.external) wb.external.featureBar = featureBar;
+	setTodoStatus(module == 'todo');
+  	featureBar = ''
+  	for(i=1; #config.order[module]; 1)
+  	{	
+ 	 	 var browseType = config.order[module][i];
+  		 featureBar += "<span><a id='" + browseType + "' onclick=loadList('" + module + "','" + browseType + "')>" + lang.featureBar[module][browseType] + "</a></span> ";
+ 	 }
+ 	 wbLayout.queryEle("#" + module + " .featureBar").innerHTML = featureBar;
+ 	 listener();
 }
 loadFeatureBar('todo');
-	
-wb.external = 
-{ 
-	msgbox = win.msgbox; 
-	loadFeatureBar = loadFeatureBar; 
-	moduleMenu = moduleMenu; 
-	featureBar = featureBar; 
-}
-
-function viewObject(object, id)
-{	
-	process.execute(getAPI({object; 'view'; id; viewType='html'}));
-}
-if(wb.external) wb.external.viewObject = viewObject;	
 
 function loadList(object, browseType, pageID)
 {
-	var list = "<tr class='colhead'><th class='w-id'>ID</th><th class='w-title'>" + lang.list.title + "</th></tr>"
+	var list = "<tbody>";
 	var response = http.get(getAPI({'my'; object; browseType; pageID = pageID}));
 	response = web.json.parse(response);
 	response = web.json.parse(response.data);
@@ -119,70 +178,35 @@ function loadList(object, browseType, pageID)
 	{
 		var title = v.title ? v.title : v.name; 
 		title = string.replace(title,"\\","")
-		list += "<tr><td>" + v.id + "</td><td><a href='#' onclick=viewObject('" + object + "','" + v.id + "')>" + title + "</a></td></tr>";
+		list += "<tr><td class='id'>#" + v.id + "</td><td nowrap style='overflow:hidden;'><a id='" + v.id + "')>" + title + "</a></td></tr>";
 	}
-	list += "<tr><td colspan=2 align='right'><div class='pager'>";
-	list += string.format(lang.pager.summary, pager.recTotal, pager.recPerPage, pager.pageID, pager.pageTotal);
-	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + (pager.pageID - 1) + "')>" + lang.pager.pre + "</a>";
-	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + (pager.pageID + 1) + "')>" + lang.pager.next + "</a>";
-	list += " <a href='#' onclick=loadList('" + object + "','" + browseType + "','" + pager.pageTotal + "')>" + lang.pager.last + "</a>";
-	list += "</div></td></tr>";
-	if(wb.external) wb.external.list = list;
+	list += "</tbody><tfoot><tr><td colspan=2 align='right'><div class='pager'>";
+	
+	if(pager.recTotal)
+	{
+		list += string.format(lang.pager.summary, pager.recTotal, pager.recPerPage, pager.pageID, pager.pageTotal);
+		list += " <a id='pre'>"  + lang.pager.pre  + "</a>";
+		list += " <a id='next'>" + lang.pager.next + "</a>";
+		list += " <a id='last'>" + lang.pager.last + "</a>";
+	}else 
+	{
+		list += lang.pager.empty;
+	}
+		
+	list += "</div></td></tr></tfoot>";
+	
+	wbLayout.queryEle("#" + object + "List").innerHTML = list;
+	var types = wbLayout.queryEles("#" + object + " .featureBar a");
+  	for(k,v in types)
+  	{
+  		wbLayout.queryEle("#" + object + " #" + v.id).style.color = "rgb(112,112,112)";
+  	}
+	wbLayout.queryEle("#" + object + " #" + browseType).style.color = "rgb(20,91,204)";
+	
+	listener();
 }
+loadList('todo', 'today');
 
-if(wb.external) wb.external.loadList   = loadList;		
-*/
-jQueryReady = /*
-	function viewObject(module, id)
-	{
-		external.viewObject(module, id);
-	}
-	
-	function loadList(module, browseType, pageID)
-	{
-		external.loadList(module, browseType, pageID);
-		$('#' + module +'List').html(external.list);
-		
-		$("#featureBar span a").css({"color":"black", "font-weight":"normal"});
-		$("#featureBar #" + browseType + "Tab").css({"font-weight":"bold", "color":"#009900"});
-		
-		$('table').css({"border-spacing":"0", "border-collapse":"collapse"})
-		$('.colhead th').css({background:"#efefef", "font-size":"12px", "font-weight":"bold", "height":"24px", "border-bottom":"1px solid #e4e4e4"});
-		$('.w-id').css({"width":"30"});
-		$('.w-title').css({"width":"300px"});
-		$("tr td").css({"font-size":"12px"});
-		$("tr td a").css({"text-decoration":"none"});
-		
-		$(".pager").css({"font-size":"12px"})	
-	}
-	
-    function loadFeatureBar(module)
-    {
-   		external.loadFeatureBar(module);
-    	$('#featureBar').html(external.featureBar);
-    	
-    	$("#moduleMenu li").css({"background":"#1A4F85"});
-    	$("#moduleMenu li a").css({"font-weight":"normal", "color":"white"});
-    	$("#moduleMenu #" + module + "Tab").css({"background":"e5e5e5"});
-   		$("#moduleMenu #" + module + "Tab a").css({"font-weight":"bold", "color":"#009900"});
-    	
-    	var browseType = module == 'todo' ? 'today' : 'assignedTo';
-    	loadList(module, browseType);
-    }
-
-    $('#moduleMenu').html(external.moduleMenu);
-    $('#featureBar').html(external.featureBar);
-    loadList('todo', 'today');
-    
-    $("#moduleMenu #todoTab").css({"background":"e5e5e5"});
-    $("#moduleMenu #todoTab a").css({"font-weight":"bold", "color":"#009900"});
-    
-    $(".pager").css({"font-size":"12px"})
-    
-    $('#tabs').tabs();
-*/
-
-/*
 win.clip.viewer(winform).onDrawClipboard = function() 
 { 
 	createFile = assert(loadcode("/create.aau"));	
@@ -213,8 +237,6 @@ function getActions()
 	notifyFile = assert(loadcode("/notify.aau"));	
 	notifyFile();
 }
-getActions();
-*/
 
 winform.show();
 win.loopMessage();

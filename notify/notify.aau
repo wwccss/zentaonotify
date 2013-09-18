@@ -2,13 +2,28 @@ import win.ui;
 import win.util.popup;
 import web.json;
 /*DSG{{*/
-var notifyForm = ..win.form( exmode="toolwindow";bgcolor=15780518;bottom=263;parent=...;right=279;border="none";topmost=1 )
+var notifyForm = ..win.form( exmode="toolwindow";bgcolor=16762664;bottom=263;parent=...;right=279;border="none";topmost=1 )
 notifyForm.add( 
 button={ bottom=18;color=0;text="r";left=259;top=1;font=LOGFONT( name='Marlett';charset=2;weight=500 );z=1;right=281;cls="button" };
 listbox={ bgcolor=16777215;bottom=253;right=267;left=7;top=23;z=2;vscroll=1;
 items={  };edge=1;cls="listbox" }
 )
 /*}}*/
+
+notifyForm.wndproc = function(hwnd,message,wParam,lParam){
+	select( message ) { 
+		case 0x205/*_WM_RBUTTONUP*/{
+			//鼠标右键弹起,下面获取坐标
+			var x,y = win.getMessagePos(lParam);
+			
+		}
+		else{
+			
+		}
+	}
+	//无返回值则继续调用默认回调函数
+}
+
 
 var list = {}
 notifyForm.listbox.oncommand = function(id,event)

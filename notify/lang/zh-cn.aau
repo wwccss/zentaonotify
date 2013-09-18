@@ -1,5 +1,10 @@
 lang = {}
 
+lang.login = {}
+lang.login.zentaourl = "禅道地址"
+lang.login.account   = "用户名"
+lang.login.password  = "密码"
+
 lang.moduleMenu = {}
 lang.moduleMenu.todo     = "待办"
 lang.moduleMenu.story    = "需求"
@@ -49,11 +54,19 @@ lang.pager = {}
 lang.pager.pre     = '上一页'
 lang.pager.next    = '下一页'
 lang.pager.last    = '末页'
-lang.pager.summary = '共%d条记录，每页%d条 %d/%d'
+lang.pager.summary = '共%d条，每页%d条 %d/%d'
+lang.pager.empty   = '暂时没有记录'
 
 lang.header = {}
 lang.header.welcome = '欢迎你，%s'
 lang.header.logout  = '注销'
 
-lang.list = {}
-lang.list.title = "标题";
+lang.create = {}
+lang.create.objectType = "类型"
+lang.create.product    = "产品"
+lang.create.project    = "项目"
+lang.create.title      = "标题"
+lang.create.desc       = "描述"
+lang.create.save       = "保存"
+lang.create.success    = "成功创建"
+lang.create.failed     = "创建失败"
