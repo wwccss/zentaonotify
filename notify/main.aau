@@ -41,7 +41,7 @@ wbLayout.onButtonClick =
 		user.password  = wbLayout.getEle("password").value;
 		if(!#user.password)
 		{
-			showResult(loginform, 'failed', string.format(lang.prompt.notEmpty, lang.login.password));
+			showResult('failed', string.format(lang.prompt.notEmpty, lang.login.password));
 			return;
 		}
 		if(#user.password and #user.password != 32) user.password = string.md5(user.password, true);
