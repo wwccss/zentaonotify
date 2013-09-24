@@ -10,17 +10,18 @@
     </div>
 	</div> 
 
-  <div id='dropMenu' class='hidden'>
-    <ul>
-      <li><a id='logout'></a></li>
-      <li><a id='exit'></a></li>
-    </ul>
-  </div>
 
   <div id='wrap'>
     <div class="tabs">
       <div class='strip' id="moduleMenu" >  
          <div panel="todo" selected><div><a id='icon-todo'></a><span></span></div></div>
+      </div>
+
+      <div id='dropMenu' class='hidden'>
+        <ul>
+          <li><a id='logout'></a></li>
+          <li><a id='exit'></a></li>
+        </ul>
       </div>
 
       <div name="todo" id='todo' class='outer'>
@@ -34,8 +35,8 @@
       </div>
 
       <div name="task" id='task' class='outer'>
-        <div class='featureBar' class='dataList'></div>
-        <table id='taskList'></table>
+        <div class='featureBar'></div>
+        <table id='taskList'  class='dataList'></table>
       </div> 
 
       <div name="bug" id='bug' class='outer'>
