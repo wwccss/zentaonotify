@@ -271,6 +271,7 @@ function getActions()
 {
 	actions  = {}
 	var actionID = string.load(ACTION_FILE) or 0;
+
 	var response  = http.get(getAPI({"api"; "getmodel"; "action"; "getUnreadActions"; "actionID=" + actionID}));
 	response      = web.json.parse(response);
 	response.data = web.json.parse(web.json.parse(response.data));
@@ -280,7 +281,7 @@ function getActions()
 	{
 		for(k,action in list)
 		{
-			if(action.actionID > actionID) actionID = action.actionID;
+			if(tonumber(action.actionID) > tonumber(actionID)) actionID = action.actionID;
 			action.action = string.replace(action.action,"\\","")
 			actions[action.actionID] = action;
 		}		
