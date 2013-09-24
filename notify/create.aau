@@ -8,7 +8,7 @@ import web.layout.behavior.windowCommand;
 
 var WIN_WIDTH  = 498;
 var WIN_HEIGHT = 495;
-var createForm  = ..win.form( right=WIN_WIDTH;bottom=WIN_HEIGHT;parent=...;border="none";scroll="none";text="新建")
+createForm  = ..win.form( right=WIN_WIDTH;bottom=WIN_HEIGHT;parent=...;border="none";scroll="none";text="新建")
 
 createLayout = web.layout(createForm)  
 createLayout.go("/layout/create.html") 

@@ -5,6 +5,10 @@ lang.login.zentaourl = "禅道地址"
 lang.login.account   = "用户名"
 lang.login.password  = "密码"
 
+lang.dropMenu = {}
+lang.dropMenu.logout = "注销"
+lang.dropMenu.exit   = "退出"
+
 lang.moduleMenu = {}
 lang.moduleMenu.todo     = "待办"
 lang.moduleMenu.story    = "需求"

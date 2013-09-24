@@ -3,6 +3,12 @@ body {margin:10px 0px 0px 0px;}
 #window-buttons {right: 10px;}
 a, #moduleMenu div div {cursor:pointer}
 
+#dropMenu {background:white; position:absolute; right:60px; top:20px; border: 1px solid rgba(0,0,0,0.2); }
+#dropMenu ul {padding:0px 5px}
+#dropMenu ul li { padding: 3px 0px; height: 20px; font-size: 14px; list-style-type: none; }
+#dropMenu ul li:hover { background: #1AA8D2; cursor: pointer;}
+#dropMenu ul li a { padding: 0px 10px; float: left; clear: both; color: #333333; display: block; font-weight: normal; line-height: 20px; white-space: nowrap;}
+
 #wrap{border:none;}
 .tabs { behavior:tabs; width:287px; margin:1px auto; height:555px; margin-left:9px}
 
@@ -54,6 +60,7 @@ a, #moduleMenu div div {cursor:pointer}
 table {width:100%}
 table tbody{max-height:420px; overflow-y:auto}
 table tbody tr {border-bottom: 1px solid rgb(215,215,215);}
+table tbody tr:hover {background:#fff0bc;}
 table tr td {color:black; height:25px}
 table tr td a{line-height:25px; color:black; text-decoration:none}
 table tr td.id {width:40px}

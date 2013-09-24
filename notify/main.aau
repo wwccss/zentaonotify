@@ -55,7 +55,7 @@ wbLayout.onButtonClick =
 now = time();
 now.format="%Y-%m-%d";
 var LOG_FILE    = "/log/" + tostring(now) + '.txt';
-var INFO_FILE   = "/tmp/.logininfo";
+INFO_FILE   = "/tmp/.logininfo";
 ACTION_FILE = "/tmp/actionID";
 
 langFile = loadcode("/lang/zh-cn.aau");

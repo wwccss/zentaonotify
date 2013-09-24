@@ -4,11 +4,18 @@
 <body>
 	<div id='header' command="window-caption">  
     <div id='window-buttons'>
-      <span command="window-setting">6</span>
+      <span id="window-dropMenu">6</span>
       <span command="window-min">0</span>
-      <span command="window-close">r</span> 
+      <span id="window-close">r</span> 
     </div>
 	</div> 
+
+  <div id='dropMenu' class='hidden'>
+    <ul>
+      <li><a id='logout'></a></li>
+      <li><a id='exit'></a></li>
+    </ul>
+  </div>
 
   <div id='wrap'>
     <div class="tabs">

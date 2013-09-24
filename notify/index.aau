@@ -23,6 +23,8 @@ tray.message = 0x400+9981/*_WM_TRAYMESSAGE*/
 tray.tip     = lang.prompt.softName;
 winform.popmenu = win.ui.popmenu(winform);
 winform.popmenu.add(lang.popmenu.exit, function(id){ exit()});
+wbLayout.queryEle("#logout").innerText = lang.dropMenu.logout;
+wbLayout.queryEle("#exit").innerText   = lang.dropMenu.exit;
 
 winform.wndproc = function(hwnd,message,wParam,lParam)
 {
@@ -58,8 +60,24 @@ winform.wndproc = function(hwnd,message,wParam,lParam)
 	}	
 }
 
+function logout()
+{	
+	http.get(getAPI({"user"; "logout"}));
+	output = user;
+	output.password = '';
+	string.save(INFO_FILE, web.json.stringify(output, true));
+	winform.close();
+	if(createForm) createForm.close();
+ 	if(notifyForm) notifyForm.close();
+	mainFile = assert(loadcode("/main.aau"));	
+	mainFile();
+}
+
 function exit()
 {
+	if(createForm) createForm.close();
+ 	if(notifyForm) notifyForm.close();
+	http.get(getAPI({"user"; "logout"}));
 	tray.delete();
  	winform.close();
  	win.quitMessage();
@@ -70,9 +88,44 @@ function viewObject(object, id)
 	process.execute(getAPI({object; 'view'; id; viewType='html'}));
 }
 
+function toggleDropMenu()
+{
+	dropMenu = wbLayout.queryEle("#dropMenu");
+	if(dropMenu.style.display == "none")
+	{ 
+		dropMenu.style.display = "block";
+	}else
+	{
+		dropMenu.style.display = "none";
+	}
+}
+
 currentModule = 'todo';
 function listener()
 {
+	winButtonsListener = wbLayout.queryEles("#window-buttons span");
+	for(k,button in winButtonsListener)
+	{
+		button.onMouseClick = function( ltTarget,ltEle,x,y,mouseParams )
+		{
+			if(ltTarget.id == "window-dropMenu") toggleDropMenu();
+			if(ltTarget.id == "window-close")    exit();
+		}
+		button.attachEventHandler();	
+	}
+	
+	dropMenuListener = wbLayout.queryEles("#dropMenu ul li a");
+	for(k,item in dropMenuListener)
+	{
+		item.onMouseClick = function( ltTarget,ltEle,x,y,mouseParams )
+		{
+			if(ltTarget.id == 'setting') setting();
+			if(ltTarget.id == 'logout')  logout();
+			if(ltTarget.id == 'exit')    exit();
+		}
+		item.attachEventHandler();	
+	}
+
 	menuListener = wbLayout.queryEles("#moduleMenu > div");
 	for (i,moduleTab in menuListener)
 	{

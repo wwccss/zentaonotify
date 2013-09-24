@@ -1,52 +1,35 @@
 import win.ui;
 import win.util.popup;
 import web.json;
-/*DSG{{*/
-var notifyForm = ..win.form( exmode="toolwindow";bgcolor=16762664;bottom=263;parent=...;right=279;border="none";topmost=1 )
-notifyForm.add( 
-button={ bottom=18;color=0;text="r";left=259;top=1;font=LOGFONT( name='Marlett';charset=2;weight=500 );z=1;right=281;cls="button" };
-listbox={ bgcolor=16777215;bottom=253;right=267;left=7;top=23;z=2;vscroll=1;
-items={  };edge=1;cls="listbox" }
-)
-/*}}*/
+import web.layout;
+import web.layout.debug; 
+import web.layout.behavior.windowCommand; 
 
-notifyForm.wndproc = function(hwnd,message,wParam,lParam){
-	select( message ) { 
-		case 0x205/*_WM_RBUTTONUP*/{
-			//鼠标右键弹起,下面获取坐标
-			var x,y = win.getMessagePos(lParam);
-			
-		}
-		else{
-			
-		}
-	}
-	//无返回值则继续调用默认回调函数
+notifyForm  = ..win.form( right=350;bottom=300;parent=...;border="none";scroll="none";text="提醒")
+notifyLayout = web.layout(notifyForm)  
+notifyLayout.go("/layout/notify.html")
+
+var list = "";
+for(actionID,action in actions)
+{	
+	list  = "<tr><td>";
+	list += "<a id='" + actionID + "'>" + action.action;
+	list += "</a></td></tr>";
 }
+notifyLayout.queryEle("table").innerHTML = list;
 
-
-var list = {}
-notifyForm.listbox.oncommand = function(id,event)
+listListener = notifyLayout.queryEles("table tr td a");
+for(k,item in listListener)
 {
-	if(event == 0x2/*_LBN_DBLCLK*/)
+	item.onMouseClick = function( ltTarget,ltEle,x,y,mouseParams )
 	{
-		var index = notifyForm.listbox.selIndex;
-		viewObject(actions[list[index]].objectType, actions[list[index]].objectID);
+		actionID = ltEle.id;
+		viewObject(actions[actionID].objectType, actions[actionID].objectID);
 	}
+	item.attachEventHandler();
 }
 
 pop = win.util.popup(notifyForm, config.sys.closeInterval);
-
-var i = 1;
-for(actionID,action in actions)
-{	
-	notifyForm.listbox.add(action.action,-1);
-	list[i] = actionID;
-	i++;
-}
-
-notifyForm.button.oncommand = function(id,event){ notifyForm.close();}
-
 notifyForm.show(true) 
 notifyForm.setTimeout(function(){notifyForm.close()}, config.sys.closeInterval);
 win.loopMessage();

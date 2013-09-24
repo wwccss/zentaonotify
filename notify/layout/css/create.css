@@ -12,6 +12,5 @@ input[type='submit']:hover { outline:2px glow #3280fc 1px; foreground-image-tran
 
 #objectType {width:100px}
 .w-p95 {width:95%}
-.hidden {display:none}
 
 #result {float:left; line-height:25px; padding-left:50px;}
