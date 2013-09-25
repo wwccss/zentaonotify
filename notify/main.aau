@@ -82,9 +82,36 @@ function getAPI(param)
 	var methodName = param[2]
 	var api = ''
 	var viewType = param.viewType ? param.viewType : "json"; 
-    if(zentaoConfig.requestType == 'GET')
+    if(string.lower(zentaoConfig.requestType) == 'get')
 	{
-		
+		api = user.zentaourl + "/index.php?";
+		if(moduleName == 'user' and methodName == 'login')
+		{
+			if(#user.password) var password = string.md5(user.password + tostring(session.data.rand), true);	
+			api += "m=user&f=login&account=" + user.account + "&password=" + password + "&t=json"; 
+			log(api)
+		 	return api;
+		}
+		api += "m=" + moduleName + "&f=" + methodName
+		if(moduleName == 'api' and string.lower(methodName) == 'getmodel') 
+		{
+			api += "&moduleName=" + param[3] + "&methodName=" + param[4] + "&params=";
+			for(i=5; #param; 1) 
+			{
+				api += param[i]; 
+				if(param[i+1]) api += "&";
+			}	
+		}
+		if(moduleName == 'my')   api += "&type=" + param[3];
+		if(methodName == 'view') api += "&" + moduleName + "ID=" + param[3];
+		if(param.pageID)
+		{ 
+			if(methodName == 'todo') api += "&account=&status=all&orderBy=date_desc,status,begin&";
+			if(methodName != 'todo') api += "&&orderBy=id_desc&";
+			api += "recTotal=" + pager.recTotal + "&recPerPage=" + pager.recPerPage + "&pageID=" + param.pageID;
+		}
+		api += "&t=" + viewType;
+		if(session) api += "&" + session.data.sessionName + "=" + session.data.sessionID;	
 	}
 	else 
 	{

@@ -212,7 +212,7 @@ function loadFeatureBar(module)
   	for(i=1; #config.order[module]; 1)
   	{	
  	 	 var browseType = config.order[module][i];
-  		 featureBar += "<span><a id='" + browseType + "' onclick=loadList('" + module + "','" + browseType + "')>" + lang.featureBar[module][browseType] + "</a></span> ";
+  		 featureBar += "<span><a id='" + browseType + "'>" + lang.featureBar[module][browseType] + "</a></span> ";
  	 }
  	 wbLayout.queryEle("#" + module + " .featureBar").innerHTML = featureBar;
  	 listener();
