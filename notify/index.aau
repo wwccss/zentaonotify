@@ -23,6 +23,7 @@ tray.message = 0x400+9981/*_WM_TRAYMESSAGE*/
 tray.tip     = lang.prompt.softName;
 winform.popmenu = win.ui.popmenu(winform);
 winform.popmenu.add(lang.popmenu.exit, function(id){ exit()});
+wbLayout.queryEle("#title").innerText = lang.prompt.softName + config.sys.version;
 wbLayout.queryEle("#logout").innerText = lang.dropMenu.logout;
 wbLayout.queryEle("#exit").innerText   = lang.dropMenu.exit;
 
@@ -260,11 +261,13 @@ function loadList(object, browseType, pageID)
 }
 loadList('todo', 'today');
 
+/*
 win.clip.viewer(winform).onDrawClipboard = function() 
 { 
 	createFile = assert(loadcode("/create.aau"));	
 	createFile();
 }
+*/
 
 winform.addtimer(config.sys.updateInterval, function(){getActions()});
 function getActions()

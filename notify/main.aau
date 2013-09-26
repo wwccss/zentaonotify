@@ -63,6 +63,8 @@ langFile();
 configFile = loadcode("/config/config.aau");
 configFile();
 
+wbLayout.queryEle("#title").innerText = lang.prompt.softName + config.sys.version;
+
 function log(content)
 {
 	string.save(LOG_FILE, content + '\n', true);
