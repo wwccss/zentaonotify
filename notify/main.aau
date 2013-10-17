@@ -207,12 +207,22 @@ function login()
 function getRole()
 {
 	var response = http.get(getAPI({"api"; "getmodel"; "user"; "getById"; "account=" + user.account}));
+	
 	if(!response or response == '') return false;
-	response = web.json.parse(response);
-	if(response.status == 'fail') return false;
-	response = web.json.parse(response.data);
-	user.role = response.role;
-	return true;
+	var success = true;
+	try
+	{
+		response = web.json.parse(response);
+		if(response.status == 'fail') success = false;
+		response = web.json.parse(response.data);
+		user.role = response.role;	
+	}
+	catch(e)
+	{
+		success = false;
+		showResult('failed', string.format(lang.prompt.noAuthority, user.account, "api-getmodel"));
+	}
+	return success;	
 }
 
 function init()
@@ -221,7 +231,7 @@ function init()
 	if(!checkVersion()) return false;
 	if(!getSession())   {showResult('failed', lang.prompt.wrongUrl); return false} 
 	if(!login())        {showResult('failed', lang.prompt.wrongInfo); return false} 
-	if(!getRole())      {showResult('failed', lang.prompt.wrongInfo); return false}
+	if(!getRole())      {return false}
 	string.save(INFO_FILE, web.json.stringify(user, true));
 	return true;
 }

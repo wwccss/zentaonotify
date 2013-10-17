@@ -66,3 +66,4 @@ table tr td a{line-height:25px; color:black; text-decoration:none}
 table tr td.id {width:40px}
 
 .pager {font-size:12px}
+#result {position:absolute; top:125px;}

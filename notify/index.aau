@@ -224,8 +224,19 @@ function loadList(object, browseType, pageID)
 {
 	var list = "<tbody>";
 	var response = http.get(getAPI({'my'; object; browseType; pageID = pageID}));
-	response = web.json.parse(response);
-	response = web.json.parse(response.data);
+	var success = true;
+	try
+	{
+		response = web.json.parse(response);
+		response = web.json.parse(response.data);
+	}
+	catch(e)
+	{	
+		showResult('failed', string.format(lang.prompt.noAuthority, user.account, "my-" + object));
+		success = false;
+	}
+	if(!success) return;
+	
 	pager = response.pager;
 	var index = object == "story" ? "stories" : object + "s";
 	for(k,v in response[index]) 

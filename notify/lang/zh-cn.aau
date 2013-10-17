@@ -52,6 +52,7 @@ lang.prompt.versionUnmatch     = '您当前版本是%s，请升级至%s以上版本'
 lang.prompt.wrongUrl           = '您填写的禅道地址有误，请重新填写！'
 lang.prompt.wrongInfo          = '您填写的信息有误，请重新填写！'
 lang.prompt.notEmpty           = '%s不能为空, 请重新填写！'
+lang.prompt.noAuthority        = '请为%s增加%s权限！'
 lang.prompt.minToTray          = "最小化到托盘了";
 
 lang.pager = {}
