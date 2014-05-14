@@ -1,0 +1,74 @@
+﻿html { background: url(../images/background.png) no-repeat; background-color:rgb(104,196,255);}
+#title {padding-top:3px; padding-left:20px}
+
+#wrap{ width:200px; height:84px; margin:0px auto; margin-top:250px; background-repeat:no-repeat; flow: vertical;}
+#form input {    
+    border-radius:2px;
+    width: 153px;
+    height: 24px;   
+    font-size:12px; 
+    line-height: 10px;
+    border-width: 1px 0;
+    margin-bottom:5px;
+    padding:  0 30px 0 10px;
+    background: url(../images/Input-box.png) no-repeat;
+    background-position: 3px 8px 4px 5px;
+    background-repeat: expand;
+}
+
+#form input:empty { color:#888888; }
+#form #password
+{
+    border-top-right-radius:0px;
+    border-top-bottom-radius:0px;
+    margin-right:0px;
+    width:100px;
+    background: url(../images/password.png) no-repeat;
+    background-position: 2px 0px 3px 2px;
+    background-repeat: expand stretch-top stretch-left stretch-middle stretch-bottom;
+}
+
+#login {cursor:pointer; color:white; width:136px; height:30px; margin:10px auto; background-image:url(../images/login.png); background-position: 5px 6px 7px 8px; background-repeat: expand stretch-top stretch-left stretch-middle stretch-right stretch-bottom; padding-left:12px; }
+#login:hover { outline:5px glow #11b92d 2px; foreground-image-transformation: contrast-brightness-gamma(0.5,0.6, 1.5); }
+
+div#password-box{ flow:horizontal; }
+button#pop-keyboard
+{
+behavior:popup-menu;
+margin-left:0px; 
+background-image: url(../images/keyboard.png);
+background-position: 3px 2px 3px 0px;
+background-repeat: expand stretch-top stretch-middle stretch-right stretch-bottom;
+}
+button#pop-keyboard img{ margin:0px -4px 0px 5px; }
+
+#pop-keyboard popup
+{   
+behavior:menu;
+background-image: url(../images/keypad1.png);
+background-position: 14px 14px 10px 9px;
+background-repeat: expand stretch-top stretch-left stretch-middle stretch-right stretch-bottom;
+line-height:14px; 
+padding:2px 2px 2px 2px;
+}
+
+#pop-keyboard popup button
+{
+behavior:~keyboard;
+margin:1px 2px 1px 2px; 
+background-image: url(../images/button4.png);
+background-position: 3px 2px 3px 2px;
+background-repeat: expand stretch-top stretch-left stretch-middle stretch-right stretch-bottom;
+padding:1px 4px 1px 4px;  
+width:19px;  
+font-size:12px;
+line-height:14px; 
+}
+
+#pop-keyboard popup button.nosup{ font-size:12px; line-height:17px; } 
+#pop-keyboard popup button:checked{ background-image: url("../images/keypad1.png"); }
+#pop-keyboard popup button:hover{ background-image:url("../images/button5.png"); }
+#pop-keyboard popup button:active{ background-image:url("../images/button6.png"); }
+#pop-keyboard popup button sup{ font-size:10px; color:#666; }
+
+#result {font-size:14px; padding-left:50px}

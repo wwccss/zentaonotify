@@ -1,8 +1,0 @@
-html {background:#edebe9; border:1px solid #d7d7d7; }
-#wrap {background:white; border:1px solid #bbb; height:95%; width:100%; margin-top:-10px}
-
-table {width:100%; border-collapse: collapse; border-spacing: 0; }
-table tr {border-bottom: 1px solid rgb(215,215,215);}
-table tr:hover {background:#fff0bc; cursor:pointer}
-table tr td {color:black; height:25px;  padding:5px 8px}
-table tr td a{line-height:25px; color:black; text-decoration:none}

@@ -1,0 +1,21 @@
+#header { position: relative; height: 26px; behavior: windowCommand; }
+#title {font-weight:bold; padding-left:28px; color:#333}
+#window-buttons { position: absolute; top:-10px; right: 0px; max-width: max-intrinsic; }
+#window-buttons span 
+{
+  display: block;
+  float: left; 
+  color: #fff;
+  line-height: 22px; 
+  padding: 0 5px;
+  font-family: Webdings; 
+  font-weight: bold; 
+  font-size: 13px;
+  behavior: windowCommand; 
+  cursor: pointer;
+}
+#window-buttons span:hover { background-color:rgba(255,255,255,0.3); }
+#window-buttons span[command=window-close]:hover { background-color: #da3610; }
+#window-buttons span#window-close:hover { background-color: #da3610; }
+
+.hidden {display:none}

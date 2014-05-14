@@ -1,0 +1,16 @@
+html {background: url(../images/create.png) no-repeat; background-color:#68c4ff}
+#wrap{border:none; padding-top:38px;}
+
+table   {width:100%;  border-collapse: collapse; border-spacing: 0; } 
+select  {height: 25px;}
+th      {font-size: 12px; border: none; padding: 4px 3px; text-align: right; width: 50px;}
+td      {padding: 4px 3px; border:none;}
+select,input,textarea  {border:1px solid #d7d7d7}
+input   {height:22px; font-size:16px}
+input[type='submit'] {float:left; cursor:pointer; width:40px; height:25px; background:url(../images/save.png); padding-left:25px; font-size:14px; color:white}
+input[type='submit']:hover { outline:2px glow #3280fc 1px; foreground-image-transformation: contrast-brightness-gamma(0.5,0.6, 1.5); }
+
+#objectType {width:100px}
+.w-p95 {width:95%}
+
+#result {float:left; line-height:25px; padding-left:50px;}
