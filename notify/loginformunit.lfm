@@ -1,7 +1,7 @@
 object LoginForm: TLoginForm
-  Left = 419
+  Left = 410
   Height = 555
-  Top = 326
+  Top = 396
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -2127,7 +2127,7 @@ object LoginForm: TLoginForm
   object ShapeAddress: TShape
     Left = 33
     Height = 30
-    Top = 224
+    Top = 234
     Width = 221
     Anchors = [akTop, akLeft, akRight]
     Brush.Color = clNone
@@ -2135,10 +2135,10 @@ object LoginForm: TLoginForm
     Pen.Cosmetic = False
   end
   object EditAddress: TEdit
-    Left = 37
+    Left = 38
     Height = 20
-    Hint = '禅道地址'
-    Top = 229
+    Hint = '禅道地址 (http://zentao.net)'
+    Top = 239
     Width = 211
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
@@ -2149,12 +2149,12 @@ object LoginForm: TLoginForm
     OnExit = EditExit
     ParentFont = False
     TabOrder = 0
-    Text = '禅道地址'
+    Text = '禅道地址 (http://zentao.net)'
   end
   object ShapeUsername: TShape
     Left = 33
     Height = 30
-    Top = 259
+    Top = 269
     Width = 221
     Anchors = [akTop, akLeft, akRight]
     Brush.Color = clNone
@@ -2165,7 +2165,7 @@ object LoginForm: TLoginForm
     Left = 37
     Height = 20
     Hint = '用户名'
-    Top = 264
+    Top = 274
     Width = 211
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
@@ -2182,7 +2182,7 @@ object LoginForm: TLoginForm
     Left = 33
     Height = 30
     Hint = '密码'
-    Top = 294
+    Top = 304
     Width = 221
     Anchors = [akTop, akLeft, akRight]
     Brush.Color = clNone
@@ -2193,7 +2193,7 @@ object LoginForm: TLoginForm
     Left = 37
     Height = 20
     Hint = '密码'
-    Top = 299
+    Top = 309
     Width = 211
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
@@ -2210,10 +2210,37 @@ object LoginForm: TLoginForm
     Left = 33
     Height = 45
     Hint = 'hint'
-    Top = 328
+    Top = 339
     Width = 221
     Anchors = [akTop, akLeft, akRight]
-    DefaultCaption = True
+    Caption = '登录'
+    OnClick = BitBtnLoginClick
     TabOrder = 3
+  end
+  object LabelResult: TLabel
+    Left = 0
+    Height = 36
+    Top = 188
+    Width = 286
+    Alignment = taCenter
+    AutoSize = False
+    Caption = '请填写禅道地址'
+    Color = clRed
+    Font.Color = clWhite
+    Layout = tlCenter
+    ParentColor = False
+    ParentFont = False
+    Transparent = False
+    Visible = False
+  end
+  object Edit1: TEdit
+    Left = 0
+    Height = 127
+    Top = 428
+    Width = 286
+    Anchors = [akLeft, akRight, akBottom]
+    AutoSize = False
+    TabOrder = 4
+    Text = 'Edit1'
   end
 end
