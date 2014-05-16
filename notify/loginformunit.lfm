@@ -1,13 +1,13 @@
 object LoginForm: TLoginForm
-  Left = 410
+  Left = 381
   Height = 555
-  Top = 396
+  Top = 287
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 555
   ClientWidth = 286
+  OnCreate = FormCreate
   Position = poScreenCenter
   LCLVersion = '1.2.2.0'
   object ImageBackground: TImage
@@ -2135,7 +2135,7 @@ object LoginForm: TLoginForm
     Pen.Cosmetic = False
   end
   object EditAddress: TEdit
-    Left = 38
+    Left = 37
     Height = 20
     Hint = '禅道地址 (http://zentao.net)'
     Top = 239
@@ -2193,16 +2193,18 @@ object LoginForm: TLoginForm
     Left = 37
     Height = 20
     Hint = '密码'
-    Top = 309
+    Top = 310
     Width = 211
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
+    EchoMode = emPassword
     Font.Color = clGray
     OnChange = EditChange
     OnEnter = EditPasswordEnter
     OnExit = EditPasswordExit
     ParentFont = False
+    PasswordChar = '*'
     TabOrder = 2
     Text = '密码'
   end
@@ -2223,6 +2225,7 @@ object LoginForm: TLoginForm
     Top = 188
     Width = 286
     Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
     AutoSize = False
     Caption = '请填写禅道地址'
     Color = clRed
@@ -2232,15 +2235,5 @@ object LoginForm: TLoginForm
     ParentFont = False
     Transparent = False
     Visible = False
-  end
-  object Edit1: TEdit
-    Left = 0
-    Height = 127
-    Top = 428
-    Width = 286
-    Anchors = [akLeft, akRight, akBottom]
-    AutoSize = False
-    TabOrder = 4
-    Text = 'Edit1'
   end
 end

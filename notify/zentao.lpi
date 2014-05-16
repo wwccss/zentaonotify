@@ -12,7 +12,7 @@
       <Icon Value="0"/>
     </General>
     <i18n>
-      <EnableI18N LFM="False"/>
+      <OutDir Value="languages"/>
     </i18n>
     <VersionInfo>
       <StringTable ProductVersion=""/>
@@ -33,7 +33,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="2">
+    <Units Count="3">
       <Unit0>
         <Filename Value="zentao.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -47,6 +47,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="LoginFormUnit"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="zentaoapiunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ZentaoAPIUnit"/>
+      </Unit2>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -74,7 +79,7 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="3">
+    <Exceptions Count="4">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -84,6 +89,9 @@
       <Item3>
         <Name Value="EFOpenError"/>
       </Item3>
+      <Item4>
+        <Name Value="EScannerError"/>
+      </Item4>
     </Exceptions>
   </Debugging>
 </CONFIG>
