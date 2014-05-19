@@ -27,8 +27,16 @@ type
         Sender   : TObject;
     end;
 
+    DataResult = record
+        Result  : boolean;
+        Message : string;
+        Data    : TJSONObject;
+    end;
+
 
 { Function declarations }
+procedure Init();
+procedure Destroy();
 function GetAPI(const Params: array of Const): string;
 function CheckVersion(): HandleResult;
 function GetConfig(): HandleResult;
@@ -36,6 +44,7 @@ function GetSession(): HandleResult;
 function Login(): HandleResult;
 function GetRole(): HandleResult;
 function TryLogin(): HandleResult;
+function LoadDataList(obj: string; browseType: string; pageID: string): DataResult;
 
 var
     User         : UserConfig;
@@ -44,6 +53,34 @@ var
     Http         : TFPHTTPClient;
 
 implementation
+
+(* Load Data from server with zentao api and return in a list *)
+function LoadDataList(obj: string; browseType: string; pageID: string): DataResult;
+var response : string;
+var data     : TJSONObject;
+begin
+    Result.Result := true;
+
+    try
+        response := Http.Get(GetAPI(['module', 'my', 'method', obj, 'type', browseType, 'pageID', pageID]));
+        try
+            (* prepare data *)
+            data := TJSONObject(TJSONParser.Create(response).Parse);
+            response := data.Get('data', '');
+            if response <> '' then
+                data := TJSONObject(TJSONParser.Create(response).Parse);
+
+            Result.Data := data;
+
+        except
+            Result.Result  := false;
+            Result.Message := '服务器返回的数据不正确。';
+        end;
+    except
+        Result.Result  := false;
+        Result.Message := '无法连接到服务器。';
+    end;
+end;
 
 (* Get config *)
 function GetConfig(): HandleResult;
@@ -106,7 +143,7 @@ begin
     moduleName := config.Get('module', '');
     methodName := config.Get('method', '');
     nameSet    := TStringList.Create;
-    nameSet.CommaText := 'viewType,module,method,moduleName,methodName,pageID';
+    nameSet.CommaText := 'viewType,module,method,moduleName,methodName,pageID,type';
 
     if LowerCase(ZentaoConfig.Get('requestType', '')) = 'get' then
     begin
@@ -169,26 +206,30 @@ begin
         if (moduleName = 'api') and (LowerCase(methodName) = 'getmodel') then
         begin
             Result := Result + config.Get('moduleName', '') + '-' + config.Get('methodName', '') + '-';
-            for item in config do
-            begin
-                if (nameSet.indexOf(item.Key) > 0) then
-                    continue;
-                Result := Result + item.Key + '=' + item.Value.AsString + '-';
-            end;
         end;
 
-        pageID := config.Get('pageID', '');
-        if pageID <> '' then
+        if moduleName = 'my' then
+            Result := Result + config.Get('type', '') + '-';
+
+        for item in config do
         begin
-            if methodName = 'todo' then
-            begin
-                Result := Result + '--all-date_desc,status,begin-';
-            end
-            else
-            begin
-                // Result := Result + '-id_desc-' + pager.recTotal + '-' + pager.recPerPage + '-' + pageID;
-            end;
+            if (nameSet.indexOf(item.Key) > 0) then
+                continue;
+            Result := Result + item.Key + '=' + item.Value.AsString + '-';
         end;
+
+        // pageID := config.Get('pageID', '');
+        // if pageID <> '' then
+        // begin
+        //     if methodName = 'todo' then
+        //     begin
+        //         Result := Result + '--all-date_desc,status,begin-';
+        //     end
+        //     else
+        //     begin
+        //         // Result := Result + '-id_desc-' + pager.recTotal + '-' + pager.recPerPage + '-' + pageID;
+        //     end;
+        // end;
 
         if Result[Length(Result)] = '-' then
             Result := Copy(Result, 1, Length(Result) - 1);
@@ -272,7 +313,7 @@ begin
             end
             else
             begin
-                role := role.Get('data', TJSONObject.Create(['role', '']));
+                role := TJSONObject(TJSONParser.Create(role.Get('data', '')).Parse);
                 User.Role := role.Get('role', '');
             end;
         end
@@ -291,45 +332,34 @@ function TryLogin(): HandleResult;
 begin
     Session := TJSONObject.Create(['undefined', true]);
 
-    Http := TFPHTTPClient.Create(Nil);
-
     Result := GetConfig();
     if not Result.Result then
-    begin
         Exit;
-        Http.Free;
-    end;
 
-    Result := CheckVersion();
-    if not Result.Result then
-    begin
-       Exit;
-       Http.Free;
-    end;
+    //Result := CheckVersion();
+    //if not Result.Result then
+    //   Exit;
 
     Result := GetSession();
     if not Result.Result then
-    begin
         Exit;
-        Http.Free;
-    end;
 
     Result := Login();
     if not Result.Result then
-    begin
         Exit;
-        Http.Free;
-    end;
 
     Result := GetRole();
     if not Result.Result then
-    begin
         Exit;
-        Http.Free;
-    end;
-
-    Http.Free;
 end;
 
-end.
+procedure Init();
+begin
+    Http := TFPHTTPClient.Create(Nil);
+end;
 
+procedure Destroy();
+begin
+    Http.Free;
+end;
+end.

@@ -1,9 +1,10 @@
 object LoginForm: TLoginForm
-  Left = 381
+  Left = 593
   Height = 555
-  Top = 287
+  Top = 387
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 555
   ClientWidth = 286

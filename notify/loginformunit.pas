@@ -46,6 +46,8 @@ var
 
 implementation
 
+uses MainFormUnit;
+
 {$R *.lfm}
 
 { TLoginForm members }
@@ -96,6 +98,7 @@ begin
         User.PassMd5  := MD5Print(MD5String(User.Password));
         User.Url      := EditAddress.Text;
 
+        Init();
         r := TryLogin();
 
         if not r.Result then
@@ -105,7 +108,11 @@ begin
             BitBtnLogin.Enabled := true;
         end
         else
+        begin
             ShowResultMessage('登录成功！');
+            LoginForm.Hide;
+            MainForm.Show;
+        end;
     end;
 end;
 
@@ -143,7 +150,7 @@ procedure TLoginForm.EditPasswordExit(Sender: TObject);
 begin
     EditExit(Sender);
     if EditPassword.Text = EditPassword.Hint then
-        EditPassword.PasswordChar := #0
+        EditPassword.PasswordChar := #0;
 end;
 
 procedure TLoginForm.FormCreate(Sender: TObject);

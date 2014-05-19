@@ -1,0 +1,417 @@
+object MainForm: TMainForm
+  Left = 444
+  Height = 700
+  Top = 187
+  Width = 1400
+  Caption = '禅道桌面提醒工具1.2'
+  ClientHeight = 700
+  ClientWidth = 1400
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '1.2.2.0'
+  object PanelMenu: TPanel
+    Left = 0
+    Height = 50
+    Top = 0
+    Width = 1400
+    Anchors = [akTop, akLeft, akRight]
+    BevelOuter = bvNone
+    ClientHeight = 50
+    ClientWidth = 1400
+    Color = 13392660
+    ParentColor = False
+    TabOrder = 0
+    OnClick = PanelMenuClick
+    object LabelTab1: TLabel
+      Tag = 1
+      Left = 8
+      Height = 40
+      Hint = 'todo'
+      Top = 10
+      Width = 95
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '待办'
+      Color = 16380651
+      Font.Color = 13392660
+      Font.Height = -18
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      OnClick = LabelTabClick
+      OnMouseEnter = LabelTabMouseEnter
+      OnMouseLeave = LabelTabMouseLeave
+    end
+    object LabelTab2: TLabel
+      Left = 105
+      Height = 40
+      Hint = 'task'
+      Top = 10
+      Width = 95
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '任务'
+      Color = 13392660
+      Font.Color = clWhite
+      Font.Height = -18
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      OnClick = LabelTabClick
+      OnMouseEnter = LabelTabMouseEnter
+      OnMouseLeave = LabelTabMouseLeave
+    end
+    object LabelTab3: TLabel
+      Left = 202
+      Height = 40
+      Hint = 'bug'
+      Top = 10
+      Width = 95
+      Alignment = taCenter
+      AutoSize = False
+      Caption = 'Bug'
+      Color = 13392660
+      Font.Color = clWhite
+      Font.Height = -18
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      OnClick = LabelTabClick
+      OnMouseEnter = LabelTabMouseEnter
+      OnMouseLeave = LabelTabMouseLeave
+    end
+    object LabelResult: TLabel
+      Left = 384
+      Height = 50
+      Top = 0
+      Width = 1016
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'tes'
+      Color = clRed
+      Font.Color = clWhite
+      Font.Height = -13
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      Visible = False
+    end
+    object Memo1: TMemo
+      Left = 1035
+      Height = 47
+      Top = 2
+      Width = 364
+      TabOrder = 0
+    end
+  end
+  object PanelNav: TPanel
+    Left = 0
+    Height = 650
+    Top = 50
+    Width = 350
+    Anchors = [akTop, akLeft, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 650
+    ClientWidth = 350
+    Color = 16380651
+    ParentColor = False
+    TabOrder = 1
+    object Label1: TLabel
+      Left = 12
+      Height = 20
+      Top = 15
+      Width = 30
+      Caption = '今天'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      Left = 272
+      Height = 36
+      Top = 7
+      Width = 70
+      Alignment = taCenter
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = '新建'
+      Color = 16547890
+      Font.Color = clWhite
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+    end
+    object StringGridTodo: TStringGrid
+      Left = 0
+      Height = 570
+      Top = 50
+      Width = 350
+      AlternateColor = clNone
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      BorderStyle = bsNone
+      Color = clWhite
+      ColCount = 0
+      Columns = <      
+        item
+          Alignment = taCenter
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end      
+        item
+          Font.Color = clBlack
+          Title.Caption = 'Title'
+          Width = 250
+        end      
+        item
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end>
+      DefaultColWidth = 60
+      DefaultRowHeight = 38
+      FixedColor = clNone
+      FixedCols = 0
+      FixedRows = 0
+      Flat = True
+      Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
+      RowCount = 0
+      ScrollBars = ssAutoVertical
+      TabOrder = 0
+      TitleStyle = tsNative
+    end
+  end
+  object PanelNav1: TPanel
+    Left = 350
+    Height = 650
+    Top = 50
+    Width = 350
+    Anchors = [akTop, akLeft, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 650
+    ClientWidth = 350
+    Color = 16380651
+    ParentColor = False
+    TabOrder = 2
+    object Label3: TLabel
+      Left = 12
+      Height = 20
+      Top = 15
+      Width = 30
+      Caption = '今天'
+      ParentColor = False
+    end
+    object Label4: TLabel
+      Left = 272
+      Height = 36
+      Top = 7
+      Width = 70
+      Alignment = taCenter
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = '新建'
+      Color = 16547890
+      Font.Color = clWhite
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+    end
+    object StringGridTask: TStringGrid
+      Left = 0
+      Height = 570
+      Top = 50
+      Width = 350
+      AlternateColor = clNone
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      BorderStyle = bsNone
+      Color = clWhite
+      ColCount = 0
+      Columns = <      
+        item
+          Alignment = taCenter
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end      
+        item
+          Font.Color = clBlack
+          Title.Caption = 'Title'
+          Width = 250
+        end      
+        item
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end>
+      DefaultColWidth = 60
+      DefaultRowHeight = 38
+      FixedColor = clNone
+      FixedCols = 0
+      FixedRows = 0
+      Flat = True
+      Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
+      RowCount = 0
+      ScrollBars = ssAutoVertical
+      TabOrder = 0
+      TitleStyle = tsNative
+    end
+  end
+  object PanelNav2: TPanel
+    Left = 700
+    Height = 650
+    Top = 50
+    Width = 350
+    Anchors = [akTop, akLeft, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 650
+    ClientWidth = 350
+    Color = 16380651
+    ParentColor = False
+    TabOrder = 3
+    object Label5: TLabel
+      Left = 12
+      Height = 20
+      Top = 15
+      Width = 30
+      Caption = '今天'
+      ParentColor = False
+    end
+    object Label6: TLabel
+      Left = 272
+      Height = 36
+      Top = 7
+      Width = 70
+      Alignment = taCenter
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = '新建'
+      Color = 16547890
+      Font.Color = clWhite
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+    end
+    object StringGridBug: TStringGrid
+      Left = 0
+      Height = 570
+      Top = 50
+      Width = 350
+      AlternateColor = clNone
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      BorderStyle = bsNone
+      Color = clWhite
+      ColCount = 0
+      Columns = <      
+        item
+          Alignment = taCenter
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end      
+        item
+          Font.Color = clBlack
+          Title.Caption = 'Title'
+          Width = 250
+        end      
+        item
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end>
+      DefaultColWidth = 60
+      DefaultRowHeight = 38
+      FixedColor = clNone
+      FixedCols = 0
+      FixedRows = 0
+      Flat = True
+      Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
+      RowCount = 0
+      ScrollBars = ssAutoVertical
+      TabOrder = 0
+      TitleStyle = tsNative
+    end
+  end
+  object PanelNav3: TPanel
+    Left = 1050
+    Height = 650
+    Top = 50
+    Width = 350
+    Anchors = [akTop, akLeft, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 650
+    ClientWidth = 350
+    Color = 16380651
+    ParentColor = False
+    TabOrder = 4
+    object Label7: TLabel
+      Left = 12
+      Height = 20
+      Top = 15
+      Width = 30
+      Caption = '今天'
+      ParentColor = False
+    end
+    object Label8: TLabel
+      Left = 272
+      Height = 36
+      Top = 7
+      Width = 70
+      Alignment = taCenter
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = '新建'
+      Color = 16547890
+      Font.Color = clWhite
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+    end
+    object StringGridStory: TStringGrid
+      Left = 0
+      Height = 570
+      Top = 50
+      Width = 350
+      AlternateColor = clNone
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      BorderStyle = bsNone
+      Color = clWhite
+      ColCount = 0
+      Columns = <      
+        item
+          Alignment = taCenter
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end      
+        item
+          Font.Color = clBlack
+          Title.Caption = 'Title'
+          Width = 250
+        end      
+        item
+          Font.Color = clGray
+          Title.Caption = 'Title'
+          Width = 50
+        end>
+      DefaultColWidth = 60
+      DefaultRowHeight = 38
+      FixedColor = clNone
+      FixedCols = 0
+      FixedRows = 0
+      Flat = True
+      Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
+      RowCount = 0
+      ScrollBars = ssAutoVertical
+      TabOrder = 0
+      TitleStyle = tsNative
+    end
+  end
+end
