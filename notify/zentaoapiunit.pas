@@ -33,9 +33,12 @@ type
         Data    : TJSONObject;
     end;
 
+    BrowseType  = (btTodo = 0, btTask = 1, btBug = 2, btStory = 3);
+
+
 
 { Function declarations }
-procedure Init();
+procedure InitZentaoAPI();
 procedure Destroy();
 function GetAPI(const Params: array of Const): string;
 function CheckVersion(): HandleResult;
@@ -44,25 +47,27 @@ function GetSession(): HandleResult;
 function Login(): HandleResult;
 function GetRole(): HandleResult;
 function TryLogin(): HandleResult;
-function LoadDataList(obj: string; browseType: string; pageID: string): DataResult;
+function LoadDataList(obj: string; objType: string; pageID: string): DataResult;
 
 var
     User         : UserConfig;
     ZentaoConfig : TJSONObject;
     Session      : TJSONObject;
     Http         : TFPHTTPClient;
+    BrowseName   : array[BrowseType] of string;
+    BrowseTypes  : array[0..3] of BrowseType;
 
 implementation
 
 (* Load Data from server with zentao api and return in a list *)
-function LoadDataList(obj: string; browseType: string; pageID: string): DataResult;
+function LoadDataList(obj: string; objType: string; pageID: string): DataResult;
 var response : string;
 var data     : TJSONObject;
 begin
     Result.Result := true;
 
     try
-        response := Http.Get(GetAPI(['module', 'my', 'method', obj, 'type', browseType, 'pageID', pageID]));
+        response := Http.Get(GetAPI(['module', 'my', 'method', obj, 'type', objType, 'pageID', pageID]));
         try
             (* prepare data *)
             data := TJSONObject(TJSONParser.Create(response).Parse);
@@ -353,9 +358,20 @@ begin
         Exit;
 end;
 
-procedure Init();
+procedure InitZentaoAPI();
 begin
     Http := TFPHTTPClient.Create(Nil);
+
+    (* init browsename *)
+    BrowseName[btTodo]  := 'todo';
+    BrowseName[btTask]  := 'task';
+    BrowseName[btBug]   := 'bug';
+    BrowseName[btStory] := 'story';
+
+    BrowseTypes[0] := btTodo;
+    BrowseTypes[1] := btTask;
+    BrowseTypes[2] := btBug;
+    BrowseTypes[3] := btStory;
 end;
 
 procedure Destroy();

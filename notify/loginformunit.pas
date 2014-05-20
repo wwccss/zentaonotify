@@ -98,7 +98,7 @@ begin
         User.PassMd5  := MD5Print(MD5String(User.Password));
         User.Url      := EditAddress.Text;
 
-        Init();
+        InitZentaoAPI();
         r := TryLogin();
 
         if not r.Result then

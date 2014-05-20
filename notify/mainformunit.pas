@@ -30,10 +30,10 @@ type
         LabelTab2: TLabel;
         Memo1: TMemo;
         PanelMenu: TPanel;
-        PanelNav: TPanel;
-        PanelNav1: TPanel;
-        PanelNav2: TPanel;
-        PanelNav3: TPanel;
+        PanelNavTodo: TPanel;
+        PanelNavTask: TPanel;
+        PanelNavBug: TPanel;
+        PanelNavStory: TPanel;
         StringGridBug: TStringGrid;
         StringGridStory: TStringGrid;
         StringGridTodo: TStringGrid;
@@ -41,6 +41,8 @@ type
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
+        procedure LabelBtnMouseLeave(Sender: TObject);
+        procedure LabelBtnMouseEnter(Sender: TObject);
         procedure LabelTabMouseEnter(Sender: TObject);
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
@@ -51,7 +53,9 @@ type
         procedure LoadTasks();
         procedure LoadBugs();
         procedure LoadStories();
-        procedure LoadTabData(tabName: string);
+        procedure LoadTabData(tabName: BrowseType);
+        procedure TryLoadTabData(tabName: BrowseType);
+        procedure InitTabMenu();
 
     private
         { private declarations }
@@ -59,9 +63,14 @@ type
         { public declarations }
     end;
 
+const
+    TryLoadTabInterval = 5.0 / (24 * 60);
+
 var
-    MainForm: TMainForm;
-    TabName : string;
+    MainForm        : TMainForm;
+    CurrentTab      : BrowseType;
+    FirstShow       : Boolean;
+    LastSyncTime    : array[BrowseType] of TDateTime;
 
 implementation
 
@@ -71,15 +80,23 @@ uses LoginFormUnit;
 
 { TMainForm }
 
-procedure TMainForm.LoadTabData(tabName: string);
+procedure TMainForm.TryLoadTabData(tabName: BrowseType);
+begin
+    if (Now - LastSyncTime[tabName]) > TryLoadTabInterval then
+    begin
+        LoadTabData(tabName);
+    end;
+end;
+
+procedure TMainForm.LoadTabData(tabName: BrowseType);
 begin
     case tabName of
-        'story': LoadStories;
-        'bug': LoadBugs;
-        'task': LoadTasks;
-        'todo': LoadTodos;
+        btStory: LoadStories;
+        btBug  : LoadBugs;
+        btTask : LoadTasks;
+        btTodo : LoadTodos;
         else 
-            ShowResultMessage('无法加载标签 "' + tabName + '" 的数据。');
+            ShowResultMessage('无法加载标签 "' + BrowseName[tabName] + '" 的数据。');
     end;
 end;
 
@@ -113,6 +130,8 @@ begin
             StringGridTodo.Cells[1, index - 1] := dataItem.Get('name', '-');
             StringGridTodo.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
+
+        LastSyncTime[btTodo] := Now;
     end
     else
     begin
@@ -150,6 +169,8 @@ begin
             StringGridTask.Cells[1, index - 1] := dataItem.Get('name', '-');
             StringGridTask.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
+
+        LastSyncTime[btTask] := Now;
     end
     else
     begin
@@ -187,6 +208,8 @@ begin
             StringGridBug.Cells[1, index - 1] := dataItem.Get('title', '-');
             StringGridBug.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
+
+        LastSyncTime[btBug] := Now;
     end
     else
     begin
@@ -224,6 +247,8 @@ begin
             StringGridStory.Cells[1, index - 1] := dataItem.Get('title', '-');
             StringGridStory.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
+
+        LastSyncTime[btStory] := Now;
     end
     else
     begin
@@ -239,24 +264,66 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-    (* Set menu *)
+    FirstShow := true;
+end;
 
+procedure TMainForm.InitTabMenu();
+begin
+    if (User.Role = 'qa') or (User.Role = 'qd') then
+    begin
+        LabelTab2.Caption := 'Bug';
+        LabelTab2.Hint    := 'bug';
+        LabelTab2.Tag     := 2;
+        LabelTab3.Caption := '任务';
+        LabelTab3.Hint    := 'task';
+        LabelTab3.Tag     := 1;
+    end
+    else if (User.Role = 'po') or (User.Role = 'pd') then
+    begin
+        LabelTab2.Caption := '需求';
+        LabelTab2.Hint    := 'story';
+        LabelTab2.Tag     := 3;
+        LabelTab3.Caption := 'Bug';
+        LabelTab3.Hint    := 'bug';
+        LabelTab3.Tag     := 2;
+    end;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-    LoadTodos;
-    LoadTasks;
-    LoadBugs;
-    LoadStories;
-    ShowResultMessage(User.Role);
+    if FirstShow then
+    begin
+        InitTabMenu;
+
+        (* Load all data *)
+        LoadTodos;
+        LoadTasks;
+        LoadBugs;
+        LoadStories;
+
+        FirstShow := false;
+    end;
+end;
+
+procedure TMainForm.LabelBtnMouseLeave(Sender: TObject);
+var LabelSender : TLabel;
+begin
+    LabelSender := Sender as TLabel;
+    LabelSender.Color := 16547890;
+end;
+
+procedure TMainForm.LabelBtnMouseEnter(Sender: TObject);
+var LabelSender : TLabel;
+begin
+    LabelSender := Sender as TLabel;
+    LabelSender.Color := 13392660;
 end;
 
 procedure TMainForm.LabelTabMouseEnter(Sender: TObject);
 var LabelSender : TLabel;
 begin
     LabelSender := Sender as TLabel;
-    if LabelSender.Tag = 0 then
+    if BrowseTypes[LabelSender.Tag] <> CurrentTab then
     begin
         LabelSender.Color := 16547890;
     end;
@@ -266,7 +333,7 @@ procedure TMainForm.LabelTabMouseLeave(Sender: TObject);
 var LabelSender : TLabel;
 begin
     LabelSender := Sender as TLabel;
-    if LabelSender.Tag = 0 then
+    if BrowseTypes[LabelSender.Tag] <> CurrentTab then
     begin
         LabelSender.Color := 13392660;
     end;
@@ -274,24 +341,59 @@ end;
 
 procedure TMainForm.LabelTabClick(Sender: TObject);
 var LabelSender : TLabel;
+var tab: BrowseType;
 begin
     LabelSender := Sender as TLabel;
-    if LabelSender.Tag = 0 then
+    tab := BrowseTypes[LabelSender.Tag];
+
+    if tab <> CurrentTab then
     begin
+        (* reset tab label color *)
         LabelTab1.Color      := 13392660;
         LabelTab1.Font.Color := clWhite;
-        LabelTab1.Tag        := 0;
         LabelTab2.Color      := 13392660;
         LabelTab2.Font.Color := clWhite;
-        LabelTab2.Tag        := 0;
         LabelTab3.Color       := 13392660;
         LabelTab3.Font.Color  := clWhite;
-        LabelTab3.Tag         := 0;
 
+        (* changed current tab color *)
         LabelSender.Color      := 16380651;
         LabelSender.Font.Color := 13392660;
-        LabelSender.Tag        := 1;
-        TabName                := LabelSender.Hint;
+        CurrentTab             := tab;
+
+        (* hide other panel *)
+        PanelNavTodo.Visible  := false;
+        PanelNavTask.Visible  := false;
+        PanelNavBug.Visible   := false;
+        PanelNavStory.Visible := false;
+
+        case tab of
+            btTodo: 
+            begin
+                PanelNavTodo.Visible := true;
+                PanelNavTodo.Left := 0;
+            end;
+            btTask:
+            begin
+                PanelNavTask.Visible := true;
+                PanelNavTask.Left := 0;
+            end;
+            btBug: 
+            begin
+                PanelNavBug.Visible := true;
+                PanelNavBug.Left := 0;
+            end;
+            btStory: 
+            begin
+                PanelNavStory.Visible := true;
+                PanelNavStory.Left := 0;
+                
+            end;
+        end;
+    end
+    else
+    begin
+        LoadTabData(tab);
     end;
 end;
 
@@ -310,6 +412,7 @@ procedure TMainForm.ShowResultMessage(Message: string);
 begin
     LabelResult.Caption := Message;
     LabelResult.Visible := true;
+    Memo1.Visible := true;
     Memo1.Lines.Text := Memo1.Lines.Text + Message + LineEnding;
 end;
 

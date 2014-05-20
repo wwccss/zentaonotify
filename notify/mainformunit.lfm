@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 444
+  Left = 464
   Height = 700
-  Top = 187
+  Top = 246
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700
@@ -25,7 +25,7 @@ object MainForm: TMainForm
     TabOrder = 0
     OnClick = PanelMenuClick
     object LabelTab1: TLabel
-      Tag = 1
+      Cursor = crHandPoint
       Left = 8
       Height = 40
       Hint = 'todo'
@@ -46,6 +46,8 @@ object MainForm: TMainForm
       OnMouseLeave = LabelTabMouseLeave
     end
     object LabelTab2: TLabel
+      Tag = 1
+      Cursor = crHandPoint
       Left = 105
       Height = 40
       Hint = 'task'
@@ -66,6 +68,8 @@ object MainForm: TMainForm
       OnMouseLeave = LabelTabMouseLeave
     end
     object LabelTab3: TLabel
+      Tag = 2
+      Cursor = crHandPoint
       Left = 202
       Height = 40
       Hint = 'bug'
@@ -86,10 +90,10 @@ object MainForm: TMainForm
       OnMouseLeave = LabelTabMouseLeave
     end
     object LabelResult: TLabel
-      Left = 384
+      Left = 328
       Height = 50
       Top = 0
-      Width = 1016
+      Width = 1072
       Anchors = [akTop, akLeft, akRight]
       AutoSize = False
       Caption = 'tes'
@@ -108,9 +112,10 @@ object MainForm: TMainForm
       Top = 2
       Width = 364
       TabOrder = 0
+      Visible = False
     end
   end
-  object PanelNav: TPanel
+  object PanelNavTodo: TPanel
     Left = 0
     Height = 650
     Top = 50
@@ -131,6 +136,7 @@ object MainForm: TMainForm
       ParentColor = False
     end
     object Label2: TLabel
+      Cursor = crHandPoint
       Left = 272
       Height = 36
       Top = 7
@@ -145,6 +151,8 @@ object MainForm: TMainForm
       ParentColor = False
       ParentFont = False
       Transparent = False
+      OnMouseEnter = LabelBtnMouseEnter
+      OnMouseLeave = LabelBtnMouseLeave
     end
     object StringGridTodo: TStringGrid
       Left = 0
@@ -186,7 +194,7 @@ object MainForm: TMainForm
       TitleStyle = tsNative
     end
   end
-  object PanelNav1: TPanel
+  object PanelNavTask: TPanel
     Left = 350
     Height = 650
     Top = 50
@@ -207,6 +215,7 @@ object MainForm: TMainForm
       ParentColor = False
     end
     object Label4: TLabel
+      Cursor = crHandPoint
       Left = 272
       Height = 36
       Top = 7
@@ -221,6 +230,8 @@ object MainForm: TMainForm
       ParentColor = False
       ParentFont = False
       Transparent = False
+      OnMouseEnter = LabelBtnMouseEnter
+      OnMouseLeave = LabelBtnMouseLeave
     end
     object StringGridTask: TStringGrid
       Left = 0
@@ -262,7 +273,7 @@ object MainForm: TMainForm
       TitleStyle = tsNative
     end
   end
-  object PanelNav2: TPanel
+  object PanelNavBug: TPanel
     Left = 700
     Height = 650
     Top = 50
@@ -283,6 +294,7 @@ object MainForm: TMainForm
       ParentColor = False
     end
     object Label6: TLabel
+      Cursor = crHandPoint
       Left = 272
       Height = 36
       Top = 7
@@ -297,6 +309,8 @@ object MainForm: TMainForm
       ParentColor = False
       ParentFont = False
       Transparent = False
+      OnMouseEnter = LabelBtnMouseEnter
+      OnMouseLeave = LabelBtnMouseLeave
     end
     object StringGridBug: TStringGrid
       Left = 0
@@ -338,7 +352,7 @@ object MainForm: TMainForm
       TitleStyle = tsNative
     end
   end
-  object PanelNav3: TPanel
+  object PanelNavStory: TPanel
     Left = 1050
     Height = 650
     Top = 50
@@ -359,6 +373,7 @@ object MainForm: TMainForm
       ParentColor = False
     end
     object Label8: TLabel
+      Cursor = crHandPoint
       Left = 272
       Height = 36
       Top = 7
@@ -373,6 +388,8 @@ object MainForm: TMainForm
       ParentColor = False
       ParentFont = False
       Transparent = False
+      OnMouseEnter = LabelBtnMouseEnter
+      OnMouseLeave = LabelBtnMouseLeave
     end
     object StringGridStory: TStringGrid
       Left = 0
