@@ -8,7 +8,7 @@ uses
     Classes, SysUtils, FileUtil, synhighlighterunixshellscript, RTTICtrls,
     Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons, ActnList,
     Grids, EditBtn, Menus,
-    fpjson,jsonparser,
+    fpjson, jsonparser,
     ZentaoAPIUnit;
 
 type
@@ -16,28 +16,28 @@ type
     { TMainForm }
 
     TMainForm = class(TForm)
-        Label1: TLabel;
-        Label2: TLabel;
-        Label3: TLabel;
-        Label4: TLabel;
-        Label5: TLabel;
-        Label6: TLabel;
-        Label7: TLabel;
-        Label8: TLabel;
-        LabelResult: TLabel;
-        LabelTab3: TLabel;
-        LabelTab1: TLabel;
-        LabelTab2: TLabel;
-        Memo1: TMemo;
-        PanelMenu: TPanel;
-        PanelNavTodo: TPanel;
-        PanelNavTask: TPanel;
-        PanelNavBug: TPanel;
-        PanelNavStory: TPanel;
-        StringGridBug: TStringGrid;
+        Label1:          TLabel;
+        Label2:          TLabel;
+        Label3:          TLabel;
+        Label4:          TLabel;
+        Label5:          TLabel;
+        Label6:          TLabel;
+        Label7:          TLabel;
+        Label8:          TLabel;
+        LabelResult:     TLabel;
+        LabelTab3:       TLabel;
+        LabelTab1:       TLabel;
+        LabelTab2:       TLabel;
+        Memo1:           TMemo;
+        PanelMenu:       TPanel;
+        PanelNavTodo:    TPanel;
+        PanelNavTask:    TPanel;
+        PanelNavBug:     TPanel;
+        PanelNavStory:   TPanel;
+        StringGridBug:   TStringGrid;
         StringGridStory: TStringGrid;
-        StringGridTodo: TStringGrid;
-        StringGridTask: TStringGrid;
+        StringGridTodo:  TStringGrid;
+        StringGridTask:  TStringGrid;
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
@@ -67,10 +67,10 @@ const
     TryLoadTabInterval = 5.0 / (24 * 60);
 
 var
-    MainForm        : TMainForm;
-    CurrentTab      : BrowseType;
-    FirstShow       : Boolean;
-    LastSyncTime    : array[BrowseType] of TDateTime;
+    MainForm:     TMainForm;
+    CurrentTab:   BrowseType;
+    FirstShow:    boolean;
+    LastSyncTime: array[BrowseType] of TDateTime;
 
 implementation
 
@@ -92,29 +92,30 @@ procedure TMainForm.LoadTabData(tabName: BrowseType);
 begin
     case tabName of
         btStory: LoadStories;
-        btBug  : LoadBugs;
-        btTask : LoadTasks;
-        btTodo : LoadTodos;
-        else 
+        btBug: LoadBugs;
+        btTask: LoadTasks;
+        btTodo: LoadTodos;
+        else
             ShowResultMessage('无法加载标签 "' + BrowseName[tabName] + '" 的数据。');
     end;
 end;
 
 (* Load todos *)
 procedure TMainForm.LoadTodos();
-var data, pager, dataItem : TJSONObject;
-var dataList : TJSONArray;
-var r : DataResult;
-var dataRow : TJSONEnum;
-var index : Integer;
+var
+    Data, pager, dataItem: TJSONObject;
+    dataList: TJSONArray;
+    r:        DataResult;
+    dataRow:  TJSONEnum;
+    index:    integer;
 begin
     r := LoadDataList('todo', 'today', '0');
     if r.Result then
     begin
-        data := r.Data;
-        pager := TJSONObject(TJSONParser.Create(data.Get('pager', '')).Parse);
-        dataList := data.Arrays['todos'];
-        
+        Data     := r.Data;
+        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
+        dataList := Data.Arrays['todos'];
+
         (* clean all cells *)
         StringGridTodo.Clean;
         StringGridTodo.RowCount := 0;
@@ -123,7 +124,7 @@ begin
         (* convert data *)
         for dataRow in dataList do
         begin
-            index := index + 1;
+            index    := index + 1;
             dataItem := TJSONObject(dataRow.Value);
             StringGridTodo.RowCount := index;
             StringGridTodo.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
@@ -141,19 +142,20 @@ end;
 
 (* Load tasks *)
 procedure TMainForm.LoadTasks();
-var data, pager, dataItem : TJSONObject;
-var dataList : TJSONArray;
-var r : DataResult;
-var dataRow : TJSONEnum;
-var index : Integer;
+var
+    Data, pager, dataItem: TJSONObject;
+    dataList: TJSONArray;
+    r:        DataResult;
+    dataRow:  TJSONEnum;
+    index:    integer;
 begin
     r := LoadDataList('task', 'assignedTo', '0');
     if r.Result then
     begin
-        data := r.Data;
-        pager := TJSONObject(TJSONParser.Create(data.Get('pager', '')).Parse);
-        dataList := data.Arrays['tasks'];
-        
+        Data     := r.Data;
+        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
+        dataList := Data.Arrays['tasks'];
+
         (* clean all cells *)
         StringGridTask.Clean;
         StringGridTask.RowCount := 0;
@@ -162,7 +164,7 @@ begin
         (* convert data *)
         for dataRow in dataList do
         begin
-            index := index + 1;
+            index    := index + 1;
             dataItem := TJSONObject(dataRow.Value);
             StringGridTask.RowCount := index;
             StringGridTask.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
@@ -180,19 +182,20 @@ end;
 
 (* Load bugs *)
 procedure TMainForm.LoadBugs();
-var data, pager, dataItem : TJSONObject;
-var dataList : TJSONArray;
-var r : DataResult;
-var dataRow : TJSONEnum;
-var index : Integer;
+var
+    Data, pager, dataItem: TJSONObject;
+    dataList: TJSONArray;
+    r:        DataResult;
+    dataRow:  TJSONEnum;
+    index:    integer;
 begin
     r := LoadDataList('bug', 'assignedTo', '0');
     if r.Result then
     begin
-        data := r.Data;
-        pager := TJSONObject(TJSONParser.Create(data.Get('pager', '')).Parse);
-        dataList := data.Arrays['bugs'];
-        
+        Data     := r.Data;
+        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
+        dataList := Data.Arrays['bugs'];
+
         (* clean all cells *)
         StringGridBug.Clean;
         StringGridBug.RowCount := 0;
@@ -201,7 +204,7 @@ begin
         (* convert data *)
         for dataRow in dataList do
         begin
-            index := index + 1;
+            index    := index + 1;
             dataItem := TJSONObject(dataRow.Value);
             StringGridBug.RowCount := index;
             StringGridBug.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
@@ -219,19 +222,20 @@ end;
 
 (* Load stories *)
 procedure TMainForm.LoadStories();
-var data, pager, dataItem : TJSONObject;
-var dataList : TJSONArray;
-var r : DataResult;
-var dataRow : TJSONEnum;
-var index : Integer;
+var
+    Data, pager, dataItem: TJSONObject;
+    dataList: TJSONArray;
+    r:        DataResult;
+    dataRow:  TJSONEnum;
+    index:    integer;
 begin
     r := LoadDataList('story', 'assignedTo', '0');
     if r.Result then
     begin
-        data := r.Data;
-        pager := TJSONObject(TJSONParser.Create(data.Get('pager', '')).Parse);
-        dataList := data.Arrays['stories'];
-        
+        Data     := r.Data;
+        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
+        dataList := Data.Arrays['stories'];
+
         (* clean all cells *)
         StringGridStory.Clean;
         StringGridStory.RowCount := 0;
@@ -240,7 +244,7 @@ begin
         (* convert data *)
         for dataRow in dataList do
         begin
-            index := index + 1;
+            index    := index + 1;
             dataItem := TJSONObject(dataRow.Value);
             StringGridStory.RowCount := index;
             StringGridStory.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
@@ -264,7 +268,7 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-    FirstShow := true;
+    FirstShow := True;
 end;
 
 procedure TMainForm.InitTabMenu();
@@ -301,26 +305,29 @@ begin
         LoadBugs;
         LoadStories;
 
-        FirstShow := false;
+        FirstShow := False;
     end;
 end;
 
 procedure TMainForm.LabelBtnMouseLeave(Sender: TObject);
-var LabelSender : TLabel;
+var
+    LabelSender: TLabel;
 begin
-    LabelSender := Sender as TLabel;
+    LabelSender       := Sender as TLabel;
     LabelSender.Color := 16547890;
 end;
 
 procedure TMainForm.LabelBtnMouseEnter(Sender: TObject);
-var LabelSender : TLabel;
+var
+    LabelSender: TLabel;
 begin
-    LabelSender := Sender as TLabel;
+    LabelSender       := Sender as TLabel;
     LabelSender.Color := 13392660;
 end;
 
 procedure TMainForm.LabelTabMouseEnter(Sender: TObject);
-var LabelSender : TLabel;
+var
+    LabelSender: TLabel;
 begin
     LabelSender := Sender as TLabel;
     if BrowseTypes[LabelSender.Tag] <> CurrentTab then
@@ -330,7 +337,8 @@ begin
 end;
 
 procedure TMainForm.LabelTabMouseLeave(Sender: TObject);
-var LabelSender : TLabel;
+var
+    LabelSender: TLabel;
 begin
     LabelSender := Sender as TLabel;
     if BrowseTypes[LabelSender.Tag] <> CurrentTab then
@@ -340,11 +348,12 @@ begin
 end;
 
 procedure TMainForm.LabelTabClick(Sender: TObject);
-var LabelSender : TLabel;
-var tab: BrowseType;
+var
+    LabelSender: TLabel;
+    tab:         BrowseType;
 begin
     LabelSender := Sender as TLabel;
-    tab := BrowseTypes[LabelSender.Tag];
+    tab         := BrowseTypes[LabelSender.Tag];
 
     if tab <> CurrentTab then
     begin
@@ -353,41 +362,41 @@ begin
         LabelTab1.Font.Color := clWhite;
         LabelTab2.Color      := 13392660;
         LabelTab2.Font.Color := clWhite;
-        LabelTab3.Color       := 13392660;
-        LabelTab3.Font.Color  := clWhite;
+        LabelTab3.Color      := 13392660;
+        LabelTab3.Font.Color := clWhite;
 
         (* changed current tab color *)
-        LabelSender.Color      := 16380651;
+        LabelSender.Color := 16380651;
         LabelSender.Font.Color := 13392660;
-        CurrentTab             := tab;
+        CurrentTab := tab;
 
         (* hide other panel *)
-        PanelNavTodo.Visible  := false;
-        PanelNavTask.Visible  := false;
-        PanelNavBug.Visible   := false;
-        PanelNavStory.Visible := false;
+        PanelNavTodo.Visible  := False;
+        PanelNavTask.Visible  := False;
+        PanelNavBug.Visible   := False;
+        PanelNavStory.Visible := False;
 
         case tab of
-            btTodo: 
+            btTodo:
             begin
-                PanelNavTodo.Visible := true;
-                PanelNavTodo.Left := 0;
+                PanelNavTodo.Visible := True;
+                PanelNavTodo.Left    := 0;
             end;
             btTask:
             begin
-                PanelNavTask.Visible := true;
-                PanelNavTask.Left := 0;
+                PanelNavTask.Visible := True;
+                PanelNavTask.Left    := 0;
             end;
-            btBug: 
+            btBug:
             begin
-                PanelNavBug.Visible := true;
-                PanelNavBug.Left := 0;
+                PanelNavBug.Visible := True;
+                PanelNavBug.Left    := 0;
             end;
-            btStory: 
+            btStory:
             begin
-                PanelNavStory.Visible := true;
-                PanelNavStory.Left := 0;
-                
+                PanelNavStory.Visible := True;
+                PanelNavStory.Left    := 0;
+
             end;
         end;
     end
@@ -405,16 +414,15 @@ end;
 (* Hide result message *)
 procedure TMainForm.HideResultMessage();
 begin
-    LabelResult.Visible := false;
+    LabelResult.Visible := False;
 end;
 
 procedure TMainForm.ShowResultMessage(Message: string);
 begin
     LabelResult.Caption := Message;
-    LabelResult.Visible := true;
-    Memo1.Visible := true;
-    Memo1.Lines.Text := Memo1.Lines.Text + Message + LineEnding;
+    LabelResult.Visible := True;
+    Memo1.Visible       := True;
+    Memo1.Lines.Text    := Memo1.Lines.Text + Message + LineEnding;
 end;
 
 end.
-
