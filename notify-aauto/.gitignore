@@ -1,0 +1,5 @@
+log/
+Publish/
+tmp/
+.build/Manifest.xml
+.pub-lib/process.command.tar.lzma
