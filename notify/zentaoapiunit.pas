@@ -62,12 +62,13 @@ function LoadDataList(obj: string; objType: string; pageID: string): DataResult;
 var
     response: string;
     Data:     TJSONObject;
+    url:      string;
 begin
     Result.Result := True;
-
+    url           := GetAPI(['module', 'my', 'method', obj, 'type', objType, 'pageID', pageID]);
+ 
     try
-        response := Http.Get(GetAPI(['module', 'my', 'method', obj,
-            'type', objType, 'pageID', pageID]));
+        response := Http.Get(url);
         try
             (* prepare data *)
             Data     := TJSONObject(TJSONParser.Create(response).Parse);
@@ -79,7 +80,7 @@ begin
 
         except
             Result.Result  := False;
-            Result.Message := '服务器返回的数据不正确。';
+            Result.Message := '服务器返回的数据不正确。 URL: ' + url;
         end;
     except
         Result.Result  := False;
@@ -117,7 +118,7 @@ var
 begin
     version := zentaoConfig.Strings['version'];
     isPro   := False;
-    
+
     if Pos('pro', LowerCase(version)) > 0 then
     begin
         isPro   := True;

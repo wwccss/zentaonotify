@@ -16,24 +16,44 @@ type
     { TMainForm }
 
     TMainForm = class(TForm)
-        Label1:          TLabel;
+        Label1: TLabel;
+        Label3: TLabel;
+        LabelMenu10: TLabel;
+        LabelMenu11: TLabel;
+        LabelMenu12: TLabel;
+        LabelMenu13: TLabel;
+        LabelMenu14: TLabel;
+        LabelMenu15: TLabel;
+        LabelMenu16: TLabel;
+        LabelMenu2: TLabel;
+        LabelMenu3: TLabel;
+        LabelMenu4: TLabel;
         Label2:          TLabel;
-        Label3:          TLabel;
-        Label4:          TLabel;
-        Label5:          TLabel;
-        Label6:          TLabel;
-        Label7:          TLabel;
-        Label8:          TLabel;
+        LabelMenu1: TLabel;
+        LabelMenu5: TLabel;
+        LabelMenu6: TLabel;
+        LabelMenu7: TLabel;
+        LabelMenu8: TLabel;
+        LabelMenu9: TLabel;
         LabelResult:     TLabel;
         LabelTab3:       TLabel;
         LabelTab1:       TLabel;
         LabelTab2:       TLabel;
+        LabelMenuIcon: TLabel;
         Memo1:           TMemo;
+        PanelPopupMenu: TPanel;
+        PanelMenuBug: TPanel;
+        PanelMenuStory: TPanel;
+        PanelMenuTodo: TPanel;
         PanelMenu:       TPanel;
+        PanelMenuTask: TPanel;
         PanelNavTodo:    TPanel;
         PanelNavTask:    TPanel;
         PanelNavBug:     TPanel;
         PanelNavStory:   TPanel;
+        ShapeMenuIcon1: TShape;
+        ShapeMenuIcon2: TShape;
+        ShapeMenuIcon3: TShape;
         StringGridBug:   TStringGrid;
         StringGridStory: TStringGrid;
         StringGridTodo:  TStringGrid;
@@ -43,9 +63,16 @@ type
         procedure FormShow(Sender: TObject);
         procedure LabelBtnMouseLeave(Sender: TObject);
         procedure LabelBtnMouseEnter(Sender: TObject);
+        procedure LabelMenuClick(Sender: TObject);
+        procedure LabelMenuIconClick(Sender: TObject);
+        procedure LabelMenuIconMouseEnter(Sender: TObject);
+        procedure LabelMenuIconMouseLeave(Sender: TObject);
+        procedure LabelMenuMouseEnter(Sender: TObject);
+        procedure LabelMenuMouseLeave(Sender: TObject);
         procedure LabelTabMouseEnter(Sender: TObject);
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
+        procedure MenuItem1Click(Sender: TObject);
         procedure PanelMenuClick(Sender: TObject);
         procedure ShowResultMessage(Message: string);
         procedure HideResultMessage();
@@ -56,6 +83,7 @@ type
         procedure LoadTabData(tabName: BrowseType);
         procedure TryLoadTabData(tabName: BrowseType);
         procedure InitTabMenu();
+        procedure InitSubMenu();
 
     private
         { private declarations }
@@ -67,10 +95,11 @@ const
     TryLoadTabInterval = 5.0 / (24 * 60);
 
 var
-    MainForm:     TMainForm;
-    CurrentTab:   BrowseType;
-    FirstShow:    boolean;
-    LastSyncTime: array[BrowseType] of TDateTime;
+    MainForm:      TMainForm;
+    CurrentTab:    BrowseType;
+    FirstShow:     boolean;
+    LastSyncTime:  array[BrowseType] of TDateTime;
+    ActiveSubMenu: array[BrowseType] of string;
 
 implementation
 
@@ -109,7 +138,7 @@ var
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('todo', 'today', '0');
+    r := LoadDataList('todo', ActiveSubMenu[btTodo], '0');
     if r.Result then
     begin
         Data     := r.Data;
@@ -149,7 +178,7 @@ var
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('task', 'assignedTo', '0');
+    r := LoadDataList('task', ActiveSubMenu[btTask], '0');
     if r.Result then
     begin
         Data     := r.Data;
@@ -189,7 +218,7 @@ var
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('bug', 'assignedTo', '0');
+    r := LoadDataList('bug', ActiveSubMenu[btBug], '0');
     if r.Result then
     begin
         Data     := r.Data;
@@ -229,7 +258,7 @@ var
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('story', 'assignedTo', '0');
+    r := LoadDataList('story', ActiveSubMenu[btStory], '0');
     if r.Result then
     begin
         Data     := r.Data;
@@ -293,11 +322,20 @@ begin
     end;
 end;
 
+procedure TMainForm.InitSubMenu();
+begin
+    ActiveSubMenu[btTask] := 'assignedTo';
+    ActiveSubMenu[btStory] := 'assignedTo';
+    ActiveSubMenu[btTodo] := 'today';
+    ActiveSubMenu[btBug] := 'assignedTo';
+end;
+
 procedure TMainForm.FormShow(Sender: TObject);
 begin
     if FirstShow then
     begin
         InitTabMenu;
+        InitSubMenu;
 
         (* Load all data *)
         LoadTodos;
@@ -311,49 +349,134 @@ end;
 
 procedure TMainForm.LabelBtnMouseLeave(Sender: TObject);
 var
-    LabelSender: TLabel;
+    labelSender: TLabel;
 begin
-    LabelSender       := Sender as TLabel;
-    LabelSender.Color := 16547890;
+    labelSender       := Sender as TLabel;
+    labelSender.Color := 16547890;
 end;
 
 procedure TMainForm.LabelBtnMouseEnter(Sender: TObject);
 var
-    LabelSender: TLabel;
+    labelSender: TLabel;
 begin
-    LabelSender       := Sender as TLabel;
-    LabelSender.Color := 13392660;
+    labelSender       := Sender as TLabel;
+    labelSender.Color := 13392660;
+end;
+
+procedure TMainForm.LabelMenuClick(Sender: TObject);
+var
+    labelSender : TLabel;
+    tab         : BrowseType;
+    menuParent  : TPanel;
+    subMenu     : string;
+    childLabel  : TComponent;
+    i           : integer;
+begin
+    labelSender := Sender as TLabel;
+    menuParent  := labelSender.Parent as TPanel;
+    tab         := BrowseTypes[menuParent.Tag];
+    subMenu     := labelSender.Hint;
+
+    if tab <> CurrentTab then
+    begin
+        // todo: changed tab
+    end;
+
+    if ActiveSubMenu[tab] <> subMenu then
+    begin
+        ActiveSubMenu[tab] := subMenu;
+
+        for i := 0 to menuParent.ControlCount - 1 do
+        begin
+            if (menuParent.Controls[i] is TLabel) then
+                (menuParent.Controls[i] as TLabel).Font.Color := $005D5D5D;
+        end;
+        labelSender.Font.Color := 13392660;
+    end;
+    
+    LoadTabData(tab);
+end;
+
+procedure TMainForm.LabelMenuIconClick(Sender: TObject);
+begin
+
+end;
+
+procedure TMainForm.LabelMenuIconMouseEnter(Sender: TObject);
+begin
+    LabelMenuIcon.Color := 16547890;
+    ShapeMenuIcon1.Brush.Color := clWhite;
+    ShapeMenuIcon2.Brush.Color := clWhite;
+    ShapeMenuIcon3.Brush.Color := clWhite;
+end;
+
+procedure TMainForm.LabelMenuIconMouseLeave(Sender: TObject);
+begin
+    LabelMenuIcon.Color := $00CC5B14;
+    ShapeMenuIcon1.Brush.Color := clSilver;
+    ShapeMenuIcon2.Brush.Color := clSilver;
+    ShapeMenuIcon3.Brush.Color := clSilver;
+end;
+
+procedure TMainForm.LabelMenuMouseEnter(Sender: TObject);
+var
+    labelSender : TLabel;
+    tab         : BrowseType;
+    menuParent  : TPanel;
+begin
+    labelSender       := Sender as TLabel;
+    menuParent        := labelSender.Parent as TPanel;
+    tab               := BrowseTypes[menuParent.Tag];
+    if labelSender.Hint <> ActiveSubMenu[tab] then
+    begin
+        labelSender.Font.Color := $00141414;
+    end;
+end;
+
+procedure TMainForm.LabelMenuMouseLeave(Sender: TObject);
+var
+    labelSender: TLabel;
+    tab         : BrowseType;
+    menuParent  : TPanel;
+begin
+    labelSender       := Sender as TLabel;
+    menuParent        := labelSender.Parent as TPanel;
+    tab               := BrowseTypes[menuParent.Tag];
+    if labelSender.Hint <> ActiveSubMenu[tab] then
+    begin
+        labelSender.Font.Color := $005D5D5D;
+    end;
 end;
 
 procedure TMainForm.LabelTabMouseEnter(Sender: TObject);
 var
-    LabelSender: TLabel;
+    labelSender: TLabel;
 begin
-    LabelSender := Sender as TLabel;
-    if BrowseTypes[LabelSender.Tag] <> CurrentTab then
+    labelSender := Sender as TLabel;
+    if BrowseTypes[labelSender.Tag] <> CurrentTab then
     begin
-        LabelSender.Color := 16547890;
+        labelSender.Color := 16547890;
     end;
 end;
 
 procedure TMainForm.LabelTabMouseLeave(Sender: TObject);
 var
-    LabelSender: TLabel;
+    labelSender: TLabel;
 begin
-    LabelSender := Sender as TLabel;
-    if BrowseTypes[LabelSender.Tag] <> CurrentTab then
+    labelSender := Sender as TLabel;
+    if BrowseTypes[labelSender.Tag] <> CurrentTab then
     begin
-        LabelSender.Color := 13392660;
+        labelSender.Color := 13392660;
     end;
 end;
 
 procedure TMainForm.LabelTabClick(Sender: TObject);
 var
-    LabelSender: TLabel;
+    labelSender: TLabel;
     tab:         BrowseType;
 begin
-    LabelSender := Sender as TLabel;
-    tab         := BrowseTypes[LabelSender.Tag];
+    labelSender := Sender as TLabel;
+    tab         := BrowseTypes[labelSender.Tag];
 
     if tab <> CurrentTab then
     begin
@@ -366,8 +489,8 @@ begin
         LabelTab3.Font.Color := clWhite;
 
         (* changed current tab color *)
-        LabelSender.Color := 16380651;
-        LabelSender.Font.Color := 13392660;
+        labelSender.Color := 16380651;
+        labelSender.Font.Color := 13392660;
         CurrentTab := tab;
 
         (* hide other panel *)
@@ -396,7 +519,6 @@ begin
             begin
                 PanelNavStory.Visible := True;
                 PanelNavStory.Left    := 0;
-
             end;
         end;
     end
@@ -404,6 +526,11 @@ begin
     begin
         LoadTabData(tab);
     end;
+end;
+
+procedure TMainForm.MenuItem1Click(Sender: TObject);
+begin
+
 end;
 
 procedure TMainForm.PanelMenuClick(Sender: TObject);
