@@ -16,8 +16,30 @@ type
     { TMainForm }
 
     TMainForm = class(TForm)
+        Image1: TImage;
+        Image2: TImage;
+        Image3: TImage;
         Label1: TLabel;
-        Label3: TLabel;
+        LabelMessageClose: TLabel;
+        LabelMessage: TLabel;
+        LabelPagerTodoInfo: TLabel;
+        LabelPagerTaskInfo: TLabel;
+        LabelPagerBugInfo: TLabel;
+        LabelPagerStoryInfo: TLabel;
+        LabelPagerTodoLast: TLabel;
+        LabelPagerTaskLast: TLabel;
+        LabelPagerBugLast: TLabel;
+        LabelPagerStoryLast: TLabel;
+        LabelPagerTaskNext: TLabel;
+        LabelPagerBugNext: TLabel;
+        LabelPagerStoryNext: TLabel;
+        LabelPagerTodoPrev: TLabel;
+        LabelPagerTodoNext: TLabel;
+        LabelPagerTaskPrev: TLabel;
+        LabelPagerBugPrev: TLabel;
+        LabelPagerStoryPrev: TLabel;
+        LabelPopupMenuBtnSync: TLabel;
+        LabelPopupMenuBtnSep: TLabel;
         LabelMenu10: TLabel;
         LabelMenu11: TLabel;
         LabelMenu12: TLabel;
@@ -35,12 +57,18 @@ type
         LabelMenu7: TLabel;
         LabelMenu8: TLabel;
         LabelMenu9: TLabel;
-        LabelResult:     TLabel;
+        LabelPopupMenuBtnLogout: TLabel;
+        LabelPopupMenuBtnExit: TLabel;
         LabelTab3:       TLabel;
         LabelTab1:       TLabel;
         LabelTab2:       TLabel;
         LabelMenuIcon: TLabel;
         Memo1:           TMemo;
+        PanelMessage: TPanel;
+        PanelPagerTodo: TPanel;
+        PanelPagerTask: TPanel;
+        PanelPagerBug: TPanel;
+        PanelPagerStory: TPanel;
         PanelPopupMenu: TPanel;
         PanelMenuBug: TPanel;
         PanelMenuStory: TPanel;
@@ -58,6 +86,7 @@ type
         StringGridStory: TStringGrid;
         StringGridTodo:  TStringGrid;
         StringGridTask:  TStringGrid;
+        procedure FormClick(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
@@ -69,21 +98,33 @@ type
         procedure LabelMenuIconMouseLeave(Sender: TObject);
         procedure LabelMenuMouseEnter(Sender: TObject);
         procedure LabelMenuMouseLeave(Sender: TObject);
+        procedure LabelMessageCloseClick(Sender: TObject);
+        procedure LabelPagerBtnClick(Sender: TObject);
+        procedure LabelPagerPrevMouseEnter(Sender: TObject);
+        procedure LabelPagerPrevMouseLeave(Sender: TObject);
+        procedure LabelPopupMenuBtnExitClick(Sender: TObject);
+        procedure LabelPopupMenuBtnLogoutClick(Sender: TObject);
+        procedure LabelPopupMenuBtnMouseEnter(Sender: TObject);
+        procedure LabelPopupMenuBtnMouseLeave(Sender: TObject);
+        procedure LabelPopupMenuBtnSyncClick(Sender: TObject);
         procedure LabelTabMouseEnter(Sender: TObject);
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
         procedure MenuItem1Click(Sender: TObject);
         procedure PanelMenuClick(Sender: TObject);
-        procedure ShowResultMessage(Message: string);
-        procedure HideResultMessage();
-        procedure LoadTodos();
-        procedure LoadTasks();
-        procedure LoadBugs();
-        procedure LoadStories();
-        procedure LoadTabData(tabName: BrowseType);
+        procedure ShowMessage(Message: string; msgType: string = 'danger');
+        procedure HideMessage();
+        procedure LoadTodos(pageID: string = '');
+        procedure LoadTasks(pageID: string = '');
+        procedure LoadBugs(pageID: string = '');
+        procedure LoadStories(pageID: string = '');
+        procedure LoadTabData(tabName: BrowseType; pageID: string = '');
         procedure TryLoadTabData(tabName: BrowseType);
         procedure InitTabMenu();
         procedure InitSubMenu();
+        procedure HidePopup();overload;
+        procedure HidePopup(Sender: TObject);overload;
+        procedure LoadAllTabDatas();
 
     private
         { private declarations }
@@ -94,12 +135,13 @@ type
 const
     TryLoadTabInterval = 5.0 / (24 * 60);
 
+
 var
     MainForm:      TMainForm;
     CurrentTab:    BrowseType;
     FirstShow:     boolean;
     LastSyncTime:  array[BrowseType] of TDateTime;
-    ActiveSubMenu: array[BrowseType] of string;
+    ActiveSubMenu: array[BrowseType] of BrowseSubType;
 
 implementation
 
@@ -108,6 +150,30 @@ uses LoginFormUnit;
 {$R *.lfm}
 
 { TMainForm }
+procedure TMainForm.LoadAllTabDatas();
+begin
+    LoadTodos;
+    LoadBugs;
+    if (User.Role = 'qa') or (User.Role = 'qd') then
+    begin
+        LoadTasks;
+    end
+    else if (User.Role = 'po') or (User.Role = 'pd') then
+    begin
+        LoadStories
+    end;
+end;
+
+procedure TMainForm.HidePopup(Sender: TObject);overload;
+begin
+    HidePopup;
+end;
+
+procedure TMainForm.HidePopup();overload;
+begin
+    PanelPopupMenu.Visible := False;
+    HideMessage;
+end;
 
 procedure TMainForm.TryLoadTabData(tabName: BrowseType);
 begin
@@ -117,32 +183,34 @@ begin
     end;
 end;
 
-procedure TMainForm.LoadTabData(tabName: BrowseType);
+(* Load tab data list with a given browse type *)
+procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = '');
 begin
     case tabName of
-        btStory: LoadStories;
-        btBug: LoadBugs;
-        btTask: LoadTasks;
-        btTodo: LoadTodos;
+        btStory: LoadStories(pageID);
+        btBug: LoadBugs(pageID);
+        btTask: LoadTasks(pageID);
+        btTodo: LoadTodos(pageID);
         else
-            ShowResultMessage('无法加载标签 "' + BrowseName[tabName] + '" 的数据。');
+            ShowMessage('无法加载标签 "' + BrowseName[tabName] + '" 的数据。');
     end;
 end;
 
 (* Load todos *)
-procedure TMainForm.LoadTodos();
+procedure TMainForm.LoadTodos(pageID: string = '');
 var
-    Data, pager, dataItem: TJSONObject;
+    Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
+    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('todo', ActiveSubMenu[btTodo], '0');
+    r := LoadDataList(btTodo, ActiveSubMenu[btTodo], pageID);
     if r.Result then
     begin
         Data     := r.Data;
-        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
+
         dataList := Data.Arrays['todos'];
 
         (* clean all cells *)
@@ -161,28 +229,44 @@ begin
             StringGridTodo.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
+        pager := r.Pager;
+        LabelPagerTodoInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
+        LabelPagerTodoPrev.Enabled := pager.PageID > 1;
+        LabelPagerTodoNext.Enabled := pager.PageID < pager.PageTotal;
+        LabelPagerTodoLast.Enabled := LabelPagerTodoPrev.Enabled;
+        if pager.PageID = pager.PageTotal then
+        begin
+            LabelPagerTodoLast.Caption := '首页';
+            LabelPagerTodoLast.Hint := 'first';
+        end
+        else
+        begin
+            LabelPagerTodoLast.Caption := '末页';
+            LabelPagerTodoLast.Hint := 'last';
+        end;
+
         LastSyncTime[btTodo] := Now;
     end
     else
     begin
-        ShowResultMessage(r.Message);
+        ShowMessage(r.Message);
     end;
 end;
 
 (* Load tasks *)
-procedure TMainForm.LoadTasks();
+procedure TMainForm.LoadTasks(pageID: string = '');
 var
-    Data, pager, dataItem: TJSONObject;
+    Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
+    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('task', ActiveSubMenu[btTask], '0');
+    r := LoadDataList(btTask, ActiveSubMenu[btTask], pageID);
     if r.Result then
     begin
         Data     := r.Data;
-        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
         dataList := Data.Arrays['tasks'];
 
         (* clean all cells *)
@@ -201,28 +285,44 @@ begin
             StringGridTask.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
+        pager := r.Pager;
+        LabelPagerTaskInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
+        LabelPagerTaskPrev.Enabled := pager.PageID > 1;
+        LabelPagerTaskNext.Enabled := pager.PageID < pager.PageTotal;
+        LabelPagerTaskLast.Enabled := LabelPagerTaskPrev.Enabled;
+        if pager.PageID = pager.PageTotal then
+        begin
+            LabelPagerTaskLast.Caption := '首页';
+            LabelPagerTaskLast.Hint := 'first';
+        end
+        else
+        begin
+            LabelPagerTaskLast.Caption := '末页';
+            LabelPagerTaskLast.Hint := 'last';
+        end;
+
         LastSyncTime[btTask] := Now;
     end
     else
     begin
-        ShowResultMessage(r.Message);
+        ShowMessage(r.Message);
     end;
 end;
 
 (* Load bugs *)
-procedure TMainForm.LoadBugs();
+procedure TMainForm.LoadBugs(pageID: string = '');
 var
-    Data, pager, dataItem: TJSONObject;
+    Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
+    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('bug', ActiveSubMenu[btBug], '0');
+    r := LoadDataList(btBug, ActiveSubMenu[btBug], pageID);
     if r.Result then
     begin
         Data     := r.Data;
-        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
         dataList := Data.Arrays['bugs'];
 
         (* clean all cells *)
@@ -241,28 +341,44 @@ begin
             StringGridBug.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
+        pager := r.Pager;
+        LabelPagerBugInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
+        LabelPagerBugPrev.Enabled := pager.PageID > 1;
+        LabelPagerBugNext.Enabled := pager.PageID < pager.PageTotal;
+        LabelPagerBugLast.Enabled := LabelPagerBugPrev.Enabled;
+        if pager.PageID = pager.PageTotal then
+        begin
+            LabelPagerBugLast.Caption := '首页';
+            LabelPagerBugLast.Hint := 'first';
+        end
+        else
+        begin
+            LabelPagerBugLast.Caption := '末页';
+            LabelPagerBugLast.Hint := 'last';
+        end;
+
         LastSyncTime[btBug] := Now;
     end
     else
     begin
-        ShowResultMessage(r.Message);
+        ShowMessage(r.Message);
     end;
 end;
 
 (* Load stories *)
-procedure TMainForm.LoadStories();
+procedure TMainForm.LoadStories(pageID: string = '');
 var
-    Data, pager, dataItem: TJSONObject;
+    Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
+    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList('story', ActiveSubMenu[btStory], '0');
+    r := LoadDataList(btStory, ActiveSubMenu[btStory], pageID);
     if r.Result then
     begin
         Data     := r.Data;
-        pager    := TJSONObject(TJSONParser.Create(Data.Get('pager', '')).Parse);
         dataList := Data.Arrays['stories'];
 
         (* clean all cells *)
@@ -281,18 +397,40 @@ begin
             StringGridStory.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
+        pager := r.Pager;
+        LabelPagerStoryInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
+        LabelPagerStoryPrev.Enabled := pager.PageID > 1;
+        LabelPagerStoryNext.Enabled := pager.PageID < pager.PageTotal;
+        LabelPagerStoryLast.Enabled := LabelPagerStoryPrev.Enabled;
+        if pager.PageID = pager.PageTotal then
+        begin
+            LabelPagerStoryLast.Caption := '首页';
+            LabelPagerStoryLast.Hint := 'first';
+        end
+        else
+        begin
+            LabelPagerStoryLast.Caption := '末页';
+            LabelPagerStoryLast.Hint := 'last';
+        end;
+
         LastSyncTime[btStory] := Now;
     end
     else
     begin
-        ShowResultMessage(r.Message);
+        ShowMessage(r.Message);
     end;
 end;
 
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     // Destroy;
+    Logout;
     LoginForm.Close;
+end;
+
+procedure TMainForm.FormClick(Sender: TObject);
+begin
+    HidePopup;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -324,10 +462,10 @@ end;
 
 procedure TMainForm.InitSubMenu();
 begin
-    ActiveSubMenu[btTask] := 'assignedTo';
-    ActiveSubMenu[btStory] := 'assignedTo';
-    ActiveSubMenu[btTodo] := 'today';
-    ActiveSubMenu[btBug] := 'assignedTo';
+    ActiveSubMenu[btTask] := assignedTo;
+    ActiveSubMenu[btStory] := assignedTo;
+    ActiveSubMenu[btTodo] := today;
+    ActiveSubMenu[btBug] := assignedTo;
 end;
 
 procedure TMainForm.FormShow(Sender: TObject);
@@ -338,10 +476,7 @@ begin
         InitSubMenu;
 
         (* Load all data *)
-        LoadTodos;
-        LoadTasks;
-        LoadBugs;
-        LoadStories;
+        LoadAllTabDatas;
 
         FirstShow := False;
     end;
@@ -368,14 +503,16 @@ var
     labelSender : TLabel;
     tab         : BrowseType;
     menuParent  : TPanel;
-    subMenu     : string;
+    subMenu     : BrowseSubType;
     childLabel  : TComponent;
     i           : integer;
 begin
+    HidePopup;
+
     labelSender := Sender as TLabel;
     menuParent  := labelSender.Parent as TPanel;
     tab         := BrowseTypes[menuParent.Tag];
-    subMenu     := labelSender.Hint;
+    subMenu     := BrowseSubTypes[labelSender.Tag];
 
     if tab <> CurrentTab then
     begin
@@ -399,7 +536,8 @@ end;
 
 procedure TMainForm.LabelMenuIconClick(Sender: TObject);
 begin
-
+    PanelPopupMenu.Top := 50;
+    PanelPopupMenu.Visible := (not PanelPopupMenu.Visible);
 end;
 
 procedure TMainForm.LabelMenuIconMouseEnter(Sender: TObject);
@@ -427,7 +565,7 @@ begin
     labelSender       := Sender as TLabel;
     menuParent        := labelSender.Parent as TPanel;
     tab               := BrowseTypes[menuParent.Tag];
-    if labelSender.Hint <> ActiveSubMenu[tab] then
+    if BrowseSubTypes[labelSender.Tag] <> ActiveSubMenu[tab] then
     begin
         labelSender.Font.Color := $00141414;
     end;
@@ -442,10 +580,96 @@ begin
     labelSender       := Sender as TLabel;
     menuParent        := labelSender.Parent as TPanel;
     tab               := BrowseTypes[menuParent.Tag];
-    if labelSender.Hint <> ActiveSubMenu[tab] then
+    if BrowseSubTypes[labelSender.Tag] <> ActiveSubMenu[tab] then
     begin
         labelSender.Font.Color := $005D5D5D;
     end;
+end;
+
+procedure TMainForm.LabelMessageCloseClick(Sender: TObject);
+begin
+    HideMessage;
+end;
+
+procedure TMainForm.LabelPagerBtnClick(Sender: TObject);
+var
+    labelSender: TLabel;
+    tab        : BrowseType;
+begin
+    labelSender       := Sender as TLabel;
+    tab := BrowseTypes[(labelSender.Parent as TPanel).Tag];
+    LoadTabData(tab, labelSender.Hint);
+end;
+
+procedure TMainForm.LabelPagerPrevMouseEnter(Sender: TObject);
+var
+    labelSender: TLabel;
+begin
+    labelSender       := Sender as TLabel;
+    labelSender.Font.Color := $00CC5B14;
+
+end;
+
+procedure TMainForm.LabelPagerPrevMouseLeave(Sender: TObject);
+var
+    labelSender: TLabel;
+begin
+    labelSender       := Sender as TLabel;
+    labelSender.Font.Color := $00FC8032;
+
+end;
+
+procedure TMainForm.LabelPopupMenuBtnExitClick(Sender: TObject);
+begin
+    PanelPopupMenu.Visible := False;
+
+    Close;
+end;
+
+procedure TMainForm.LabelPopupMenuBtnLogoutClick(Sender: TObject);
+var
+    r: HandleResult;
+begin
+    PanelPopupMenu.Visible := False;
+
+    r := Logout;
+
+    if r.Result then
+    begin
+        LoginForm.Show;
+        MainForm.Close;
+    end
+    else
+    begin
+        ShowMessage(r.Message, 'danger');
+    end;
+end;
+
+procedure TMainForm.LabelPopupMenuBtnMouseEnter(Sender: TObject);
+var
+    labelSender: TLabel;
+begin
+    labelSender       := Sender as TLabel;
+    labelSender.Color := 16547890;
+    labelSender.Font.Color := clWhite;
+end;
+
+procedure TMainForm.LabelPopupMenuBtnMouseLeave(Sender: TObject);
+var
+    labelSender: TLabel;
+begin
+    labelSender       := Sender as TLabel;
+    labelSender.Color := clNone;
+    labelSender.Font.Color := clDefault;
+
+end;
+
+procedure TMainForm.LabelPopupMenuBtnSyncClick(Sender: TObject);
+begin
+    LoadAllTabDatas;
+    ShowMessage('已成功同步.', 'success');
+
+    PanelPopupMenu.Visible := False;
 end;
 
 procedure TMainForm.LabelTabMouseEnter(Sender: TObject);
@@ -475,6 +699,8 @@ var
     labelSender: TLabel;
     tab:         BrowseType;
 begin
+    HidePopup;
+
     labelSender := Sender as TLabel;
     tab         := BrowseTypes[labelSender.Tag];
 
@@ -521,6 +747,8 @@ begin
                 PanelNavStory.Left    := 0;
             end;
         end;
+
+        TryLoadTabData(tab);
     end
     else
     begin
@@ -535,20 +763,59 @@ end;
 
 procedure TMainForm.PanelMenuClick(Sender: TObject);
 begin
-
+    HidePopup;
 end;
 
 (* Hide result message *)
-procedure TMainForm.HideResultMessage();
+procedure TMainForm.HideMessage();
 begin
-    LabelResult.Visible := False;
+    PanelMessage.Visible := False;
 end;
 
-procedure TMainForm.ShowResultMessage(Message: string);
+procedure TMainForm.ShowMessage(Message: string; msgType: string = 'danger');
 begin
-    LabelResult.Caption := Message;
-    LabelResult.Visible := True;
-    Memo1.Visible       := True;
+    LabelMessage.Caption := Message;
+    PanelMessage.Visible := True;
+
+    case Lowercase(msgType) of
+        'success':
+        begin
+            PanelMessage.Color := $00E6FFE5;
+            PanelMessage.Font.Color := $00249F23;
+        end;
+        'danger':
+        begin
+            PanelMessage.Color := $00e5E6ff;
+            PanelMessage.Font.Color := $002D32D2;
+        end;
+        'warning':
+        begin
+            PanelMessage.Color := $00E5F4FF;
+            PanelMessage.Font.Color := $000086E4;
+        end;
+        'info':
+        begin
+            PanelMessage.Color := $00FFF9E5;
+            PanelMessage.Font.Color := $00D7B339;
+        end;
+        'important':
+        begin
+            PanelMessage.Color := $00E5F3FF;
+            PanelMessage.Font.Color := $001C5181;
+        end;
+        'special':
+        begin
+            PanelMessage.Color := $00FFE5F7;
+            PanelMessage.Font.Color := $00A15789;
+        end;
+        else 
+        begin
+            PanelMessage.Color := $00F1F1F1;
+            PanelMessage.Font.Color := $00333333;
+        end;
+    end;
+
+    Memo1.Visible := True;
     Memo1.Lines.Text    := Memo1.Lines.Text + Message + LineEnding;
 end;
 

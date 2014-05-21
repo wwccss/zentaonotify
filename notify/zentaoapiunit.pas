@@ -27,13 +27,24 @@ type
         Sender:  TObject;
     end;
 
+    PageRecord = record
+        Status : string;
+        PageID : Integer;
+        PageTotal : Integer;
+        PerPage : Integer;
+        Total : Integer;
+        PageCookie : String;
+    end;
+
     DataResult = record
         Result:  boolean;
         Message: string;
         Data:    TJSONObject;
+        Pager:   PageRecord;
     end;
 
     BrowseType = (btTodo = 0, btTask = 1, btBug = 2, btStory = 3);
+    BrowseSubType = (today = 0, yesterday = 1, thisweek = 2, lastweek = 3, assignedTo = 4, openedBy = 5, reviewedBy= 6, closedBy = 7, finishedBy = 8, resolvedBy = 9);
 
 { Function declarations }
 procedure InitZentaoAPI();
@@ -45,7 +56,10 @@ function GetSession(): HandleResult;
 function Login(): HandleResult;
 function GetRole(): HandleResult;
 function TryLogin(): HandleResult;
-function LoadDataList(obj: string; objType: string; pageID: string): DataResult;
+function Logout(): HandleResult;
+function LoadDataList(obj: BrowseType; objType: BrowseSubType; pageID: string = ''): DataResult;
+function Max(a: Integer; b: Integer): Integer;
+function Min(a: Integer; b: Integer): Integer;
 
 var
     User:         UserConfig;
@@ -54,18 +68,63 @@ var
     Http:         TFPHTTPClient;
     BrowseName:   array[BrowseType] of string;
     BrowseTypes:  array[0..3] of BrowseType;
+    BrowseSubName:   array[BrowseSubType] of string;
+    BrowseSubTypes:  array[0..9] of BrowseSubType;
+    BrowsePagers: array[BrowseType] of array[BrowseSubType] of PageRecord;
 
 implementation
 
 (* Load Data from server with zentao api and return in a list *)
-function LoadDataList(obj: string; objType: string; pageID: string): DataResult;
+function LoadDataList(obj: BrowseType; objType: BrowseSubType; pageID: string = ''): DataResult;
 var
     response: string;
-    Data:     TJSONObject;
+    Data, pageData:     TJSONObject;
     url:      string;
+    pager:    PageRecord;
+    pageNum:  Integer;
+    firstPage: boolean;
 begin
     Result.Result := True;
-    url           := GetAPI(['module', 'my', 'method', obj, 'type', objType, 'pageID', pageID]);
+
+    (* init page *)
+    pager         := BrowsePagers[obj, objType];
+    pageID        := LowerCase(pageID);
+    if pager.status = 'ok' then
+    begin
+        if (pageID = 'next') or (pageID = 'n') then
+        begin
+            pageID := IntToStr(Max(pager.PageID + 1, pager.PageTotal));
+        end
+        else if (pageID = 'prev') or (pageID = 'p') then
+        begin
+            pageID := IntToStr(Min(pager.PageID - 1, pager.PageTotal));
+        end
+        else if (pageID = 'last') or (pageID = 'l') then
+        begin
+            pageID := IntToStr(pager.PageTotal);
+        end
+        else if (pageID = 'first') or (pageID = 'f') then
+        begin
+            pageID := '';
+        end
+        else
+        begin
+            try
+                pageID := IntToStr(StrToInt(pageID));
+            except
+                pageID := '';
+            end;
+        end;
+    end
+    else
+    begin
+        pageID := '';
+    end;
+    firstPage := (pageID = '');
+
+    (* get url *)
+    url           := GetAPI(['module', 'my', 'method', BrowseName[obj], 'type', BrowseSubName[objType], 'pageID', pageID, 'recTotal', IntToStr(pager.Total), 'recPerPage', IntToStr(pager.PerPage)]);
+    Result.Message := 'Loading: ' + url;
  
     try
         response := Http.Get(url);
@@ -76,8 +135,23 @@ begin
             if response <> '' then
                 Data := TJSONObject(TJSONParser.Create(response).Parse);
 
-            Result.Data := Data;
+            pageData    := Data.Objects['pager'];
 
+            pager.PageID := pageData.Get('pageID', 1);
+            if pager.PageID = 1 then pager.PageID := StrToInt(pageData.Get('pageID', '1'));
+            if firstPage then
+            begin
+                pager.status := 'ok';
+                pager.PerPage := pageData.Get('recPerPage', 20);
+                pager.PageTotal := pageData.Get('pageTotal', 0);
+                pager.PageCookie := pageData.Get('pageCookie', '');
+                pager.Total := pageData.Get('recTotal', 0);
+            end;
+            Result.Pager := pager;
+            BrowsePagers[obj, objType] := pager;
+
+
+            Result.Data := Data;
         except
             Result.Result  := False;
             Result.Message := '服务器返回的数据不正确。 URL: ' + url;
@@ -153,7 +227,7 @@ begin
     moduleName := config.Get('module', '');
     methodName := config.Get('method', '');
     nameSet    := TStringList.Create;
-    nameSet.CommaText := 'viewType,module,method,moduleName,methodName,pageID,type';
+    nameSet.CommaText := 'viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage';
 
     if LowerCase(ZentaoConfig.Get('requestType', '')) = 'get' then
     begin
@@ -240,18 +314,19 @@ begin
             Result := Result + item.Key + '=' + item.Value.AsString + '-';
         end;
 
-        // pageID := config.Get('pageID', '');
-        // if pageID <> '' then
-        // begin
-        //     if methodName = 'todo' then
-        //     begin
-        //         Result := Result + '--all-date_desc,status,begin-';
-        //     end
-        //     else
-        //     begin
-        //         // Result := Result + '-id_desc-' + pager.recTotal + '-' + pager.recPerPage + '-' + pageID;
-        //     end;
-        // end;
+        pageID := config.Get('pageID', '');
+        if pageID <> '' then
+        begin
+            if methodName = 'todo' then
+            begin
+                Result := Result + '-all-date_desc,status,begin-';
+            end
+            else
+            begin
+                Result := Result + '-id_desc-';
+            end;
+            Result := Result + config.Get('recTotal', '') + '-' + config.Get('recPerPage', '') + '-' + pageID;
+        end;
 
         if Result[Length(Result)] = '-' then
             Result := Copy(Result, 1, Length(Result) - 1);
@@ -354,6 +429,21 @@ begin
         Result.Message := '获取角色信息失败。';
 end;
 
+function Logout(): HandleResult;
+var
+    url, response: string;
+begin
+    Result.Result := True;
+    url := GetAPI(['module', 'user', 'method', 'logout']);
+
+    try
+        Http.Get(url);
+    except
+        Result.Result := False;
+        Result.Message := '注销时发生了错误。 Url: ' + url + '||' + response;
+    end;
+end;
+
 (* Try login in *)
 function TryLogin(): HandleResult;
 begin
@@ -394,11 +484,57 @@ begin
     BrowseTypes[1] := btTask;
     BrowseTypes[2] := btBug;
     BrowseTypes[3] := btStory;
+
+    BrowseSubName[today] := 'today';
+    BrowseSubName[yesterday] := 'yesterday';
+    BrowseSubName[thisweek] := 'thisweek';
+    BrowseSubName[lastweek] := 'lastweek';
+    BrowseSubName[assignedTo] :='assignedTo'; 
+    BrowseSubName[openedBy] := 'openedBy';
+    BrowseSubName[reviewedBy] := 'reviewedBy';
+    BrowseSubName[closedBy] := 'closedBy';
+    BrowseSubName[finishedBy] := 'finishedBy';
+    BrowseSubName[resolvedBy] := 'resolvedBy';
+
+    BrowseSubTypes[0] := today;
+    BrowseSubTypes[1] := yesterday;
+    BrowseSubTypes[2] := thisweek;
+    BrowseSubTypes[3] := lastweek;
+    BrowseSubTypes[4] :=assignedTo; 
+    BrowseSubTypes[5] := openedBy;
+    BrowseSubTypes[6] := reviewedBy;
+    BrowseSubTypes[7] := closedBy;
+    BrowseSubTypes[8] := finishedBy;
+    BrowseSubTypes[9] := resolvedBy;
 end;
 
 procedure Destroy();
 begin
     Http.Free;
+end;
+
+function Max(a: Integer; b: Integer): Integer;
+begin
+    if a > b then
+    begin
+        Result := a;
+    end
+    else
+    begin
+        Result := b;
+    end;
+end;
+
+function Min(a: Integer; b: Integer): Integer;
+begin
+    if a < b then
+    begin
+        Result := a;
+    end
+    else
+    begin
+        Result := b;
+    end;
 end;
 
 end.
