@@ -8,6 +8,7 @@ uses
     Classes, SysUtils,
     md5,
     fphttpclient,
+    LCLIntf,
     fpjson, jsonparser;
 
 type
@@ -63,6 +64,7 @@ function LoadDataList(obj: BrowseType; objType: BrowseSubType;
     pageID: string = ''): DataResult;
 function Max(a: integer; b: integer): integer;
 function Min(a: integer; b: integer): integer;
+function ViewObject(objType: BrowseType; id: string): boolean;
 
 var
     user:           UserConfig;
@@ -76,6 +78,14 @@ var
     BrowsePagers:   array[BrowseType] of array[BrowseSubType] of PageRecord;
 
 implementation
+
+(* View object in browser *)
+function ViewObject(objType: BrowseType; id: string): boolean;
+begin
+    if Copy(id,1,1) = '#' then
+        id := Copy(id, 2, Length(id) - 1);
+    Result := OpenURL(GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']));
+end;
 
 (* Load Data from server with zentao api and return in a list *)
 function LoadDataList(obj: BrowseType; objType: BrowseSubType;
@@ -235,7 +245,7 @@ begin
     methodName := config.Get('method', '');
     nameSet    := TStringList.Create;
     nameSet.CommaText :=
-        'viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage';
+        ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
 
     if LowerCase(zentaoConfig.Get('requestType', '')) = 'get' then
     begin
@@ -319,7 +329,9 @@ begin
         begin
             if (nameSet.indexOf(item.Key) > 0) then
                 continue;
-            Result := Result + item.Key + '=' + item.Value.AsString + '-';
+            if (methodName <> 'view') or (item.key <> 'id') then
+                Result := Result + item.Key + '=';
+            Result := Result + item.Value.AsString + '-';
         end;
 
         pageID := config.Get('pageID', '');

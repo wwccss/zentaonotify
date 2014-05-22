@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 505
+  Left = 557
   Height = 700
-  Top = 209
+  Top = 196
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700
@@ -95,7 +95,7 @@ object MainForm: TMainForm
       OnMouseLeave = LabelTabMouseLeave
     end
     object Memo1: TMemo
-      Left = 1035
+      Left = 1036
       Height = 47
       Top = 2
       Width = 364
@@ -229,6 +229,8 @@ object MainForm: TMainForm
       TabOrder = 0
       TitleStyle = tsNative
       OnClick = HidePopup
+      OnDblClick = StringGridDblClick
+      OnSelectCell = StringGridTodoSelectCell
     end
     object PanelMenuTodo: TPanel
       Left = 0
@@ -419,6 +421,7 @@ object MainForm: TMainForm
     TabOrder = 2
     OnClick = HidePopup
     object StringGridTask: TStringGrid
+      Tag = 1
       Left = 0
       Height = 570
       Top = 50
@@ -457,6 +460,7 @@ object MainForm: TMainForm
       TabOrder = 0
       TitleStyle = tsNative
       OnClick = HidePopup
+      OnDblClick = StringGridDblClick
     end
     object PanelMenuTask: TPanel
       Tag = 1
@@ -640,6 +644,7 @@ object MainForm: TMainForm
     TabOrder = 3
     OnClick = HidePopup
     object StringGridBug: TStringGrid
+      Tag = 2
       Left = 0
       Height = 570
       Top = 50
@@ -678,6 +683,7 @@ object MainForm: TMainForm
       TabOrder = 0
       TitleStyle = tsNative
       OnClick = HidePopup
+      OnDblClick = StringGridDblClick
     end
     object PanelMenuBug: TPanel
       Tag = 2
@@ -861,6 +867,7 @@ object MainForm: TMainForm
     TabOrder = 4
     OnClick = HidePopup
     object StringGridStory: TStringGrid
+      Tag = 3
       Left = 0
       Height = 570
       Top = 50
@@ -899,6 +906,7 @@ object MainForm: TMainForm
       TabOrder = 0
       TitleStyle = tsNative
       OnClick = HidePopup
+      OnDblClick = StringGridDblClick
     end
     object PanelMenuStory: TPanel
       Tag = 3
@@ -1071,7 +1079,7 @@ object MainForm: TMainForm
   object PanelMessage: TPanel
     Left = 0
     Height = 50
-    Top = 150
+    Top = -40
     Width = 1400
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
@@ -1111,7 +1119,7 @@ object MainForm: TMainForm
   object PanelPopupMenu: TPanel
     Left = 217
     Height = 106
-    Top = 100
+    Top = -100
     Width = 133
     BevelOuter = bvNone
     BorderStyle = bsSingle

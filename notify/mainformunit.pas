@@ -111,6 +111,7 @@ type
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
         procedure MenuItem1Click(Sender: TObject);
+        procedure MenuItemViewObjectClick(Sender: TObject);
         procedure PanelMenuClick(Sender: TObject);
         procedure PanelMessageClick(Sender: TObject);
         procedure PanelPopupMenuClick(Sender: TObject);
@@ -121,6 +122,11 @@ type
         procedure LoadBugs(pageID: string = '');
         procedure LoadStories(pageID: string = '');
         procedure LoadTabData(tabName: BrowseType; pageID: string = '');
+        procedure StringGridDblClick(Sender: TObject);
+        procedure StringGridTodoMouseDown(Sender: TObject;
+            Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+        procedure StringGridTodoSelectCell(Sender: TObject; aCol,
+            aRow: Integer; var CanSelect: Boolean);
         procedure TryLoadTabData(tabName: BrowseType);
         procedure InitTabMenu();
         procedure InitSubMenu();
@@ -197,6 +203,27 @@ begin
         else
             ShowMessage('无法加载标签 "' + BrowseName[tabName] + '" 的数据。');
     end;
+end;
+
+procedure TMainForm.StringGridDblClick(Sender: TObject);
+var
+    stringGridSender: TStringGrid;
+    tab: BrowseType;
+begin
+    stringGridSender := Sender as TStringGrid;
+    tab := BrowseTypes[stringGridSender.Tag];
+    ViewObject(tab, stringGridSender.Cells[0, stringGridSender.Selection.Bottom]);
+end;
+
+procedure TMainForm.StringGridTodoMouseDown(Sender: TObject;
+    Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+end;
+
+procedure TMainForm.StringGridTodoSelectCell(Sender: TObject; aCol,
+    aRow: Integer; var CanSelect: Boolean);
+begin
+
 end;
 
 (* Load todos *)
@@ -737,6 +764,11 @@ begin
 end;
 
 procedure TMainForm.MenuItem1Click(Sender: TObject);
+begin
+
+end;
+
+procedure TMainForm.MenuItemViewObjectClick(Sender: TObject);
 begin
 
 end;

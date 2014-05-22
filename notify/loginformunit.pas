@@ -12,7 +12,6 @@ uses
     ZentaoAPIUnit;
 
 type
-
     { TLoginForm }
     TLoginForm = class(TForm)
         EditAddress:     TEdit;
