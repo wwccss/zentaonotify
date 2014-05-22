@@ -22,22 +22,22 @@ type
         Label1: TLabel;
         LabelMessageClose: TLabel;
         LabelMessage: TLabel;
-        LabelPagerTodoInfo: TLabel;
         LabelPagerTaskInfo: TLabel;
         LabelPagerBugInfo: TLabel;
         LabelPagerStoryInfo: TLabel;
-        LabelPagerTodoLast: TLabel;
+        LabelPagerTodoInfo: TLabel;
         LabelPagerTaskLast: TLabel;
         LabelPagerBugLast: TLabel;
         LabelPagerStoryLast: TLabel;
+        LabelPagerTodoLast: TLabel;
         LabelPagerTaskNext: TLabel;
         LabelPagerBugNext: TLabel;
         LabelPagerStoryNext: TLabel;
-        LabelPagerTodoPrev: TLabel;
         LabelPagerTodoNext: TLabel;
         LabelPagerTaskPrev: TLabel;
         LabelPagerBugPrev: TLabel;
         LabelPagerStoryPrev: TLabel;
+        LabelPagerTodoPrev: TLabel;
         LabelPopupMenuBtnSync: TLabel;
         LabelPopupMenuBtnSep: TLabel;
         LabelMenu10: TLabel;
@@ -65,10 +65,10 @@ type
         LabelMenuIcon: TLabel;
         Memo1:           TMemo;
         PanelMessage: TPanel;
-        PanelPagerTodo: TPanel;
         PanelPagerTask: TPanel;
         PanelPagerBug: TPanel;
         PanelPagerStory: TPanel;
+        PanelPagerTodo: TPanel;
         PanelPopupMenu: TPanel;
         PanelMenuBug: TPanel;
         PanelMenuStory: TPanel;
@@ -157,11 +157,11 @@ procedure TMainForm.LoadAllTabDatas();
 begin
     LoadTodos;
     LoadBugs;
-    if (User.Role = 'qa') or (User.Role = 'qd') then
+    if (user.Role = 'qa') or (user.Role = 'qd') then
     begin
         LoadTasks;
     end
-    else if (User.Role = 'po') or (User.Role = 'pd') then
+    else if (user.Role = 'po') or (user.Role = 'pd') then
     begin
         LoadStories
     end;
@@ -366,15 +366,20 @@ end;
 
 procedure TMainForm.ShowPager(pager: PageRecord; labelPagerInfo: TLabel; labelPagerPrev: TLabel; labelPagerNext: TLabel; labelPagerLast: TLabel);
 begin
+    labelPagerInfo.Visible := False;
+    labelPagerPrev.Visible := False;
+    labelPagerNext.Visible := False;
+    labelPagerLast.Visible := False;
     if pager.Total > 0 then
     begin
         labelPagerInfo.Caption := Format('第 %d - %d 条，共 %d 条', [Min(pager.Total,(pager.PageID - 1) * pager.PerPage + 1), Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
         labelPagerPrev.Visible := True;
+        labelPagerInfo.Visible := True;
         labelPagerNext.Visible := True;
         labelPagerLast.Visible := True;
         labelPagerPrev.Enabled := pager.PageID > 1;
         labelPagerNext.Enabled := pager.PageID < pager.PageTotal;
-        labelPagerLast.Enabled := labelPagerPrev.Enabled;
+        labelPagerLast.Enabled := pager.PageTotal > 1;
         if pager.PageID = pager.PageTotal then
         begin
             labelPagerLast.Caption := '首页';
@@ -389,9 +394,7 @@ begin
     else
     begin
         labelPagerInfo.Caption := '暂时没有数据。';
-        labelPagerPrev.Visible := False;
-        labelPagerNext.Visible := False;
-        labelPagerLast.Visible := False;
+        labelPagerInfo.Visible := True;
     end;
 end;
 
@@ -415,7 +418,7 @@ end;
 
 procedure TMainForm.InitTabMenu();
 begin
-    if (User.Role = 'qa') or (User.Role = 'qd') then
+    if (user.Role = 'qa') or (user.Role = 'qd') then
     begin
         LabelTab2.Caption := 'Bug';
         LabelTab2.Hint    := 'bug';
@@ -424,7 +427,7 @@ begin
         LabelTab3.Hint    := 'task';
         LabelTab3.Tag     := 1;
     end
-    else if (User.Role = 'po') or (User.Role = 'pd') then
+    else if (user.Role = 'po') or (user.Role = 'pd') then
     begin
         LabelTab2.Caption := '需求';
         LabelTab2.Hint    := 'story';

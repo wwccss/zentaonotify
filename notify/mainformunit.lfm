@@ -1,12 +1,13 @@
 object MainForm: TMainForm
-  Left = 391
+  Left = 505
   Height = 700
-  Top = 199
+  Top = 209
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700
   ClientWidth = 1400
   Constraints.MaxHeight = 890
+  Constraints.MinHeight = 168
   Constraints.MinWidth = 350
   OnClick = FormClick
   OnClose = FormClose
@@ -308,6 +309,16 @@ object MainForm: TMainForm
         OnMouseLeave = LabelMenuMouseLeave
       end
     end
+    object Label1: TLabel
+      Left = 0
+      Height = 1
+      Top = 49
+      Width = 350
+      AutoSize = False
+      Color = clSilver
+      ParentColor = False
+      Transparent = False
+    end
     object PanelPagerTodo: TPanel
       Left = 50
       Height = 30
@@ -324,19 +335,6 @@ object MainForm: TMainForm
       Font.Height = -13
       ParentFont = False
       TabOrder = 2
-      object LabelPagerTodoInfo: TLabel
-        Left = 38
-        Height = 30
-        Top = 0
-        Width = 130
-        Align = alRight
-        Caption = '第 11-20 条 共100 条'
-        Font.Color = clGray
-        Font.Height = -13
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-      end
       object LabelPagerTodoLast: TLabel
         Cursor = crHandPoint
         Left = 264
@@ -392,16 +390,19 @@ object MainForm: TMainForm
         OnMouseEnter = LabelPagerPrevMouseEnter
         OnMouseLeave = LabelPagerPrevMouseLeave
       end
-    end
-    object Label1: TLabel
-      Left = 0
-      Height = 1
-      Top = 49
-      Width = 350
-      AutoSize = False
-      Color = clSilver
-      ParentColor = False
-      Transparent = False
+      object LabelPagerTodoInfo: TLabel
+        Left = 38
+        Height = 30
+        Top = 0
+        Width = 130
+        Align = alRight
+        Caption = '第 11-20 条 共100 条'
+        Font.Color = clGray
+        Font.Height = -13
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
+      end
     end
   end
   object PanelNavTask: TPanel
@@ -555,19 +556,6 @@ object MainForm: TMainForm
       Font.Height = -13
       ParentFont = False
       TabOrder = 2
-      object LabelPagerTaskInfo: TLabel
-        Left = 38
-        Height = 30
-        Top = 0
-        Width = 130
-        Align = alRight
-        Caption = '第 11-20 条 共100 条'
-        Font.Color = clGray
-        Font.Height = -13
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-      end
       object LabelPagerTaskLast: TLabel
         Cursor = crHandPoint
         Left = 264
@@ -622,6 +610,19 @@ object MainForm: TMainForm
         OnClick = LabelPagerBtnClick
         OnMouseEnter = LabelPagerPrevMouseEnter
         OnMouseLeave = LabelPagerPrevMouseLeave
+      end
+      object LabelPagerTaskInfo: TLabel
+        Left = 38
+        Height = 30
+        Top = 0
+        Width = 130
+        Align = alRight
+        Caption = '第 11-20 条 共100 条'
+        Font.Color = clGray
+        Font.Height = -13
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
       end
     end
   end
@@ -776,19 +777,6 @@ object MainForm: TMainForm
       Font.Height = -13
       ParentFont = False
       TabOrder = 2
-      object LabelPagerBugInfo: TLabel
-        Left = 38
-        Height = 30
-        Top = 0
-        Width = 130
-        Align = alRight
-        Caption = '第 11-20 条 共100 条'
-        Font.Color = clGray
-        Font.Height = -13
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-      end
       object LabelPagerBugLast: TLabel
         Cursor = crHandPoint
         Left = 264
@@ -843,6 +831,19 @@ object MainForm: TMainForm
         OnClick = LabelPagerBtnClick
         OnMouseEnter = LabelPagerPrevMouseEnter
         OnMouseLeave = LabelPagerPrevMouseLeave
+      end
+      object LabelPagerBugInfo: TLabel
+        Left = 38
+        Height = 30
+        Top = 0
+        Width = 130
+        Align = alRight
+        Caption = '第 11-20 条 共100 条'
+        Font.Color = clGray
+        Font.Height = -13
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
       end
     end
   end
@@ -997,19 +998,6 @@ object MainForm: TMainForm
       Font.Height = -13
       ParentFont = False
       TabOrder = 2
-      object LabelPagerStoryInfo: TLabel
-        Left = 38
-        Height = 30
-        Top = 0
-        Width = 130
-        Align = alRight
-        Caption = '第 11-20 条 共100 条'
-        Font.Color = clGray
-        Font.Height = -13
-        Layout = tlCenter
-        ParentColor = False
-        ParentFont = False
-      end
       object LabelPagerStoryLast: TLabel
         Cursor = crHandPoint
         Left = 264
@@ -1064,6 +1052,19 @@ object MainForm: TMainForm
         OnClick = LabelPagerBtnClick
         OnMouseEnter = LabelPagerPrevMouseEnter
         OnMouseLeave = LabelPagerPrevMouseLeave
+      end
+      object LabelPagerStoryInfo: TLabel
+        Left = 38
+        Height = 30
+        Top = 0
+        Width = 130
+        Align = alRight
+        Caption = '第 11-20 条 共100 条'
+        Font.Color = clGray
+        Font.Height = -13
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
       end
     end
   end

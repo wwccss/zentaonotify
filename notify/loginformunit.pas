@@ -95,10 +95,10 @@ begin
         BitBtnLogin.Caption := 'Logining';
         BitBtnLogin.Enabled := False;
 
-        User.Account  := EditUsername.Text;
-        User.Password := EditPassword.Text;
-        User.PassMd5  := MD5Print(MD5String(User.Password));
-        User.Url      := EditAddress.Text;
+        user.Account  := EditUsername.Text;
+        user.Password := EditPassword.Text;
+        user.PassMd5  := MD5Print(MD5String(user.Password));
+        user.Url      := EditAddress.Text;
 
         InitZentaoAPI();
         r := TryLogin();
@@ -160,7 +160,7 @@ end;
 
 procedure TLoginForm.FormCreate(Sender: TObject);
 begin
-    Session := TJSONObject.Create(['undefined', True]);
+    session := TJSONObject.Create(['undefined', True]);
 
     // Test data
     EditAddress.Text  := 'http://zentao.com/';

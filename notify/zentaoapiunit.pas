@@ -65,10 +65,10 @@ function Max(a: integer; b: integer): integer;
 function Min(a: integer; b: integer): integer;
 
 var
-    User:           UserConfig;
-    ZentaoConfig:   TJSONObject;
-    Session:        TJSONObject;
-    Http:           TFPHTTPClient;
+    user:           UserConfig;
+    zentaoConfig:   TJSONObject;
+    session:        TJSONObject;
+    http:           TFPHTTPClient;
     BrowseName:     array[BrowseType] of string;
     BrowseTypes:    array[0..3] of BrowseType;
     BrowseSubName:  array[BrowseSubType] of string;
@@ -133,7 +133,7 @@ begin
     Result.Message := 'Loading: ' + url;
 
     try
-        response := Http.Get(url);
+        response := http.Get(url);
         try
             (* prepare data *)
             Data     := TJSONObject(TJSONParser.Create(response).Parse);
@@ -176,10 +176,10 @@ var
 begin
     Result.Result := True;
     try
-        configStr := Http.Get(User.Url + '/index.php?mode=getconfig');
+        configStr := http.Get(user.Url + '/index.php?mode=getconfig');
         if Length(configStr) > 0 then
         begin
-            ZentaoConfig := TJSONObject(TJSONParser.Create(configStr).Parse);
+            zentaoConfig := TJSONObject(TJSONParser.Create(configStr).Parse);
         end
         else
             Result.Result := False;
@@ -237,16 +237,16 @@ begin
     nameSet.CommaText :=
         'viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage';
 
-    if LowerCase(ZentaoConfig.Get('requestType', '')) = 'get' then
+    if LowerCase(zentaoConfig.Get('requestType', '')) = 'get' then
     begin
-        Result := User.Url + '/index.php?';
+        Result := user.Url + '/index.php?';
         if (moduleName = 'user') and (methodName = 'login') then
         begin
-            password := MD5Print(MD5String(User.Password +
-                IntToStr(Session.Int64s['rand'])));
-            Result   := Result + 'm=user&f=login&account=' + User.Account +
-                '&password=' + password + '&' + Session.Get('sessionName', '') +
-                '=' + Session.Get('sessionID', '') + '&t=json';
+            password := MD5Print(MD5String(user.Password +
+                IntToStr(session.Int64s['rand'])));
+            Result   := Result + 'm=user&f=login&account=' + user.Account +
+                '&password=' + password + '&' + session.Get('sessionName', '') +
+                '=' + session.Get('sessionID', '') + '&t=json';
             Exit;
         end;
 
@@ -285,22 +285,22 @@ begin
 
         Result := Result + '&t=' + viewType;
 
-        if not Session.Get('undefined', False) then
+        if not session.Get('undefined', False) then
         begin
-            Result := Result + '&' + Session.Get('sessionName', '') +
-                '=' + Session.Get('sessionID', '');
+            Result := Result + '&' + session.Get('sessionName', '') +
+                '=' + session.Get('sessionID', '');
         end;
     end
     else
     begin
-        Result := Result + User.Url + '/';
+        Result := Result + user.Url + '/';
         if (moduleName = 'user') and (methodName = 'login') then
         begin
-            password := MD5Print(MD5String(User.PassMd5 +
-                IntToStr(Session.Int64s['rand'])));
+            password := MD5Print(MD5String(user.PassMd5 +
+                IntToStr(session.Int64s['rand'])));
             Result   := Result + 'user-login.json?account=' +
-                User.Account + '&password=' + password + '&' +
-                Session.Get('sessionName', 'sid') + '=' + Session.Get('sessionID', '');
+                user.Account + '&password=' + password + '&' +
+                session.Get('sessionName', 'sid') + '=' + session.Get('sessionID', '');
             Exit;
         end;
 
@@ -342,10 +342,10 @@ begin
 
         Result := Result + '.' + viewType;
 
-        if not Session.Get('undefined', False) then
+        if not session.Get('undefined', False) then
         begin
-            Result := Result + '?' + Session.Get('sessionName', '') +
-                '=' + Session.Get('sessionID', '');
+            Result := Result + '?' + session.Get('sessionName', '') +
+                '=' + session.Get('sessionID', '');
         end;
     end;
 end;
@@ -357,14 +357,14 @@ var
 begin
     Result.Result := True;
     try
-        sessionStr := Http.Get(GetAPI(['module', 'api', 'method', 'getSessionID']));
+        sessionStr := http.Get(GetAPI(['module', 'api', 'method', 'getSessionID']));
         if Length(sessionStr) > 0 then
         begin
-            Session := TJSONObject(TJSONParser.Create(sessionStr).Parse);
-            if Session.Get('status', '') = 'success' then
+            session := TJSONObject(TJSONParser.Create(sessionStr).Parse);
+            if session.Get('status', '') = 'success' then
             begin
-                sessionStr := Session.Get('data', '');
-                Session    := TJSONObject(TJSONParser.Create(sessionStr).Parse);
+                sessionStr := session.Get('data', '');
+                session    := TJSONObject(TJSONParser.Create(sessionStr).Parse);
             end
             else
                 Result.Result := False;
@@ -387,7 +387,7 @@ var
 begin
     Result.Result := True;
     try
-        response := Http.Get(GetAPI(['module', 'user', 'method', 'login']));
+        response := http.Get(GetAPI(['module', 'user', 'method', 'login']));
         if Length(response) > 0 then
         begin
             status := TJSONObject(TJSONParser.Create(response).Parse);
@@ -413,8 +413,8 @@ var
 begin
     Result.Result := True;
     try
-        response := Http.Get(GetAPI(['module', 'api', 'method', 'getmodel',
-            'moduleName', 'user', 'methodName', 'getById', 'account', User.Account]));
+        response := http.Get(GetAPI(['module', 'api', 'method', 'getmodel',
+            'moduleName', 'user', 'methodName', 'getById', 'account', user.Account]));
         if Length(response) > 0 then
         begin
             role := TJSONObject(TJSONParser.Create(response).Parse);
@@ -425,7 +425,7 @@ begin
             else
             begin
                 role      := TJSONObject(TJSONParser.Create(role.Get('data', '')).Parse);
-                User.Role := role.Get('role', '');
+                user.Role := role.Get('role', '');
             end;
         end
         else
@@ -446,7 +446,7 @@ begin
     url           := GetAPI(['module', 'user', 'method', 'logout']);
 
     try
-        Http.Get(url);
+        http.Get(url);
     except
         Result.Result  := False;
         Result.Message := '注销时发生了错误。 Url: ' + url + '||' + response;
@@ -456,7 +456,7 @@ end;
 (* Try login in *)
 function TryLogin(): HandleResult;
 begin
-    Session := TJSONObject.Create(['undefined', True]);
+    session := TJSONObject.Create(['undefined', True]);
 
     Result := GetConfig();
     if not Result.Result then
@@ -481,7 +481,7 @@ end;
 
 procedure InitZentaoAPI();
 begin
-    Http := TFPHTTPClient.Create(nil);
+    http := TFPHTTPClient.Create(nil);
 
     (* init browsename *)
     BrowseName[btTodo]  := 'todo';
@@ -519,7 +519,7 @@ end;
 
 procedure Destroy();
 begin
-    Http.Free;
+    http.Free;
 end;
 
 function Max(a: integer; b: integer): integer;
