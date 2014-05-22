@@ -19,6 +19,7 @@ type
         Image1: TImage;
         Image2: TImage;
         Image3: TImage;
+        ImageListPopupMenu: TImageList;
         Label1: TLabel;
         LabelMessageClose: TLabel;
         LabelMessage: TLabel;
@@ -64,6 +65,9 @@ type
         LabelTab2:       TLabel;
         LabelMenuIcon: TLabel;
         Memo1:           TMemo;
+        MenuItemReloadTab: TMenuItem;
+        MenuItemSep: TMenuItem;
+        MenuItemViewObject: TMenuItem;
         PanelMessage: TPanel;
         PanelPagerTask: TPanel;
         PanelPagerBug: TPanel;
@@ -79,6 +83,7 @@ type
         PanelNavTask:    TPanel;
         PanelNavBug:     TPanel;
         PanelNavStory:   TPanel;
+        PopupMenuStringGrid: TPopupMenu;
         ShapeMenuIcon1: TShape;
         ShapeMenuIcon2: TShape;
         ShapeMenuIcon3: TShape;
@@ -111,6 +116,7 @@ type
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
         procedure MenuItem1Click(Sender: TObject);
+        procedure MenuItemReloadTabClick(Sender: TObject);
         procedure MenuItemViewObjectClick(Sender: TObject);
         procedure PanelMenuClick(Sender: TObject);
         procedure PanelMessageClick(Sender: TObject);
@@ -123,7 +129,7 @@ type
         procedure LoadStories(pageID: string = '');
         procedure LoadTabData(tabName: BrowseType; pageID: string = '');
         procedure StringGridDblClick(Sender: TObject);
-        procedure StringGridTodoMouseDown(Sender: TObject;
+        procedure StringGridMouseDown(Sender: TObject;
             Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
         procedure StringGridTodoSelectCell(Sender: TObject; aCol,
             aRow: Integer; var CanSelect: Boolean);
@@ -148,6 +154,7 @@ const
 var
     MainForm:      TMainForm;
     CurrentTab:    BrowseType;
+    CurrentItemId: string;
     FirstShow:     boolean;
     LastSyncTime:  array[BrowseType] of TDateTime;
     ActiveSubMenu: array[BrowseType] of BrowseSubType;
@@ -215,15 +222,31 @@ begin
     ViewObject(tab, stringGridSender.Cells[0, stringGridSender.Selection.Bottom]);
 end;
 
-procedure TMainForm.StringGridTodoMouseDown(Sender: TObject;
+procedure TMainForm.StringGridMouseDown(Sender: TObject;
     Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+    nACol, nARow: Integer;
+    stringGridSender: TStringGrid;
 begin
+    stringGridSender := Sender as TStringGrid;
+    if Button = mbRight then
+    begin
+        stringGridSender.MouseToCell(X, Y, nACol, nARow);
+        stringGridSender.Col := nACol;
+        stringGridSender.Row := nARow;
+
+        if nARow >= 0 then
+        begin
+            CurrentItemId := stringGridSender.Cells[0, nARow];
+            PopupMenuStringGrid.Popup;
+        end;
+    end;
 end;
 
 procedure TMainForm.StringGridTodoSelectCell(Sender: TObject; aCol,
     aRow: Integer; var CanSelect: Boolean);
 begin
-
+    // ShowMessage(IntToStr(aCol) + ',' + IntToStr(aRow));
 end;
 
 (* Load todos *)
@@ -768,9 +791,14 @@ begin
 
 end;
 
+procedure TMainForm.MenuItemReloadTabClick(Sender: TObject);
+begin
+    LoadTabData(CurrentTab);
+end;
+
 procedure TMainForm.MenuItemViewObjectClick(Sender: TObject);
 begin
-
+    ViewObject(CurrentTab, CurrentItemId);
 end;
 
 procedure TMainForm.PanelMenuClick(Sender: TObject);
