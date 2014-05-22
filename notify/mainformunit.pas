@@ -112,6 +112,8 @@ type
         procedure LabelTabClick(Sender: TObject);
         procedure MenuItem1Click(Sender: TObject);
         procedure PanelMenuClick(Sender: TObject);
+        procedure PanelMessageClick(Sender: TObject);
+        procedure PanelPopupMenuClick(Sender: TObject);
         procedure ShowMessage(Message: string; msgType: string = 'danger');
         procedure HideMessage();
         procedure LoadTodos(pageID: string = '');
@@ -125,6 +127,7 @@ type
         procedure HidePopup();overload;
         procedure HidePopup(Sender: TObject);overload;
         procedure LoadAllTabDatas();
+        procedure ShowPager(pager: PageRecord; labelPagerInfo: TLabel; labelPagerPrev: TLabel; labelPagerNext: TLabel; labelPagerLast: TLabel);
 
     private
         { private declarations }
@@ -202,7 +205,6 @@ var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
-    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
@@ -229,21 +231,7 @@ begin
             StringGridTodo.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        pager := r.Pager;
-        LabelPagerTodoInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
-        LabelPagerTodoPrev.Enabled := pager.PageID > 1;
-        LabelPagerTodoNext.Enabled := pager.PageID < pager.PageTotal;
-        LabelPagerTodoLast.Enabled := LabelPagerTodoPrev.Enabled;
-        if pager.PageID = pager.PageTotal then
-        begin
-            LabelPagerTodoLast.Caption := '首页';
-            LabelPagerTodoLast.Hint := 'first';
-        end
-        else
-        begin
-            LabelPagerTodoLast.Caption := '末页';
-            LabelPagerTodoLast.Hint := 'last';
-        end;
+        ShowPager(r.Pager, LabelPagerTodoInfo, LabelPagerTodoPrev, LabelPagerTodoNext, LabelPagerTodoLast);
 
         LastSyncTime[btTodo] := Now;
     end
@@ -259,7 +247,6 @@ var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
-    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
@@ -285,21 +272,7 @@ begin
             StringGridTask.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        pager := r.Pager;
-        LabelPagerTaskInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
-        LabelPagerTaskPrev.Enabled := pager.PageID > 1;
-        LabelPagerTaskNext.Enabled := pager.PageID < pager.PageTotal;
-        LabelPagerTaskLast.Enabled := LabelPagerTaskPrev.Enabled;
-        if pager.PageID = pager.PageTotal then
-        begin
-            LabelPagerTaskLast.Caption := '首页';
-            LabelPagerTaskLast.Hint := 'first';
-        end
-        else
-        begin
-            LabelPagerTaskLast.Caption := '末页';
-            LabelPagerTaskLast.Hint := 'last';
-        end;
+        ShowPager(r.Pager, LabelPagerTaskInfo, LabelPagerTaskPrev, LabelPagerTaskNext, LabelPagerTaskLast);
 
         LastSyncTime[btTask] := Now;
     end
@@ -315,7 +288,6 @@ var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
-    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
@@ -341,21 +313,7 @@ begin
             StringGridBug.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        pager := r.Pager;
-        LabelPagerBugInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
-        LabelPagerBugPrev.Enabled := pager.PageID > 1;
-        LabelPagerBugNext.Enabled := pager.PageID < pager.PageTotal;
-        LabelPagerBugLast.Enabled := LabelPagerBugPrev.Enabled;
-        if pager.PageID = pager.PageTotal then
-        begin
-            LabelPagerBugLast.Caption := '首页';
-            LabelPagerBugLast.Hint := 'first';
-        end
-        else
-        begin
-            LabelPagerBugLast.Caption := '末页';
-            LabelPagerBugLast.Hint := 'last';
-        end;
+        ShowPager(r.Pager, LabelPagerBugInfo, LabelPagerBugPrev, LabelPagerBugNext, LabelPagerBugLast);
 
         LastSyncTime[btBug] := Now;
     end
@@ -371,7 +329,6 @@ var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     r:        DataResult;
-    pager:    PageRecord;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
@@ -397,21 +354,7 @@ begin
             StringGridStory.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        pager := r.Pager;
-        LabelPagerStoryInfo.Caption := Format('第 %d - %d 条，共 %d 条', [(pager.PageID - 1) * pager.PerPage + 1, Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
-        LabelPagerStoryPrev.Enabled := pager.PageID > 1;
-        LabelPagerStoryNext.Enabled := pager.PageID < pager.PageTotal;
-        LabelPagerStoryLast.Enabled := LabelPagerStoryPrev.Enabled;
-        if pager.PageID = pager.PageTotal then
-        begin
-            LabelPagerStoryLast.Caption := '首页';
-            LabelPagerStoryLast.Hint := 'first';
-        end
-        else
-        begin
-            LabelPagerStoryLast.Caption := '末页';
-            LabelPagerStoryLast.Hint := 'last';
-        end;
+        ShowPager(r.Pager, LabelPagerStoryInfo, LabelPagerStoryPrev, LabelPagerStoryNext, LabelPagerStoryLast);
 
         LastSyncTime[btStory] := Now;
     end
@@ -420,6 +363,38 @@ begin
         ShowMessage(r.Message);
     end;
 end;
+
+procedure TMainForm.ShowPager(pager: PageRecord; labelPagerInfo: TLabel; labelPagerPrev: TLabel; labelPagerNext: TLabel; labelPagerLast: TLabel);
+begin
+    if pager.Total > 0 then
+    begin
+        labelPagerInfo.Caption := Format('第 %d - %d 条，共 %d 条', [Min(pager.Total,(pager.PageID - 1) * pager.PerPage + 1), Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
+        labelPagerPrev.Visible := True;
+        labelPagerNext.Visible := True;
+        labelPagerLast.Visible := True;
+        labelPagerPrev.Enabled := pager.PageID > 1;
+        labelPagerNext.Enabled := pager.PageID < pager.PageTotal;
+        labelPagerLast.Enabled := labelPagerPrev.Enabled;
+        if pager.PageID = pager.PageTotal then
+        begin
+            labelPagerLast.Caption := '首页';
+            labelPagerLast.Hint := 'first';
+        end
+        else
+        begin
+            labelPagerLast.Caption := '末页';
+            labelPagerLast.Hint := 'last';
+        end;
+    end
+    else
+    begin
+        labelPagerInfo.Caption := '暂时没有数据。';
+        labelPagerPrev.Visible := False;
+        labelPagerNext.Visible := False;
+        labelPagerLast.Visible := False;
+    end;
+end;
+
 
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
@@ -538,6 +513,7 @@ procedure TMainForm.LabelMenuIconClick(Sender: TObject);
 begin
     PanelPopupMenu.Top := 50;
     PanelPopupMenu.Visible := (not PanelPopupMenu.Visible);
+    HideMessage;
 end;
 
 procedure TMainForm.LabelMenuIconMouseEnter(Sender: TObject);
@@ -766,6 +742,16 @@ begin
     HidePopup;
 end;
 
+procedure TMainForm.PanelMessageClick(Sender: TObject);
+begin
+
+end;
+
+procedure TMainForm.PanelPopupMenuClick(Sender: TObject);
+begin
+
+end;
+
 (* Hide result message *)
 procedure TMainForm.HideMessage();
 begin
@@ -776,6 +762,7 @@ procedure TMainForm.ShowMessage(Message: string; msgType: string = 'danger');
 begin
     LabelMessage.Caption := Message;
     PanelMessage.Visible := True;
+    PanelMessage.Top := 50;
 
     case Lowercase(msgType) of
         'success':

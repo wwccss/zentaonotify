@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 479
+  Left = 391
   Height = 700
-  Top = 241
+  Top = 199
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700
@@ -695,7 +695,7 @@ object MainForm: TMainForm
       TabOrder = 1
       OnClick = HidePopup
       object LabelMenu9: TLabel
-        Tag = 1
+        Tag = 4
         Cursor = crHandPoint
         Left = 10
         Height = 20
@@ -1070,7 +1070,7 @@ object MainForm: TMainForm
   object PanelMessage: TPanel
     Left = 0
     Height = 50
-    Top = 50
+    Top = 150
     Width = 1400
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
@@ -1080,9 +1080,11 @@ object MainForm: TMainForm
     Font.Color = 2268964
     ParentColor = False
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 5
     Visible = False
+    OnClick = PanelMessageClick
     object LabelMessageClose: TLabel
+      Cursor = crHandPoint
       Left = 1348
       Height = 20
       Top = 7
@@ -1108,7 +1110,7 @@ object MainForm: TMainForm
   object PanelPopupMenu: TPanel
     Left = 217
     Height = 106
-    Top = -100
+    Top = 100
     Width = 133
     BevelOuter = bvNone
     BorderStyle = bsSingle
@@ -1119,8 +1121,9 @@ object MainForm: TMainForm
     ClientWidth = 129
     Color = clWhite
     ParentColor = False
-    TabOrder = 5
+    TabOrder = 6
     Visible = False
+    OnClick = PanelPopupMenuClick
     object LabelPopupMenuBtnSync: TLabel
       Left = 0
       Height = 30
