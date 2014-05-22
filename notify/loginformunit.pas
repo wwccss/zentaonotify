@@ -106,8 +106,6 @@ begin
         if not r.Result then
         begin
             ShowResultMessage(r.Message);
-            BitBtnLogin.Caption := '登录';
-            BitBtnLogin.Enabled := True;
         end
         else
         begin
@@ -115,6 +113,9 @@ begin
             LoginForm.Hide;
             MainForm.Show;
         end;
+        BitBtnLogin.Caption := '登录';
+        BitBtnLogin.Enabled := True;
+        HideResultMessage;
     end;
 end;
 

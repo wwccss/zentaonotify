@@ -446,9 +446,8 @@ begin
     url           := GetAPI(['module', 'user', 'method', 'logout']);
 
     try
-        http.Get(url);
+        response := http.Get(url);
     except
-        Result.Result  := False;
         Result.Message := '注销时发生了错误。 Url: ' + url + '||' + response;
     end;
 end;

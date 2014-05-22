@@ -110,9 +110,6 @@
       <Item5>
         <Name Value="EConvertError"/>
       </Item5>
-      <Item6>
-        <Name Value="EHTTPClient"/>
-      </Item6>
     </Exceptions>
   </Debugging>
 </CONFIG>

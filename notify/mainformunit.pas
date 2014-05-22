@@ -616,7 +616,8 @@ begin
     if r.Result then
     begin
         LoginForm.Show;
-        MainForm.Close;
+        MainForm.Hide;
+        FirstShow := True;
     end
     else
     begin
