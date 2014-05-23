@@ -9,7 +9,9 @@ uses
     Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons, ActnList,
     Grids, EditBtn, Menus,
     fpjson, jsonparser,
-    ZentaoAPIUnit;
+    Clipbrd, LResources,
+    ZentaoAPIUnit,
+    BackgroundWorkerUnit;
 
 type
 
@@ -65,6 +67,7 @@ type
         LabelTab2:       TLabel;
         LabelMenuIcon: TLabel;
         Memo1:           TMemo;
+        MenuItemCopy: TMenuItem;
         MenuItemReloadTab: TMenuItem;
         MenuItemSep: TMenuItem;
         MenuItemViewObject: TMenuItem;
@@ -91,6 +94,7 @@ type
         StringGridStory: TStringGrid;
         StringGridTodo:  TStringGrid;
         StringGridTask:  TStringGrid;
+        Timer1: TTimer;
         procedure FormClick(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
@@ -115,7 +119,7 @@ type
         procedure LabelTabMouseEnter(Sender: TObject);
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
-        procedure MenuItem1Click(Sender: TObject);
+        procedure MenuItemCopyClick(Sender: TObject);
         procedure MenuItemReloadTabClick(Sender: TObject);
         procedure MenuItemViewObjectClick(Sender: TObject);
         procedure PanelMenuClick(Sender: TObject);
@@ -123,11 +127,13 @@ type
         procedure PanelPopupMenuClick(Sender: TObject);
         procedure ShowMessage(Message: string; msgType: string = 'danger');
         procedure HideMessage();
-        procedure LoadTodos(pageID: string = '');
-        procedure LoadTasks(pageID: string = '');
-        procedure LoadBugs(pageID: string = '');
-        procedure LoadStories(pageID: string = '');
+        procedure LoadTodos(dataResult: TDataResult);
+        procedure LoadTasks(dataResult: TDataResult);
+        procedure LoadBugs(dataResult: TDataResult);
+        procedure LoadStories(dataResult: TDataResult);
         procedure LoadTabData(tabName: BrowseType; pageID: string = '');
+        procedure LoadTabDataCompleted(e: TRunWorkerCompletedEventArgs);
+        function LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
         procedure StringGridDblClick(Sender: TObject);
         procedure StringGridMouseDown(Sender: TObject;
             Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -138,7 +144,7 @@ type
         procedure InitSubMenu();
         procedure HidePopup();overload;
         procedure HidePopup(Sender: TObject);overload;
-        procedure LoadAllTabDatas();
+        procedure LoadAllTabsData();
         procedure ShowPager(pager: PageRecord; labelPagerInfo: TLabel; labelPagerPrev: TLabel; labelPagerNext: TLabel; labelPagerLast: TLabel);
 
     private
@@ -147,9 +153,14 @@ type
         { public declarations }
     end;
 
+    TLoadDataListArgs = class(TObject)
+        Tab : BrowseType;
+        SubType : BrowseSubType;
+        PageID : string;
+    end;
+
 const
     TryLoadTabInterval = 5.0 / (24 * 60);
-
 
 var
     MainForm:      TMainForm;
@@ -158,6 +169,7 @@ var
     FirstShow:     boolean;
     LastSyncTime:  array[BrowseType] of TDateTime;
     ActiveSubMenu: array[BrowseType] of BrowseSubType;
+    IsTabLoading: array[BrowseType] of boolean;
 
 implementation
 
@@ -166,18 +178,13 @@ uses LoginFormUnit;
 {$R *.lfm}
 
 { TMainForm }
-procedure TMainForm.LoadAllTabDatas();
+procedure TMainForm.LoadAllTabsData();
 begin
-    LoadTodos;
-    LoadBugs;
-    if (user.Role = 'qa') or (user.Role = 'qd') then
-    begin
-        LoadTasks;
-    end
-    else if (user.Role = 'po') or (user.Role = 'pd') then
-    begin
-        LoadStories
-    end;
+    LastSyncTime[btStory] := 0;
+    LastSyncTime[btBug] := 0;
+    LastSyncTime[btStory] := 0;
+    LastSyncTime[btTodo] := 0;
+    LoadTabData(CurrentTab);
 end;
 
 procedure TMainForm.HidePopup(Sender: TObject);overload;
@@ -201,15 +208,59 @@ end;
 
 (* Load tab data list with a given browse type *)
 procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = '');
+var
+    dataLoader: TBackgroundWorker;
+    dataLoaderArgs : TLoadDataListArgs;
 begin
+    if IsTabLoading[tabName] then
+    begin
+        ShowMessage('应用正忙。');
+        Exit;
+    end;
+
+    dataLoaderArgs := TLoadDataListArgs.Create;
+    dataLoaderArgs.Tab := tabName;
+    dataLoaderArgs.SubType := ActiveSubMenu[tabName];
+    dataLoaderArgs.PageID := pageID;
+
+    IsTabLoading[tabName] := True;
+
+    dataLoader := TBackgroundWorker.Create(@LoadingTabData, @LoadTabDataCompleted, True);
+    dataLoader.RunWorkerAsync(dataLoaderArgs);
+end;
+
+procedure TMainForm.LoadTabDataCompleted(e: TRunWorkerCompletedEventArgs);
+var
+    data: TDataResult;
+    tabName: BrowseType;
+begin
+    data := e.Target as TDataResult;
+    tabName := BrowseTypes[e.Tag];
+
+    IsTabLoading[tabName] := False;
+
     case tabName of
-        btStory: LoadStories(pageID);
-        btBug: LoadBugs(pageID);
-        btTask: LoadTasks(pageID);
-        btTodo: LoadTodos(pageID);
+        btStory: LoadStories(data);
+        btBug: LoadBugs(data);
+        btTask: LoadTasks(data);
+        btTodo: LoadTodos(data);
         else
             ShowMessage('无法加载标签 "' + BrowseName[tabName] + '" 的数据。');
     end;
+end;
+
+function TMainForm.LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
+var
+    data: TDataResult;
+    dataLoaderArgs : TLoadDataListArgs;
+begin
+    dataLoaderArgs := arg as TLoadDataListArgs;
+    data := LoadDataList(dataLoaderArgs.Tab, dataLoaderArgs.SubType, dataLoaderArgs.PageID);
+
+    Result.Tag := Ord(dataLoaderArgs.tab);
+    Result.Result := data.Result;
+    Result.Message := data.Message;
+    Result.Target := data;
 end;
 
 procedure TMainForm.StringGridDblClick(Sender: TObject);
@@ -246,22 +297,19 @@ end;
 procedure TMainForm.StringGridTodoSelectCell(Sender: TObject; aCol,
     aRow: Integer; var CanSelect: Boolean);
 begin
-    // ShowMessage(IntToStr(aCol) + ',' + IntToStr(aRow));
 end;
 
 (* Load todos *)
-procedure TMainForm.LoadTodos(pageID: string = '');
+procedure TMainForm.LoadTodos(dataResult: TDataResult);
 var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
-    r:        DataResult;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList(btTodo, ActiveSubMenu[btTodo], pageID);
-    if r.Result then
+    if dataResult.Result then
     begin
-        Data     := r.Data;
+        Data     := dataResult.Data;
 
         dataList := Data.Arrays['todos'];
 
@@ -281,29 +329,27 @@ begin
             StringGridTodo.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        ShowPager(r.Pager, LabelPagerTodoInfo, LabelPagerTodoPrev, LabelPagerTodoNext, LabelPagerTodoLast);
+        ShowPager(dataResult.Pager, LabelPagerTodoInfo, LabelPagerTodoPrev, LabelPagerTodoNext, LabelPagerTodoLast);
 
         LastSyncTime[btTodo] := Now;
     end
     else
     begin
-        ShowMessage(r.Message);
+        ShowMessage(dataResult.Message);
     end;
 end;
 
 (* Load tasks *)
-procedure TMainForm.LoadTasks(pageID: string = '');
+procedure TMainForm.LoadTasks(dataResult: TDataResult);
 var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
-    r:        DataResult;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList(btTask, ActiveSubMenu[btTask], pageID);
-    if r.Result then
+    if dataResult.Result then
     begin
-        Data     := r.Data;
+        Data     := dataResult.Data;
         dataList := Data.Arrays['tasks'];
 
         (* clean all cells *)
@@ -322,29 +368,27 @@ begin
             StringGridTask.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        ShowPager(r.Pager, LabelPagerTaskInfo, LabelPagerTaskPrev, LabelPagerTaskNext, LabelPagerTaskLast);
+        ShowPager(dataResult.Pager, LabelPagerTaskInfo, LabelPagerTaskPrev, LabelPagerTaskNext, LabelPagerTaskLast);
 
         LastSyncTime[btTask] := Now;
     end
     else
     begin
-        ShowMessage(r.Message);
+        ShowMessage(dataResult.Message);
     end;
 end;
 
 (* Load bugs *)
-procedure TMainForm.LoadBugs(pageID: string = '');
+procedure TMainForm.LoadBugs(dataResult: TDataResult);
 var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
-    r:        DataResult;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList(btBug, ActiveSubMenu[btBug], pageID);
-    if r.Result then
+    if dataResult.Result then
     begin
-        Data     := r.Data;
+        Data     := dataResult.Data;
         dataList := Data.Arrays['bugs'];
 
         (* clean all cells *)
@@ -363,29 +407,27 @@ begin
             StringGridBug.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        ShowPager(r.Pager, LabelPagerBugInfo, LabelPagerBugPrev, LabelPagerBugNext, LabelPagerBugLast);
+        ShowPager(dataResult.Pager, LabelPagerBugInfo, LabelPagerBugPrev, LabelPagerBugNext, LabelPagerBugLast);
 
         LastSyncTime[btBug] := Now;
     end
     else
     begin
-        ShowMessage(r.Message);
+        ShowMessage(dataResult.Message);
     end;
 end;
 
 (* Load stories *)
-procedure TMainForm.LoadStories(pageID: string = '');
+procedure TMainForm.LoadStories(dataResult: TDataResult);
 var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
-    r:        DataResult;
     dataRow:  TJSONEnum;
     index:    integer;
 begin
-    r := LoadDataList(btStory, ActiveSubMenu[btStory], pageID);
-    if r.Result then
+    if dataResult.Result then
     begin
-        Data     := r.Data;
+        Data     := dataResult.Data;
         dataList := Data.Arrays['stories'];
 
         (* clean all cells *)
@@ -404,13 +446,13 @@ begin
             StringGridStory.Cells[2, index - 1] := dataItem.Get('status', '-');
         end;
 
-        ShowPager(r.Pager, LabelPagerStoryInfo, LabelPagerStoryPrev, LabelPagerStoryNext, LabelPagerStoryLast);
+        ShowPager(dataResult.Pager, LabelPagerStoryInfo, LabelPagerStoryPrev, LabelPagerStoryNext, LabelPagerStoryLast);
 
         LastSyncTime[btStory] := Now;
     end
     else
     begin
-        ShowMessage(r.Message);
+        ShowMessage(dataResult.Message);
     end;
 end;
 
@@ -486,6 +528,11 @@ begin
         LabelTab3.Hint    := 'bug';
         LabelTab3.Tag     := 2;
     end;
+
+    IsTabLoading[btTodo] := False;
+    IsTabLoading[btTask] := False;
+    IsTabLoading[btStory] := False;
+    IsTabLoading[btBug] := False;
 end;
 
 procedure TMainForm.InitSubMenu();
@@ -504,7 +551,7 @@ begin
         InitSubMenu;
 
         (* Load all data *)
-        LoadAllTabDatas;
+        LoadAllTabsData;
 
         FirstShow := False;
     end;
@@ -532,7 +579,6 @@ var
     tab         : BrowseType;
     menuParent  : TPanel;
     subMenu     : BrowseSubType;
-    childLabel  : TComponent;
     i           : integer;
 begin
     HidePopup;
@@ -696,9 +742,8 @@ end;
 
 procedure TMainForm.LabelPopupMenuBtnSyncClick(Sender: TObject);
 begin
-    LoadAllTabDatas;
+    LoadAllTabsData;
     ShowMessage('已成功同步.', 'success');
-
     PanelPopupMenu.Visible := False;
 end;
 
@@ -786,9 +831,8 @@ begin
     end;
 end;
 
-procedure TMainForm.MenuItem1Click(Sender: TObject);
+procedure TMainForm.MenuItemCopyClick(Sender: TObject);
 begin
-
 end;
 
 procedure TMainForm.MenuItemReloadTabClick(Sender: TObject);

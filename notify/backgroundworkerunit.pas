@@ -8,17 +8,11 @@ uses
     Classes, SysUtils;
 
 Type
-  TDoWorkEventArgs = record
-    Result : Boolean;
-    Argument : string;
-    Message : string;
-    Target : TObject;
-  end;
-
   TRunWorkerCompletedEventArgs = record
     Result : Boolean;
     Message : string;
     Target : TObject;
+    Tag: Integer;
   end;
 
   TReportStatusEventArgs = record
@@ -28,15 +22,15 @@ Type
     Target: TObject;
   end;
 
-  TDoWorkEventHandler = function(e: TDoWorkEventArgs):TRunWorkerCompletedEventArgs of Object;
+  TDoWorkEventHandler = function(arg: TObject):TRunWorkerCompletedEventArgs of Object;
   TRunWorkerCompletedEventHandler = procedure(e: TRunWorkerCompletedEventArgs) of Object;
   TReportStatusEventHandler = procedure(e: TReportStatusEventArgs) of Object;
   
   TBackgroundWorker = class(TThread)
   private
-    DoWorkEventArgs: TDoWorkEventArgs;
     DoWorkEventHandler: TDoWorkEventHandler;
     RunWorkerCompletedEventHandler: TRunWorkerCompletedEventHandler;
+    DoWorkArgs: TObject;
     ReportStatusEventHandler: TReportStatusEventHandler;
     ReportStatusEventArgs: TReportStatusEventArgs;
     RunWorkerCompletedEventArgs: TRunWorkerCompletedEventArgs;
@@ -51,10 +45,9 @@ Type
     
     property OnDoWork: TDoWorkEventHandler read DoWorkEventHandler write DoWorkEventHandler;
     property ReportStatus: TReportStatusEventHandler read ReportStatusEventHandler write ReportStatusEventHandler;
-    property DoWorkArgs: TDoWorkEventArgs read DoWorkEventArgs write DoWorkEventArgs;
     property RunWorkerCompleted : TRunWorkerCompletedEventHandler read RunWorkerCompletedEventHandler  write RunWorkerCompletedEventHandler;
 
-    procedure RunWorkerAsync(e: TDoWorkEventArgs); overload;
+    procedure RunWorkerAsync(arg: TObject); overload;
     procedure RunWorkerAsync(); overload;
     procedure OnReportStatus();
   end;
@@ -87,9 +80,9 @@ begin
     end;
 end;
 
-procedure TBackgroundWorker.RunWorkerAsync(e: TDoWorkEventArgs); overload;
+procedure TBackgroundWorker.RunWorkerAsync(arg: TObject); overload;
 begin
-    DoWorkArgs := e;
+    DoWorkArgs := arg;
     Start;
 end;
 
@@ -114,16 +107,16 @@ begin
 
     if Assigned(DoWorkEventHandler) then
     begin
-        ReportStatusEventArgs.Message := 'Assigned DoWorkEventHandler! DoWorkEventArgs.Message='+DoWorkEventArgs.Message;
+        ReportStatusEventArgs.Message := 'Assigned DoWorkEventHandler! DoWorkEventArgs.Message=';
         Synchronize(@OnReportStatus);
 
-        RunWorkerCompletedEventArgs := DoWorkEventHandler(DoWorkEventArgs);
+        RunWorkerCompletedEventArgs := DoWorkEventHandler(DoWorkArgs);
 
         ReportStatusEventArgs.Message := 'Completed DoWorkEventHandler!';
         Synchronize(@OnReportStatus);
     end;
 
-    ReportStatusEventArgs.Message := 'Excute complted! RunWorkerCompletedEventArgs.Message=' + DoWorkEventArgs.Message;
+    ReportStatusEventArgs.Message := 'Excute complted! RunWorkerCompletedEventArgs.';
     Synchronize(@OnReportStatus);
 end;
 

@@ -9,7 +9,8 @@ uses
     ExtCtrls, Buttons,
     md5,
     fpjson, jsonparser,
-    ZentaoAPIUnit;
+    ZentaoAPIUnit,
+    BackgroundWorkerUnit;
 
 type
     { TLoginForm }
@@ -19,10 +20,12 @@ type
         EditPassword:    TEdit;
         ImageBackground: TImage;
         LabelResult:     TLabel;
+        Memo1: TMemo;
         ShapeAddress:    TShape;
         ShapeUsername:   TShape;
         ShapePassword:   TShape;
         BitBtnLogin:     TBitBtn;
+        
         procedure BitBtnLoginClick(Sender: TObject);
         procedure EditEnter(Sender: TObject);
         procedure EditExit(Sender: TObject);
@@ -30,8 +33,10 @@ type
         procedure EditPasswordEnter(Sender: TObject);
         procedure EditPasswordExit(Sender: TObject);
         procedure FormCreate(Sender: TObject);
-        procedure ShowResultMessage(Message: string);
+        procedure ShowResultMessage(message: string);
         procedure HideResultMessage();
+        procedure LoginCompleted(e: TRunWorkerCompletedEventArgs);
+        function Logining(arg: TObject):TRunWorkerCompletedEventArgs;
         function CheckInputs: boolean;
 
     private
@@ -86,8 +91,6 @@ end;
 
 (* Handle event: on click the login button *)
 procedure TLoginForm.BitBtnLoginClick(Sender: TObject);
-var
-    r: HandleResult;
 begin
     if CheckInputs() then
     begin
@@ -100,21 +103,8 @@ begin
         user.Url      := EditAddress.Text;
 
         InitZentaoAPI();
-        r := TryLogin();
 
-        if not r.Result then
-        begin
-            ShowResultMessage(r.Message);
-        end
-        else
-        begin
-            ShowResultMessage('登录成功！');
-            LoginForm.Hide;
-            MainForm.Show;
-        end;
-        BitBtnLogin.Caption := '登录';
-        BitBtnLogin.Enabled := True;
-        HideResultMessage;
+        TBackgroundWorker.Create(@Logining, @LoginCompleted);
     end;
 end;
 
@@ -158,8 +148,41 @@ begin
         EditPassword.PasswordChar := #0;
 end;
 
+procedure TLoginForm.LoginCompleted(e: TRunWorkerCompletedEventArgs);
+var
+    r: HandleResult;
+begin
+    BitBtnLogin.Caption := '登录';
+    BitBtnLogin.Enabled := True;
+
+    r.Result := e.Result;
+    r.Message := e.Message;
+
+    if not r.Result then
+    begin
+        ShowResultMessage(r.Message);
+    end
+    else
+    begin
+        ShowResultMessage('登录成功！');
+        HideResultMessage;
+        LoginForm.Hide;
+        MainForm.Show;
+    end;
+end;
+
+function TLoginForm.Logining(arg: TObject): TRunWorkerCompletedEventArgs;
+var
+    r: HandleResult;
+begin
+    r := TryLogin;
+    Result.Result := r.Result;
+    Result.Message := r.Message;
+end;
+
 procedure TLoginForm.FormCreate(Sender: TObject);
 begin
+    inherited;
     session := TJSONObject.Create(['undefined', True]);
 
     // Test data
@@ -174,9 +197,9 @@ begin
     LabelResult.Visible := False;
 end;
 
-procedure TLoginForm.ShowResultMessage(Message: string);
+procedure TLoginForm.ShowResultMessage(message: string);
 begin
-    LabelResult.Caption := Message;
+    LabelResult.Caption := message;
     LabelResult.Visible := True;
 end;
 

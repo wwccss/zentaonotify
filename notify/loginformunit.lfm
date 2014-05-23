@@ -1,7 +1,7 @@
 object LoginForm: TLoginForm
-  Left = 593
+  Left = 396
   Height = 555
-  Top = 387
+  Top = 352
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -2235,6 +2235,14 @@ object LoginForm: TLoginForm
     ParentColor = False
     ParentFont = False
     Transparent = False
+    Visible = False
+  end
+  object Memo1: TMemo
+    Left = 0
+    Height = 161
+    Top = 393
+    Width = 285
+    TabOrder = 4
     Visible = False
   end
 end

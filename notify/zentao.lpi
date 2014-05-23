@@ -29,18 +29,21 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="3">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="RunTimeTypeInfoControls"/>
+        <PackageName Value="FCL"/>
       </Item1>
       <Item2>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="RunTimeTypeInfoControls"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SynEdit"/>
       </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="5">
       <Unit0>
         <Filename Value="zentao.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -67,6 +70,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainFormUnit"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="backgroundworkerunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="BackgroundWorkerUnit"/>
+      </Unit4>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

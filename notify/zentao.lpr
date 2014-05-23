@@ -7,7 +7,8 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, runtimetypeinfocontrols, LoginFormUnit, ZentaoAPIUnit, MainFormUnit;
+  Forms, runtimetypeinfocontrols, LoginFormUnit, ZentaoAPIUnit, MainFormUnit,
+  BackgroundWorkerUnit;
 
 {$R *.res}
 

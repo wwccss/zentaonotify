@@ -11,9 +11,8 @@ uses
     LCLIntf,
     fpjson, jsonparser;
 
-type
     { Record }
-
+type
     UserConfig = record
         Url:      string;
         Account:  string;
@@ -37,7 +36,7 @@ type
         PageCookie: string;
     end;
 
-    DataResult = record
+    TDataResult = class(TObject)
         Result:  boolean;
         Message: string;
         Data:    TJSONObject;
@@ -61,7 +60,7 @@ function GetRole(): HandleResult;
 function TryLogin(): HandleResult;
 function Logout(): HandleResult;
 function LoadDataList(obj: BrowseType; objType: BrowseSubType;
-    pageID: string = ''): DataResult;
+    pageID: string = ''): TDataResult;
 function Max(a: integer; b: integer): integer;
 function Min(a: integer; b: integer): integer;
 function ViewObject(objType: BrowseType; id: string): boolean;
@@ -89,7 +88,7 @@ end;
 
 (* Load Data from server with zentao api and return in a list *)
 function LoadDataList(obj: BrowseType; objType: BrowseSubType;
-    pageID: string = ''): DataResult;
+    pageID: string = ''): TDataResult;
 var
     response:  string;
     Data, pageData: TJSONObject;
@@ -98,6 +97,7 @@ var
     pageNum:   integer;
     firstPage: boolean;
 begin
+    Result := TDataResult.Create;
     Result.Result := True;
 
     (* init page *)
@@ -472,10 +472,6 @@ begin
     Result := GetConfig();
     if not Result.Result then
         Exit;
-
-    //Result := CheckVersion();
-    //if not Result.Result then
-    //   Exit;
 
     Result := GetSession();
     if not Result.Result then
