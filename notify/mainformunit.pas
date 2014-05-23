@@ -22,7 +22,8 @@ type
         Image2: TImage;
         Image3: TImage;
         ImageListPopupMenu: TImageList;
-        Label1: TLabel;
+        LabelTodoSepLine: TLabel;
+        LabelLoadingProgressbar: TLabel;
         LabelMessageClose: TLabel;
         LabelMessage: TLabel;
         LabelPagerTaskInfo: TLabel;
@@ -94,7 +95,7 @@ type
         StringGridStory: TStringGrid;
         StringGridTodo:  TStringGrid;
         StringGridTask:  TStringGrid;
-        Timer1: TTimer;
+        TimerLoadingAnimate: TTimer;
         procedure FormClick(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
@@ -139,6 +140,9 @@ type
             Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
         procedure StringGridTodoSelectCell(Sender: TObject; aCol,
             aRow: Integer; var CanSelect: Boolean);
+        procedure TimerLoadingAnimateStartTimer(Sender: TObject);
+        procedure TimerLoadingAnimateStopTimer(Sender: TObject);
+        procedure TimerLoadingAnimateTimer(Sender: TObject);
         procedure TryLoadTabData(tabName: BrowseType);
         procedure InitTabMenu();
         procedure InitSubMenu();
@@ -161,6 +165,7 @@ type
 
 const
     TryLoadTabInterval = 5.0 / (24 * 60);
+    ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
 
 var
     MainForm:      TMainForm;
@@ -169,7 +174,9 @@ var
     FirstShow:     boolean;
     LastSyncTime:  array[BrowseType] of TDateTime;
     ActiveSubMenu: array[BrowseType] of BrowseSubType;
-    IsTabLoading: array[BrowseType] of boolean;
+    IsTabLoading: boolean;
+    AverageWaitingTime: Double; // days
+    StartLoadingTime, StopLoadingTime: TDateTime;
 
 implementation
 
@@ -212,9 +219,9 @@ var
     dataLoader: TBackgroundWorker;
     dataLoaderArgs : TLoadDataListArgs;
 begin
-    if IsTabLoading[tabName] then
+    if IsTabLoading then
     begin
-        ShowMessage('应用正忙。');
+        ShowMessage('应用正忙，请稍后再试。', 'warning');
         Exit;
     end;
 
@@ -223,7 +230,8 @@ begin
     dataLoaderArgs.SubType := ActiveSubMenu[tabName];
     dataLoaderArgs.PageID := pageID;
 
-    IsTabLoading[tabName] := True;
+    IsTabLoading := True;
+    TimerLoadingAnimate.Enabled:= true;
 
     dataLoader := TBackgroundWorker.Create(@LoadingTabData, @LoadTabDataCompleted, True);
     dataLoader.RunWorkerAsync(dataLoaderArgs);
@@ -237,7 +245,8 @@ begin
     data := e.Target as TDataResult;
     tabName := BrowseTypes[e.Tag];
 
-    IsTabLoading[tabName] := False;
+    IsTabLoading := False;
+    StopLoadingTime := Now;
 
     case tabName of
         btStory: LoadStories(data);
@@ -297,6 +306,50 @@ end;
 procedure TMainForm.StringGridTodoSelectCell(Sender: TObject; aCol,
     aRow: Integer; var CanSelect: Boolean);
 begin
+end;
+
+procedure TMainForm.TimerLoadingAnimateStartTimer(Sender: TObject);
+begin
+    StartLoadingTime := Now;
+    IsTabLoading := True;
+    LabelLoadingProgressbar.Width := 0;
+    LabelLoadingProgressbar.Visible := True;
+end;
+
+procedure TMainForm.TimerLoadingAnimateStopTimer(Sender: TObject);
+begin
+    AverageWaitingTime := 0.8 * AverageWaitingTime + 0.2 * (StopLoadingTime - StartLoadingTime);
+    LabelLoadingProgressbar.Visible := False;
+end;
+
+procedure TMainForm.TimerLoadingAnimateTimer(Sender: TObject);
+var
+    n : TDateTime;
+    d : Double;
+    w : Int64;
+    nd : Double;
+begin
+    n := Now;
+    d := n - StartLoadingTime;
+    w := Trunc(Width * (d/AverageWaitingTime));
+
+    if IsTabLoading then
+    begin
+        LabelLoadingProgressbar.Width := Min(Width - 100, w);
+    end
+    else
+    begin
+        LabelLoadingProgressbar.Width := Min(Width, LabelLoadingProgressbar.Width + Trunc((Width - LabelLoadingProgressbar.Width) / 9));
+        nd := (n-StopLoadingTime);
+
+        if nd > (420 / ONEDAYMILLIONSECONDS) then
+            LabelLoadingProgressbar.Width := Width;
+
+        if nd > (500 / ONEDAYMILLIONSECONDS) then
+        begin
+            TimerLoadingAnimate.Enabled := False;
+        end;
+    end;
 end;
 
 (* Load todos *)
@@ -506,6 +559,7 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
     FirstShow := True;
+    AverageWaitingTime := 2000 / ONEDAYMILLIONSECONDS; // 2 seconds
 end;
 
 procedure TMainForm.InitTabMenu();
@@ -529,10 +583,7 @@ begin
         LabelTab3.Tag     := 2;
     end;
 
-    IsTabLoading[btTodo] := False;
-    IsTabLoading[btTask] := False;
-    IsTabLoading[btStory] := False;
-    IsTabLoading[btBug] := False;
+    IsTabLoading := False;
 end;
 
 procedure TMainForm.InitSubMenu();
@@ -743,7 +794,6 @@ end;
 procedure TMainForm.LabelPopupMenuBtnSyncClick(Sender: TObject);
 begin
     LoadAllTabsData;
-    ShowMessage('已成功同步.', 'success');
     PanelPopupMenu.Visible := False;
 end;
 
@@ -910,6 +960,7 @@ begin
         end;
     end;
 
+    Memo1.Top := 0;
     Memo1.Visible := True;
     Memo1.Lines.Text    := Memo1.Lines.Text + Message + LineEnding;
 end;

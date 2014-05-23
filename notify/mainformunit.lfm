@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 653
+  Left = 490
   Height = 700
-  Top = 205
+  Top = 184
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700
@@ -96,9 +96,10 @@ object MainForm: TMainForm
     end
     object Memo1: TMemo
       Left = 1036
-      Height = 47
-      Top = 2
+      Height = 50
+      Top = -100
       Width = 364
+      BorderStyle = bsNone
       TabOrder = 0
       Visible = False
     end
@@ -155,6 +156,16 @@ object MainForm: TMainForm
       Enabled = False
       Pen.Color = 16547890
       Pen.Style = psClear
+    end
+    object LabelLoadingProgressbar: TLabel
+      Left = 0
+      Height = 4
+      Top = 0
+      Width = 1400
+      AutoSize = False
+      Color = 16547890
+      ParentColor = False
+      Transparent = False
     end
   end
   object PanelNavTodo: TPanel
@@ -312,7 +323,7 @@ object MainForm: TMainForm
         OnMouseLeave = LabelMenuMouseLeave
       end
     end
-    object Label1: TLabel
+    object LabelTodoSepLine: TLabel
       Left = 0
       Height = 1
       Top = 49
@@ -1083,7 +1094,7 @@ object MainForm: TMainForm
   object PanelMessage: TPanel
     Left = 0
     Height = 50
-    Top = -40
+    Top = 100
     Width = 1400
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
@@ -1123,7 +1134,7 @@ object MainForm: TMainForm
   object PanelPopupMenu: TPanel
     Left = 217
     Height = 106
-    Top = -100
+    Top = 150
     Width = 133
     BevelOuter = bvNone
     BorderStyle = bsSingle
@@ -1772,7 +1783,12 @@ object MainForm: TMainForm
       FF00FFFFFF00FFFFFF00FFFFFF00
     }
   end
-  object Timer1: TTimer
+  object TimerLoadingAnimate: TTimer
+    Enabled = False
+    Interval = 40
+    OnTimer = TimerLoadingAnimateTimer
+    OnStartTimer = TimerLoadingAnimateStartTimer
+    OnStopTimer = TimerLoadingAnimateStopTimer
     left = 424
     top = 16
   end
