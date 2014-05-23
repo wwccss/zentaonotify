@@ -37,10 +37,14 @@ type
     end;
 
     TDataResult = class(TObject)
-        Result:  boolean;
-        Message: string;
+        Result:  Boolean;
+        Message: String;
         Data:    TJSONObject;
         Pager:   PageRecord;
+        IsNew:   Boolean;
+        FirstPage: Boolean;
+
+        Constructor Create;
     end;
 
     BrowseType        = (btTodo = 0, btTask = 1, btBug = 2, btStory = 3);
@@ -71,12 +75,21 @@ var
     session:        TJSONObject;
     http:           TFPHTTPClient;
     BrowseName:     array[BrowseType] of string;
+    BrowseNames:    array[BrowseType] of string;
     BrowseTypes:    array[0..3] of BrowseType;
     BrowseSubName:  array[BrowseSubType] of string;
     BrowseSubTypes: array[0..9] of BrowseSubType;
     BrowsePagers:   array[BrowseType] of array[BrowseSubType] of PageRecord;
+    BrowseMd5:      array[BrowseType] of string;
 
 implementation
+
+Constructor TDataResult.Create;
+begin
+    IsNew := False;
+    Result := True;
+    FirstPage := False;
+end;
 
 (* View object in browser *)
 function ViewObject(objType: BrowseType; id: string): boolean;
@@ -90,7 +103,7 @@ end;
 function LoadDataList(obj: BrowseType; objType: BrowseSubType;
     pageID: string = ''): TDataResult;
 var
-    response:  string;
+    response, md5:  string;
     Data, pageData: TJSONObject;
     url:       string;
     pager:     PageRecord;
@@ -98,7 +111,6 @@ var
     firstPage: boolean;
 begin
     Result := TDataResult.Create;
-    Result.Result := True;
 
     (* init page *)
     pager  := BrowsePagers[obj, objType];
@@ -135,6 +147,7 @@ begin
         pageID := '';
     end;
     firstPage := (pageID = '');
+    Result.FirstPage := firstPage;
 
     (* get url *)
     url := GetAPI(['module', 'my', 'method', BrowseName[obj],
@@ -147,6 +160,14 @@ begin
         try
             (* prepare data *)
             Data     := TJSONObject(TJSONParser.Create(response).Parse);
+
+            md5 := Data.Get('md5', '');
+            if firstPage and (md5 <> '') and (md5 <> BrowseMd5[obj]) then
+            begin
+                Result.IsNew := True;
+                BrowseMd5[obj] := md5;
+            end;
+
             response := Data.Get('data', '');
             if response <> '' then
                 Data := TJSONObject(TJSONParser.Create(response).Parse);
@@ -243,9 +264,6 @@ begin
     viewType   := config.Get('viewType', 'json');
     moduleName := config.Get('module', '');
     methodName := config.Get('method', '');
-    nameSet    := TStringList.Create;
-    nameSet.CommaText :=
-        ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
 
     if LowerCase(zentaoConfig.Get('requestType', '')) = 'get' then
     begin
@@ -266,12 +284,15 @@ begin
         begin
             Result := Result + '&moduleName=' + config.Get('moduleName', '') +
                 '&methodName=' + config.Get('methodName', '') + '&params=';
+            nameSet    := TStringList.Create;
+            nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
             for item in config do
             begin
                 if (nameSet.indexOf(item.Key) > 0) then
                     continue;
                 Result := Result + item.Key + '=' + item.Value.AsString + '&';
             end;
+            nameSet.Free;
         end;
 
         if moduleName = 'my' then
@@ -327,11 +348,14 @@ begin
 
         for item in config do
         begin
+            nameSet    := TStringList.Create;
+            nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
             if (nameSet.indexOf(item.Key) > 0) then
                 continue;
             if (methodName <> 'view') or (item.key <> 'id') then
                 Result := Result + item.Key + '=';
             Result := Result + item.Value.AsString + '-';
+            nameSet.Free;
         end;
 
         pageID := config.Get('pageID', '');
@@ -495,6 +519,11 @@ begin
     BrowseName[btTask]  := 'task';
     BrowseName[btBug]   := 'bug';
     BrowseName[btStory] := 'story';
+
+    BrowseNames[btTodo]  := 'todos';
+    BrowseNames[btTask]  := 'tasks';
+    BrowseNames[btBug]   := 'bugs';
+    BrowseNames[btStory] := 'stories';
 
     BrowseTypes[0] := btTodo;
     BrowseTypes[1] := btTask;

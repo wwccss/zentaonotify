@@ -129,10 +129,6 @@ type
         procedure PanelPopupMenuClick(Sender: TObject);
         procedure ShowMessage(Message: string; msgType: string = 'danger');
         procedure HideMessage();
-        procedure LoadTodos(dataResult: TDataResult);
-        procedure LoadTasks(dataResult: TDataResult);
-        procedure LoadBugs(dataResult: TDataResult);
-        procedure LoadStories(dataResult: TDataResult);
         procedure LoadTabData(tabName: BrowseType; pageID: string = '');
         procedure LoadTabDataCompleted(e: TRunWorkerCompletedEventArgs);
         function LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
@@ -151,12 +147,11 @@ type
         procedure HidePopup();overload;
         procedure HidePopup(Sender: TObject);overload;
         procedure LoadAllTabsData();
-        procedure ShowPager(pager: PageRecord; labelPagerInfo: TLabel; labelPagerPrev: TLabel; labelPagerNext: TLabel; labelPagerLast: TLabel);
-
+        procedure ShowPager(pager: PageRecord; tab: BrowseType);
+    
     private
-        { private declarations }
-    public
-        { public declarations }
+        procedure LoadTab(dataResult: TDataResult; tab: BrowseType);
+
     end;
 
     TLoadDataListArgs = class(TObject)
@@ -176,7 +171,9 @@ var
     FirstShow:     boolean;
     LastSyncTime:  array[BrowseType] of TDateTime;
     ActiveSubMenu: array[BrowseType] of BrowseSubType;
-    TabGroup:      array [1..3] of BrowseType;
+    StringGrids:   array[BrowseType] of TStringGrid;
+    BrowseTrack:   array[BrowseType] of TStringList;
+    TabGroup:      array[1..3] of BrowseType;
     IsTabLoading: boolean;
     AverageWaitingTime: Double; // days
     StartLoadingTime, StopLoadingTime: TDateTime;
@@ -251,14 +248,9 @@ begin
     IsTabLoading := False;
     StopLoadingTime := Now;
 
-    case tabName of
-        btStory: LoadStories(data);
-        btBug: LoadBugs(data);
-        btTask: LoadTasks(data);
-        btTodo: LoadTodos(data);
-        else
-            ShowMessage('无法加载标签 "' + BrowseName[tabName] + '" 的数据。');
-    end;
+    LoadTab(data, tabName);
+
+    data.Free;
 end;
 
 function TMainForm.LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
@@ -273,6 +265,8 @@ begin
     Result.Result := data.Result;
     Result.Message := data.Message;
     Result.Target := data;
+
+    dataLoaderArgs.Free;
 end;
 
 procedure TMainForm.StringGridDblClick(Sender: TObject);
@@ -319,7 +313,7 @@ begin
         if (Now - LastSyncTime[TabGroup[i]]) > ((2 * 60 * 1000) / ONEDAYMILLIONSECONDS) then
         begin
             LoadTabData(TabGroup[i]);
-            ShowMessage('自动同步于： ' + FormatDateTime('YYYY-MM-DD HH:NN:SS',Now));
+            ShowMessage('自动同步于： ' + FormatDateTime('YYYY-MM-DD HH:NN:SS', Now));
             break;
         end;
     end;
@@ -369,23 +363,30 @@ begin
     end;
 end;
 
-(* Load todos *)
-procedure TMainForm.LoadTodos(dataResult: TDataResult);
+procedure TMainForm.LoadTab(dataResult: TDataResult; tab: BrowseType);
 var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
     dataRow:  TJSONEnum;
     index:    integer;
+    track: TStringList;
+    stringGrid: TStringGrid;
+    noTrack: boolean;
+    id: string;
 begin
     if dataResult.Result then
     begin
         Data     := dataResult.Data;
+        dataList := Data.Arrays[BrowseNames[tab]];
+        stringGrid := StringGrids[tab];
 
-        dataList := Data.Arrays['todos'];
+        track    := BrowseTrack[tab];
+        noTrack  := track.indexOf('#') < 0;
+        if noTrack then track.Add('#');
 
         (* clean all cells *)
-        StringGridTodo.Clean;
-        StringGridTodo.RowCount := 0;
+        stringGrid.Clean;
+        stringGrid.RowCount := 0;
         index := 0;
 
         (* convert data *)
@@ -393,15 +394,32 @@ begin
         begin
             index    := index + 1;
             dataItem := TJSONObject(dataRow.Value);
-            StringGridTodo.RowCount := index;
-            StringGridTodo.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
-            StringGridTodo.Cells[1, index - 1] := dataItem.Get('name', '-');
-            StringGridTodo.Cells[2, index - 1] := dataItem.Get('status', '-');
+            id := dataItem.Get('id', '');
+            stringGrid.RowCount := index;
+            stringGrid.Cells[0, index - 1] := '#' + id;
+            stringGrid.Cells[1, index - 1] := dataItem.Get('name', '-');
+            stringGrid.Cells[2, index - 1] := dataItem.Get('status', '-');
+
+            if noTrack then
+            begin
+                track.Add(id);
+            end
+            else if track.indexOf(id) < 0 then
+            begin
+                track.Add(id);
+                dataItem.Booleans['new'] := True;
+            end;
+
+            if dataItem.Get('new', False) then
+            begin
+                stringGrid.Cells[0, index - 1] := '+' + id;
+            end;
         end;
 
-        ShowPager(dataResult.Pager, LabelPagerTodoInfo, LabelPagerTodoPrev, LabelPagerTodoNext, LabelPagerTodoLast);
+        ShowPager(dataResult.Pager, tab);
 
         LastSyncTime[btTodo] := Now;
+        BrowseTrack[btTodo] := track;
     end
     else
     begin
@@ -409,125 +427,45 @@ begin
     end;
 end;
 
-(* Load tasks *)
-procedure TMainForm.LoadTasks(dataResult: TDataResult);
+procedure TMainForm.ShowPager(pager: PageRecord; tab: BrowseType);
 var
-    Data, dataItem: TJSONObject;
-    dataList: TJSONArray;
-    dataRow:  TJSONEnum;
-    index:    integer;
+    labelPagerInfo, labelPagerPrev, labelPagerNext, labelPagerLast: TLabel;
 begin
-    if dataResult.Result then
-    begin
-        Data     := dataResult.Data;
-        dataList := Data.Arrays['tasks'];
-
-        (* clean all cells *)
-        StringGridTask.Clean;
-        StringGridTask.RowCount := 0;
-        index := 0;
-
-        (* convert data *)
-        for dataRow in dataList do
+    case tab of
+        btTodo:
         begin
-            index    := index + 1;
-            dataItem := TJSONObject(dataRow.Value);
-            StringGridTask.RowCount := index;
-            StringGridTask.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
-            StringGridTask.Cells[1, index - 1] := dataItem.Get('name', '-');
-            StringGridTask.Cells[2, index - 1] := dataItem.Get('status', '-');
+            labelPagerInfo := LabelPagerTodoInfo;
+            labelPagerPrev := LabelPagerTodoPrev;
+            labelPagerNext := LabelPagerTodoNext;
+            labelPagerLast := LabelPagerTodoLast;
         end;
-
-        ShowPager(dataResult.Pager, LabelPagerTaskInfo, LabelPagerTaskPrev, LabelPagerTaskNext, LabelPagerTaskLast);
-
-        LastSyncTime[btTask] := Now;
-    end
-    else
-    begin
-        ShowMessage(dataResult.Message);
-    end;
-end;
-
-(* Load bugs *)
-procedure TMainForm.LoadBugs(dataResult: TDataResult);
-var
-    Data, dataItem: TJSONObject;
-    dataList: TJSONArray;
-    dataRow:  TJSONEnum;
-    index:    integer;
-begin
-    if dataResult.Result then
-    begin
-        Data     := dataResult.Data;
-        dataList := Data.Arrays['bugs'];
-
-        (* clean all cells *)
-        StringGridBug.Clean;
-        StringGridBug.RowCount := 0;
-        index := 0;
-
-        (* convert data *)
-        for dataRow in dataList do
+        btStory:
         begin
-            index    := index + 1;
-            dataItem := TJSONObject(dataRow.Value);
-            StringGridBug.RowCount := index;
-            StringGridBug.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
-            StringGridBug.Cells[1, index - 1] := dataItem.Get('title', '-');
-            StringGridBug.Cells[2, index - 1] := dataItem.Get('status', '-');
+            labelPagerInfo := LabelPagerStoryInfo;
+            labelPagerPrev := LabelPagerStoryPrev;
+            labelPagerNext := LabelPagerStoryNext;
+            labelPagerLast := LabelPagerStoryLast;
         end;
-
-        ShowPager(dataResult.Pager, LabelPagerBugInfo, LabelPagerBugPrev, LabelPagerBugNext, LabelPagerBugLast);
-
-        LastSyncTime[btBug] := Now;
-    end
-    else
-    begin
-        ShowMessage(dataResult.Message);
-    end;
-end;
-
-(* Load stories *)
-procedure TMainForm.LoadStories(dataResult: TDataResult);
-var
-    Data, dataItem: TJSONObject;
-    dataList: TJSONArray;
-    dataRow:  TJSONEnum;
-    index:    integer;
-begin
-    if dataResult.Result then
-    begin
-        Data     := dataResult.Data;
-        dataList := Data.Arrays['stories'];
-
-        (* clean all cells *)
-        StringGridStory.Clean;
-        StringGridStory.RowCount := 0;
-        index := 0;
-
-        (* convert data *)
-        for dataRow in dataList do
+        btBug:
         begin
-            index    := index + 1;
-            dataItem := TJSONObject(dataRow.Value);
-            StringGridStory.RowCount := index;
-            StringGridStory.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
-            StringGridStory.Cells[1, index - 1] := dataItem.Get('title', '-');
-            StringGridStory.Cells[2, index - 1] := dataItem.Get('status', '-');
+            labelPagerInfo := LabelPagerBugInfo;
+            labelPagerPrev := LabelPagerBugPrev;
+            labelPagerNext := LabelPagerBugNext;
+            labelPagerLast := LabelPagerBugLast;
         end;
-
-        ShowPager(dataResult.Pager, LabelPagerStoryInfo, LabelPagerStoryPrev, LabelPagerStoryNext, LabelPagerStoryLast);
-
-        LastSyncTime[btStory] := Now;
-    end
-    else
-    begin
-        ShowMessage(dataResult.Message);
+        btTask:
+        begin
+            labelPagerInfo := LabelPagerTaskInfo;
+            labelPagerPrev := LabelPagerTaskPrev;
+            labelPagerNext := LabelPagerTaskNext;
+            labelPagerLast := LabelPagerTaskLast;
+        end;
+        else 
+        begin
+            Exit;
+        end;
     end;
-end;
 
-procedure TMainForm.ShowPager(pager: PageRecord; labelPagerInfo: TLabel; labelPagerPrev: TLabel; labelPagerNext: TLabel; labelPagerLast: TLabel);
-begin
     labelPagerInfo.Visible := False;
     labelPagerPrev.Visible := False;
     labelPagerNext.Visible := False;
@@ -565,6 +503,9 @@ procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     // Destroy;
     Logout;
+    BrowseTrack[TabGroup[0]].Free;
+    BrowseTrack[TabGroup[1]].Free;
+    BrowseTrack[TabGroup[2]].Free;
     LoginForm.Close;
 end;
 
@@ -582,6 +523,8 @@ end;
 procedure TMainForm.InitTabMenu();
 begin
     TabGroup[1] := btTodo;
+    BrowseTrack[btTodo] := TStringList.Create;
+    BrowseTrack[btBug] := TStringList.Create;
     if (user.Role = 'qa') or (user.Role = 'qd') then
     begin
         LabelTab2.Caption := 'Bug';
@@ -593,6 +536,7 @@ begin
 
         TabGroup[2] := btBug;
         TabGroup[3] := btTask;
+        BrowseTrack[btTask] := TStringList.Create;
     end
     else if (user.Role = 'po') or (user.Role = 'pd') then
     begin
@@ -605,9 +549,15 @@ begin
 
         TabGroup[2] := btStory;
         TabGroup[3] := btBug;
+        BrowseTrack[btStory] := TStringList.Create;
     end;
 
     IsTabLoading := False;
+
+    StringGrids[btTask] := StringGridTask;
+    StringGrids[btTodo] := StringGridTodo;
+    StringGrids[btStory] := StringGridStory;
+    StringGrids[btBug] := StringGridBug;
 end;
 
 procedure TMainForm.InitSubMenu();
