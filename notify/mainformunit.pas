@@ -95,6 +95,7 @@ type
         StringGridStory: TStringGrid;
         StringGridTodo:  TStringGrid;
         StringGridTask:  TStringGrid;
+        TimerAutoSync: TTimer;
         TimerLoadingAnimate: TTimer;
         procedure FormClick(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -140,6 +141,7 @@ type
             Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
         procedure StringGridTodoSelectCell(Sender: TObject; aCol,
             aRow: Integer; var CanSelect: Boolean);
+        procedure TimerAutoSyncTimer(Sender: TObject);
         procedure TimerLoadingAnimateStartTimer(Sender: TObject);
         procedure TimerLoadingAnimateStopTimer(Sender: TObject);
         procedure TimerLoadingAnimateTimer(Sender: TObject);
@@ -174,6 +176,7 @@ var
     FirstShow:     boolean;
     LastSyncTime:  array[BrowseType] of TDateTime;
     ActiveSubMenu: array[BrowseType] of BrowseSubType;
+    TabGroup:      array [1..3] of BrowseType;
     IsTabLoading: boolean;
     AverageWaitingTime: Double; // days
     StartLoadingTime, StopLoadingTime: TDateTime;
@@ -306,6 +309,20 @@ end;
 procedure TMainForm.StringGridTodoSelectCell(Sender: TObject; aCol,
     aRow: Integer; var CanSelect: Boolean);
 begin
+end;
+
+procedure TMainForm.TimerAutoSyncTimer(Sender: TObject);
+var i:Integer;
+begin
+    for i := 1 to High(TabGroup) do
+    begin
+        if (Now - LastSyncTime[TabGroup[i]]) > ((2 * 60 * 1000) / ONEDAYMILLIONSECONDS) then
+        begin
+            LoadTabData(TabGroup[i]);
+            ShowMessage('自动同步于： ' + FormatDateTime('YYYY-MM-DD HH:NN:SS',Now));
+            break;
+        end;
+    end;
 end;
 
 procedure TMainForm.TimerLoadingAnimateStartTimer(Sender: TObject);
@@ -564,6 +581,7 @@ end;
 
 procedure TMainForm.InitTabMenu();
 begin
+    TabGroup[1] := btTodo;
     if (user.Role = 'qa') or (user.Role = 'qd') then
     begin
         LabelTab2.Caption := 'Bug';
@@ -572,6 +590,9 @@ begin
         LabelTab3.Caption := '任务';
         LabelTab3.Hint    := 'task';
         LabelTab3.Tag     := 1;
+
+        TabGroup[2] := btBug;
+        TabGroup[3] := btTask;
     end
     else if (user.Role = 'po') or (user.Role = 'pd') then
     begin
@@ -581,6 +602,9 @@ begin
         LabelTab3.Caption := 'Bug';
         LabelTab3.Hint    := 'bug';
         LabelTab3.Tag     := 2;
+
+        TabGroup[2] := btStory;
+        TabGroup[3] := btBug;
     end;
 
     IsTabLoading := False;

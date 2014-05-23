@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 490
+  Left = 507
   Height = 700
-  Top = 184
+  Top = 231
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700
@@ -1790,6 +1790,12 @@ object MainForm: TMainForm
     OnStartTimer = TimerLoadingAnimateStartTimer
     OnStopTimer = TimerLoadingAnimateStopTimer
     left = 424
+    top = 16
+  end
+  object TimerAutoSync: TTimer
+    Interval = 120000
+    OnTimer = TimerAutoSyncTimer
+    left = 456
     top = 16
   end
 end
