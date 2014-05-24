@@ -43,7 +43,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="5">
+    <Units Count="6">
       <Unit0>
         <Filename Value="zentao.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -75,6 +75,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="BackgroundWorkerUnit"/>
       </Unit4>
+      <Unit5>
+        <Filename Value="popwindowunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PopWindow"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PopWindowUnit"/>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

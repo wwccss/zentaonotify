@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 407
+  Left = 552
   Height = 700
-  Top = 236
+  Top = 249
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700
@@ -230,15 +230,15 @@ object MainForm: TMainForm
         end>
       DefaultColWidth = 60
       DefaultRowHeight = 38
+      ExtendedSelect = False
       FixedColor = clNone
       FixedCols = 0
       FixedRows = 0
       Flat = True
-      Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
+      Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellEllipsis]
       RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
-      TitleStyle = tsNative
       OnClick = HidePopup
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown
@@ -470,7 +470,6 @@ object MainForm: TMainForm
       RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
-      TitleStyle = tsNative
       OnClick = HidePopup
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown
@@ -694,7 +693,6 @@ object MainForm: TMainForm
       RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
-      TitleStyle = tsNative
       OnClick = HidePopup
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown
@@ -918,7 +916,6 @@ object MainForm: TMainForm
       RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
-      TitleStyle = tsNative
       OnClick = HidePopup
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown

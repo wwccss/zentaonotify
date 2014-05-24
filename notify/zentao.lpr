@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, LoginFormUnit, ZentaoAPIUnit, MainFormUnit,
-  BackgroundWorkerUnit;
+  BackgroundWorkerUnit, PopWindowUnit;
 
 {$R *.res}
 
@@ -17,7 +17,7 @@ begin
   Application.Initialize;
   Application.CreateForm(TLoginForm, LoginForm);
   Application.CreateForm(TMainForm, MainForm);
-
+  Application.CreateForm(TPopWindow, PopWindow);
   Application.Run;
 end.
 

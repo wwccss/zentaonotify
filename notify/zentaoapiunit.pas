@@ -13,6 +13,12 @@ uses
 
     { Record }
 type
+
+    BrowseType        = (btTodo = 0, btTask = 1, btBug = 2, btStory = 3);
+    BrowseSubType     = (today = 0, yesterday = 1, thisweek = 2, lastweek =
+        3, assignedTo = 4, openedBy = 5, reviewedBy = 6, closedBy = 7, finishedBy =
+        8, resolvedBy = 9);
+    
     UserConfig = record
         Url:      string;
         Account:  string;
@@ -43,14 +49,11 @@ type
         Pager:   PageRecord;
         IsNew:   Boolean;
         FirstPage: Boolean;
+        Tab: BrowseType;
+        SubType: BrowseSubType;
 
         Constructor Create;
     end;
-
-    BrowseType        = (btTodo = 0, btTask = 1, btBug = 2, btStory = 3);
-    BrowseSubType     = (today = 0, yesterday = 1, thisweek = 2, lastweek =
-        3, assignedTo = 4, openedBy = 5, reviewedBy = 6, closedBy = 7, finishedBy =
-        8, resolvedBy = 9);
 
 { Function declarations }
 procedure InitZentaoAPI();
@@ -81,6 +84,7 @@ var
     BrowseSubTypes: array[0..9] of BrowseSubType;
     BrowsePagers:   array[BrowseType] of array[BrowseSubType] of PageRecord;
     BrowseMd5:      array[BrowseType] of string;
+    PopWindowData:  TDataResult;
 
 implementation
 
@@ -111,6 +115,8 @@ var
     firstPage: boolean;
 begin
     Result := TDataResult.Create;
+    Result.Tab := obj;
+    Result.SubType := objType;
 
     (* init page *)
     pager  := BrowsePagers[obj, objType];

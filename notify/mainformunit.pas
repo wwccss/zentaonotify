@@ -11,6 +11,7 @@ uses
     fpjson, jsonparser,
     Clipbrd, LResources,
     ZentaoAPIUnit,
+    PopWindowUnit,
     BackgroundWorkerUnit;
 
 type
@@ -371,18 +372,23 @@ var
     index:    integer;
     track: TStringList;
     stringGrid: TStringGrid;
-    noTrack: boolean;
-    id: string;
+    noTrack, isNew: boolean;
+    id, title: string;
 begin
     if dataResult.Result then
     begin
         Data     := dataResult.Data;
         dataList := Data.Arrays[BrowseNames[tab]];
         stringGrid := StringGrids[tab];
+        isNew    := False;
 
         track    := BrowseTrack[tab];
-        noTrack  := track.indexOf('#') < 0;
-        if noTrack then track.Add('#');
+
+        if dataResult.FirstPage then
+        begin
+            noTrack  := track.indexOf('#') < 0;
+            if noTrack then track.Add('#');
+        end;
 
         (* clean all cells *)
         stringGrid.Clean;
@@ -395,31 +401,43 @@ begin
             index    := index + 1;
             dataItem := TJSONObject(dataRow.Value);
             id := dataItem.Get('id', '');
+            title := dataItem.Get('name', '-');
+            if title = '-' then title := dataItem.Get('title', '-');
             stringGrid.RowCount := index;
             stringGrid.Cells[0, index - 1] := '#' + id;
-            stringGrid.Cells[1, index - 1] := dataItem.Get('name', '-');
+            stringGrid.Cells[1, index - 1] := title;
             stringGrid.Cells[2, index - 1] := dataItem.Get('status', '-');
 
-            if noTrack then
+            if dataResult.FirstPage then
             begin
-                track.Add(id);
-            end
-            else if track.indexOf(id) < 0 then
-            begin
-                track.Add(id);
-                dataItem.Booleans['new'] := True;
-            end;
+                if noTrack then
+                begin
+                    track.Add(id);
+                end
+                else if (track.indexOf(id) < 0) then
+                begin
+                    track.Add(id);
+                    dataItem.Booleans['new'] := True;
+                    isNew := True;
+                end;
 
-            if dataItem.Get('new', False) then
-            begin
-                stringGrid.Cells[0, index - 1] := '+' + id;
+                if dataItem.Get('new', False) then
+                begin
+                    stringGrid.Cells[0, index - 1] := '+' + id;
+                end;
             end;
         end;
 
         ShowPager(dataResult.Pager, tab);
 
-        LastSyncTime[btTodo] := Now;
-        BrowseTrack[btTodo] := track;
+        if isNew and (WindowState = wsMinimized) then
+        begin
+            PopWindowData := dataResult;
+            PopWindow.Show();
+        end;
+
+        LastSyncTime[tab] := Now;
+        BrowseTrack[tab] := track;
     end
     else
     begin
@@ -503,9 +521,14 @@ procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     // Destroy;
     Logout;
-    BrowseTrack[TabGroup[0]].Free;
-    BrowseTrack[TabGroup[1]].Free;
-    BrowseTrack[TabGroup[2]].Free;
+    try
+    begin
+        BrowseTrack[TabGroup[0]].Free;
+        BrowseTrack[TabGroup[1]].Free;
+        BrowseTrack[TabGroup[2]].Free;
+    end;
+    finally
+    end;
     LoginForm.Close;
 end;
 
