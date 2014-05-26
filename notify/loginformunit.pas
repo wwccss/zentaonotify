@@ -94,7 +94,7 @@ procedure TLoginForm.BitBtnLoginClick(Sender: TObject);
 begin
     if CheckInputs() then
     begin
-        BitBtnLogin.Caption := 'Logining';
+        BitBtnLogin.Caption := '登录中...';
         BitBtnLogin.Enabled := False;
 
         user.Account  := EditUsername.Text;

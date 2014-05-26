@@ -68,6 +68,9 @@ type
         LabelTab1:       TLabel;
         LabelTab2:       TLabel;
         LabelMenuIcon: TLabel;
+        LabelTodoSepLine1: TLabel;
+        LabelTodoSepLine2: TLabel;
+        LabelTodoSepLine3: TLabel;
         Memo1:           TMemo;
         MenuItemCopy: TMenuItem;
         MenuItemReloadTab: TMenuItem;
@@ -149,6 +152,7 @@ type
         procedure HidePopup(Sender: TObject);overload;
         procedure LoadAllTabsData();
         procedure ShowPager(pager: PageRecord; tab: BrowseType);
+        procedure ChangeTab(tab: BrowseType; tabLabel: TLabel);
     
     private
         procedure LoadTab(dataResult: TDataResult; tab: BrowseType);
@@ -486,8 +490,8 @@ begin
         labelPagerInfo.Caption := Format('第 %d - %d 条，共 %d 条', [Min(pager.Total,(pager.PageID - 1) * pager.PerPage + 1), Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
         labelPagerPrev.Visible := True;
         labelPagerInfo.Visible := True;
-        labelPagerNext.Visible := True;
         labelPagerLast.Visible := True;
+        labelPagerNext.Visible := True;
         labelPagerPrev.Enabled := pager.PageID > 1;
         labelPagerNext.Enabled := pager.PageID < pager.PageTotal;
         labelPagerLast.Enabled := pager.PageTotal > 1;
@@ -508,7 +512,6 @@ begin
         labelPagerInfo.Visible := True;
     end;
 end;
-
 
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
@@ -652,7 +655,7 @@ end;
 
 procedure TMainForm.LabelMenuIconClick(Sender: TObject);
 begin
-    PanelPopupMenu.Top := 50;
+    PanelPopupMenu.Top := 40;
     PanelPopupMenu.Visible := (not PanelPopupMenu.Visible);
     HideMessage;
 end;
@@ -810,6 +813,51 @@ begin
     end;
 end;
 
+procedure TMainForm.ChangeTab(tab: BrowseType; tabLabel: TLabel);
+begin
+    (* reset tab label color *)
+    LabelTab1.Color      := 13392660;
+    LabelTab1.Font.Color := clWhite;
+    LabelTab2.Color      := 13392660;
+    LabelTab2.Font.Color := clWhite;
+    LabelTab3.Color      := 13392660;
+    LabelTab3.Font.Color := clWhite;
+
+    (* changed current tab color *)
+    tabLabel.Color := 16380651;
+    tabLabel.Font.Color := 13392660;
+    CurrentTab := tab;
+
+    (* hide other panel *)
+    PanelNavTodo.Visible  := False;
+    PanelNavTask.Visible  := False;
+    PanelNavBug.Visible   := False;
+    PanelNavStory.Visible := False;
+
+    case tab of
+        btTodo:
+        begin
+            PanelNavTodo.Visible := True;
+            PanelNavTodo.Left    := 0;
+        end;
+        btTask:
+        begin
+            PanelNavTask.Visible := True;
+            PanelNavTask.Left    := 0;
+        end;
+        btBug:
+        begin
+            PanelNavBug.Visible := True;
+            PanelNavBug.Left    := 0;
+        end;
+        btStory:
+        begin
+            PanelNavStory.Visible := True;
+            PanelNavStory.Left    := 0;
+        end;
+    end;
+end;
+
 procedure TMainForm.LabelTabClick(Sender: TObject);
 var
     labelSender: TLabel;
@@ -822,47 +870,7 @@ begin
 
     if tab <> CurrentTab then
     begin
-        (* reset tab label color *)
-        LabelTab1.Color      := 13392660;
-        LabelTab1.Font.Color := clWhite;
-        LabelTab2.Color      := 13392660;
-        LabelTab2.Font.Color := clWhite;
-        LabelTab3.Color      := 13392660;
-        LabelTab3.Font.Color := clWhite;
-
-        (* changed current tab color *)
-        labelSender.Color := 16380651;
-        labelSender.Font.Color := 13392660;
-        CurrentTab := tab;
-
-        (* hide other panel *)
-        PanelNavTodo.Visible  := False;
-        PanelNavTask.Visible  := False;
-        PanelNavBug.Visible   := False;
-        PanelNavStory.Visible := False;
-
-        case tab of
-            btTodo:
-            begin
-                PanelNavTodo.Visible := True;
-                PanelNavTodo.Left    := 0;
-            end;
-            btTask:
-            begin
-                PanelNavTask.Visible := True;
-                PanelNavTask.Left    := 0;
-            end;
-            btBug:
-            begin
-                PanelNavBug.Visible := True;
-                PanelNavBug.Left    := 0;
-            end;
-            btStory:
-            begin
-                PanelNavStory.Visible := True;
-                PanelNavStory.Left    := 0;
-            end;
-        end;
+        ChangeTab(tab, labelSender);
 
         TryLoadTabData(tab);
     end
@@ -911,7 +919,7 @@ procedure TMainForm.ShowMessage(Message: string; msgType: string = 'danger');
 begin
     LabelMessage.Caption := Message;
     PanelMessage.Visible := True;
-    PanelMessage.Top := 50;
+    PanelMessage.Top := 40;
 
     case Lowercase(msgType) of
         'success':

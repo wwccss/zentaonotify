@@ -1,7 +1,7 @@
 object LoginForm: TLoginForm
-  Left = 396
+  Left = 603
   Height = 555
-  Top = 352
+  Top = 253
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -2212,11 +2212,12 @@ object LoginForm: TLoginForm
   object BitBtnLogin: TBitBtn
     Left = 33
     Height = 45
-    Hint = 'hint'
+    Hint = '登录'
     Top = 339
     Width = 221
     Anchors = [akTop, akLeft, akRight]
     Caption = '登录'
+    Default = True
     OnClick = BitBtnLoginClick
     TabOrder = 3
   end

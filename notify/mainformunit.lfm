@@ -1,12 +1,12 @@
 object MainForm: TMainForm
-  Left = 529
-  Height = 700
-  Top = 218
-  Width = 1400
+  Left = 573
+  Height = 748
+  Top = 192
+  Width = 350
   Caption = '禅道桌面提醒工具1.2'
-  ClientHeight = 700
-  ClientWidth = 1400
-  Constraints.MaxHeight = 890
+  ClientHeight = 748
+  ClientWidth = 350
+  Constraints.MaxHeight = 870
   Constraints.MinHeight = 168
   Constraints.MinWidth = 350
   OnClick = FormClick
@@ -18,30 +18,30 @@ object MainForm: TMainForm
   LCLVersion = '1.2.2.0'
   object PanelMenu: TPanel
     Left = 0
-    Height = 50
+    Height = 40
     Top = 0
-    Width = 1400
+    Width = 350
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
-    ClientHeight = 50
-    ClientWidth = 1400
+    ClientHeight = 40
+    ClientWidth = 350
     Color = 13392660
     ParentColor = False
     TabOrder = 0
     OnClick = PanelMenuClick
     object LabelTab1: TLabel
       Cursor = crHandPoint
-      Left = 8
-      Height = 40
+      Left = 7
+      Height = 32
       Hint = 'todo'
-      Top = 10
-      Width = 90
+      Top = 8
+      Width = 80
       Alignment = taCenter
       AutoSize = False
       Caption = '待办'
       Color = 16380651
       Font.Color = 13392660
-      Font.Height = -18
+      Font.Height = -17
       Layout = tlCenter
       ParentColor = False
       ParentFont = False
@@ -53,17 +53,17 @@ object MainForm: TMainForm
     object LabelTab2: TLabel
       Tag = 1
       Cursor = crHandPoint
-      Left = 100
-      Height = 40
+      Left = 89
+      Height = 32
       Hint = 'task'
-      Top = 10
-      Width = 90
+      Top = 8
+      Width = 80
       Alignment = taCenter
       AutoSize = False
       Caption = '任务'
       Color = 13392660
       Font.Color = clWhite
-      Font.Height = -18
+      Font.Height = -17
       Layout = tlCenter
       ParentColor = False
       ParentFont = False
@@ -75,17 +75,17 @@ object MainForm: TMainForm
     object LabelTab3: TLabel
       Tag = 2
       Cursor = crHandPoint
-      Left = 192
-      Height = 40
+      Left = 171
+      Height = 32
       Hint = 'bug'
-      Top = 10
-      Width = 90
+      Top = 8
+      Width = 80
       Alignment = taCenter
       AutoSize = False
       Caption = 'Bug'
       Color = 13392660
       Font.Color = clWhite
-      Font.Height = -18
+      Font.Height = -17
       Layout = tlCenter
       ParentColor = False
       ParentFont = False
@@ -97,7 +97,7 @@ object MainForm: TMainForm
     object Memo1: TMemo
       Left = 1036
       Height = 50
-      Top = -100
+      Top = -103
       Width = 364
       BorderStyle = bsNone
       TabOrder = 0
@@ -107,9 +107,9 @@ object MainForm: TMainForm
       Tag = 10
       Cursor = crHandPoint
       Left = 302
-      Height = 40
+      Height = 32
       Hint = 'bug'
-      Top = 9
+      Top = 8
       Width = 40
       Alignment = taCenter
       AutoSize = False
@@ -128,7 +128,7 @@ object MainForm: TMainForm
       Cursor = crHandPoint
       Left = 312
       Height = 4
-      Top = 21
+      Top = 16
       Width = 22
       Brush.Color = clSilver
       Enabled = False
@@ -139,7 +139,7 @@ object MainForm: TMainForm
       Cursor = crHandPoint
       Left = 312
       Height = 4
-      Top = 28
+      Top = 23
       Width = 22
       Brush.Color = clSilver
       Enabled = False
@@ -150,7 +150,7 @@ object MainForm: TMainForm
       Cursor = crHandPoint
       Left = 312
       Height = 4
-      Top = 35
+      Top = 30
       Width = 22
       Brush.Color = clSilver
       Enabled = False
@@ -170,12 +170,12 @@ object MainForm: TMainForm
   end
   object PanelNavTodo: TPanel
     Left = 0
-    Height = 650
-    Top = 50
+    Height = 708
+    Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 650
+    ClientHeight = 708
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -185,8 +185,8 @@ object MainForm: TMainForm
     object Label2: TLabel
       Cursor = crHandPoint
       Left = 272
-      Height = 36
-      Top = 7
+      Height = 27
+      Top = 6
       Width = 70
       Alignment = taCenter
       Anchors = [akTop, akRight]
@@ -203,8 +203,8 @@ object MainForm: TMainForm
     end
     object StringGridTodo: TStringGrid
       Left = 0
-      Height = 570
-      Top = 50
+      Height = 638
+      Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
@@ -246,7 +246,7 @@ object MainForm: TMainForm
     end
     object PanelMenuTodo: TPanel
       Left = 0
-      Height = 49
+      Height = 39
       Top = 0
       Width = 272
       BevelOuter = bvNone
@@ -255,7 +255,7 @@ object MainForm: TMainForm
       ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 5
-      ClientHeight = 49
+      ClientHeight = 39
       ClientWidth = 272
       TabOrder = 1
       OnClick = HidePopup
@@ -264,7 +264,7 @@ object MainForm: TMainForm
         Left = 10
         Height = 20
         Hint = 'today'
-        Top = 15
+        Top = 10
         Width = 30
         Caption = '今日'
         Font.Color = 13392660
@@ -280,7 +280,7 @@ object MainForm: TMainForm
         Left = 52
         Height = 20
         Hint = 'yesterday'
-        Top = 15
+        Top = 10
         Width = 30
         Caption = '昨日'
         Font.Color = 6118749
@@ -296,7 +296,7 @@ object MainForm: TMainForm
         Left = 94
         Height = 20
         Hint = 'thisweek'
-        Top = 15
+        Top = 10
         Width = 30
         Caption = '本周'
         Font.Color = 6118749
@@ -312,7 +312,7 @@ object MainForm: TMainForm
         Left = 136
         Height = 20
         Hint = 'lastweek'
-        Top = 15
+        Top = 10
         Width = 30
         Caption = '上周'
         Font.Color = 6118749
@@ -326,7 +326,7 @@ object MainForm: TMainForm
     object LabelTodoSepLine: TLabel
       Left = 0
       Height = 1
-      Top = 49
+      Top = 39
       Width = 350
       AutoSize = False
       Color = clSilver
@@ -336,7 +336,7 @@ object MainForm: TMainForm
     object PanelPagerTodo: TPanel
       Left = 50
       Height = 30
-      Top = 620
+      Top = 678
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -421,12 +421,12 @@ object MainForm: TMainForm
   end
   object PanelNavTask: TPanel
     Left = 350
-    Height = 650
-    Top = 50
+    Height = 708
+    Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 650
+    ClientHeight = 708
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -435,8 +435,8 @@ object MainForm: TMainForm
     object StringGridTask: TStringGrid
       Tag = 1
       Left = 0
-      Height = 570
-      Top = 50
+      Height = 638
+      Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
@@ -477,7 +477,7 @@ object MainForm: TMainForm
     object PanelMenuTask: TPanel
       Tag = 1
       Left = 0
-      Height = 50
+      Height = 39
       Top = 0
       Width = 350
       BevelOuter = bvNone
@@ -486,7 +486,7 @@ object MainForm: TMainForm
       ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 5
-      ClientHeight = 50
+      ClientHeight = 39
       ClientWidth = 350
       TabOrder = 1
       OnClick = HidePopup
@@ -496,7 +496,7 @@ object MainForm: TMainForm
         Left = 10
         Height = 20
         Hint = 'assignedTo'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '指派给我'
         Font.Color = 13392660
@@ -512,7 +512,7 @@ object MainForm: TMainForm
         Left = 82
         Height = 20
         Hint = 'openedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我创建'
         Font.Color = 6118749
@@ -528,7 +528,7 @@ object MainForm: TMainForm
         Left = 154
         Height = 20
         Hint = 'finishedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我完成'
         Font.Color = 6118749
@@ -544,7 +544,7 @@ object MainForm: TMainForm
         Left = 226
         Height = 20
         Hint = 'closedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我关闭'
         Font.Color = 6118749
@@ -559,7 +559,7 @@ object MainForm: TMainForm
       Tag = 1
       Left = 50
       Height = 30
-      Top = 620
+      Top = 678
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -641,15 +641,25 @@ object MainForm: TMainForm
         ParentFont = False
       end
     end
+    object LabelTodoSepLine1: TLabel
+      Left = 0
+      Height = 1
+      Top = 39
+      Width = 350
+      AutoSize = False
+      Color = clSilver
+      ParentColor = False
+      Transparent = False
+    end
   end
   object PanelNavBug: TPanel
     Left = 700
-    Height = 650
-    Top = 50
+    Height = 708
+    Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 650
+    ClientHeight = 708
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -658,8 +668,8 @@ object MainForm: TMainForm
     object StringGridBug: TStringGrid
       Tag = 2
       Left = 0
-      Height = 570
-      Top = 50
+      Height = 638
+      Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
@@ -700,7 +710,7 @@ object MainForm: TMainForm
     object PanelMenuBug: TPanel
       Tag = 2
       Left = 0
-      Height = 50
+      Height = 39
       Top = 0
       Width = 350
       BevelOuter = bvNone
@@ -709,7 +719,7 @@ object MainForm: TMainForm
       ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 5
-      ClientHeight = 50
+      ClientHeight = 39
       ClientWidth = 350
       TabOrder = 1
       OnClick = HidePopup
@@ -719,7 +729,7 @@ object MainForm: TMainForm
         Left = 10
         Height = 20
         Hint = 'assignedTo'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '指派给我'
         Font.Color = 13392660
@@ -735,7 +745,7 @@ object MainForm: TMainForm
         Left = 82
         Height = 20
         Hint = 'openedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我创建'
         Font.Color = 6118749
@@ -751,7 +761,7 @@ object MainForm: TMainForm
         Left = 154
         Height = 20
         Hint = 'resolvedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我解决'
         Font.Color = 6118749
@@ -767,7 +777,7 @@ object MainForm: TMainForm
         Left = 226
         Height = 20
         Hint = 'closedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我关闭'
         Font.Color = 6118749
@@ -782,7 +792,7 @@ object MainForm: TMainForm
       Tag = 2
       Left = 50
       Height = 30
-      Top = 620
+      Top = 678
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -864,15 +874,25 @@ object MainForm: TMainForm
         ParentFont = False
       end
     end
+    object LabelTodoSepLine2: TLabel
+      Left = 0
+      Height = 1
+      Top = 39
+      Width = 350
+      AutoSize = False
+      Color = clSilver
+      ParentColor = False
+      Transparent = False
+    end
   end
   object PanelNavStory: TPanel
     Left = 1050
-    Height = 650
-    Top = 50
+    Height = 708
+    Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 650
+    ClientHeight = 708
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -881,8 +901,8 @@ object MainForm: TMainForm
     object StringGridStory: TStringGrid
       Tag = 3
       Left = 0
-      Height = 570
-      Top = 50
+      Height = 638
+      Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
@@ -923,7 +943,7 @@ object MainForm: TMainForm
     object PanelMenuStory: TPanel
       Tag = 3
       Left = 0
-      Height = 50
+      Height = 39
       Top = 0
       Width = 350
       BevelOuter = bvNone
@@ -932,7 +952,7 @@ object MainForm: TMainForm
       ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 5
-      ClientHeight = 50
+      ClientHeight = 39
       ClientWidth = 350
       TabOrder = 1
       OnClick = HidePopup
@@ -942,7 +962,7 @@ object MainForm: TMainForm
         Left = 10
         Height = 20
         Hint = 'assignedTo'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '指派给我'
         Font.Color = 13392660
@@ -958,7 +978,7 @@ object MainForm: TMainForm
         Left = 82
         Height = 20
         Hint = 'openedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我创建'
         Font.Color = 6118749
@@ -974,7 +994,7 @@ object MainForm: TMainForm
         Left = 154
         Height = 20
         Hint = 'finishedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我评审'
         Font.Color = 6118749
@@ -990,7 +1010,7 @@ object MainForm: TMainForm
         Left = 226
         Height = 20
         Hint = 'closedBy'
-        Top = 15
+        Top = 10
         Width = 60
         Caption = '由我关闭'
         Font.Color = 6118749
@@ -1005,7 +1025,7 @@ object MainForm: TMainForm
       Tag = 3
       Left = 50
       Height = 30
-      Top = 620
+      Top = 678
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -1087,16 +1107,26 @@ object MainForm: TMainForm
         ParentFont = False
       end
     end
+    object LabelTodoSepLine3: TLabel
+      Left = 0
+      Height = 1
+      Top = 39
+      Width = 350
+      AutoSize = False
+      Color = clSilver
+      ParentColor = False
+      Transparent = False
+    end
   end
   object PanelMessage: TPanel
     Left = 0
     Height = 50
-    Top = 100
-    Width = 1400
+    Top = 80
+    Width = 350
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
     ClientHeight = 50
-    ClientWidth = 1400
+    ClientWidth = 350
     Color = 15073254
     Font.Color = 2268964
     ParentColor = False
@@ -1120,7 +1150,7 @@ object MainForm: TMainForm
       Left = 11
       Height = 50
       Top = 0
-      Width = 1333
+      Width = 283
       Anchors = [akTop, akLeft, akRight]
       AutoSize = False
       Caption = ':)'
@@ -1131,7 +1161,7 @@ object MainForm: TMainForm
   object PanelPopupMenu: TPanel
     Left = 217
     Height = 106
-    Top = 150
+    Top = 130
     Width = 133
     BevelOuter = bvNone
     BorderStyle = bsSingle
@@ -1517,8 +1547,8 @@ object MainForm: TMainForm
   end
   object PopupMenuStringGrid: TPopupMenu
     Images = ImageListPopupMenu
-    left = 360
-    top = 16
+    left = 488
+    top = 8
     object MenuItemViewObject: TMenuItem
       Caption = '在浏览器中查看'
       Bitmap.Data = {
@@ -1614,8 +1644,8 @@ object MainForm: TMainForm
     end
   end
   object ImageListPopupMenu: TImageList
-    left = 392
-    top = 16
+    left = 520
+    top = 8
     Bitmap = {
       4C69050000001000000010000000666666006666660066666600666666006666
       66286666668B666666CF666666EA666666E8666666D16666668B666666256666
@@ -1786,13 +1816,13 @@ object MainForm: TMainForm
     OnTimer = TimerLoadingAnimateTimer
     OnStartTimer = TimerLoadingAnimateStartTimer
     OnStopTimer = TimerLoadingAnimateStopTimer
-    left = 424
-    top = 16
+    left = 552
+    top = 8
   end
   object TimerAutoSync: TTimer
     Interval = 120000
     OnTimer = TimerAutoSyncTimer
     left = 456
-    top = 16
+    top = 8
   end
 end
