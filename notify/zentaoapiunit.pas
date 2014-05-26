@@ -9,6 +9,7 @@ uses
     md5,
     fphttpclient,
     LCLIntf,
+    jsonconf,
     Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons, ActnList,
     fpjson, jsonparser;
 
@@ -23,9 +24,10 @@ type
     UserConfig = record
         Url:      string;
         Account:  string;
-        Password: string;
         PassMd5:  string;
         Role:     string;
+        AutoSignIn: boolean;
+        RememberMe: boolean;
     end;
 
     HandleResult = record
@@ -72,6 +74,8 @@ function LoadDataList(obj: BrowseType; objType: BrowseSubType;
 function Max(a: integer; b: integer): integer;
 function Min(a: integer; b: integer): integer;
 function ViewObject(objType: BrowseType; id: string): boolean;
+procedure SaveConfig();
+function LoadConfig():Boolean;
 
 var
     user:           UserConfig;
@@ -91,6 +95,7 @@ var
 const
     ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
     ONEDAYSECONDS = 24 * 60 * 60;
+    CONFIG_FILE = 'config.json';
 
 implementation
 
@@ -282,7 +287,7 @@ begin
         Result := user.Url + '/index.php?';
         if (moduleName = 'user') and (methodName = 'login') then
         begin
-            password := MD5Print(MD5String(user.Password +
+            password := MD5Print(MD5String(user.PassMd5 +
                 IntToStr(session.Int64s['rand'])));
             Result   := Result + 'm=user&f=login&account=' + user.Account +
                 '&password=' + password + '&' + session.Get('sessionName', '') +
@@ -491,6 +496,7 @@ var
     url, response: string;
 begin
     Result.Result := True;
+
     url           := GetAPI(['module', 'user', 'method', 'logout']);
 
     try
@@ -520,10 +526,77 @@ begin
     Result := GetRole();
     if not Result.Result then
         Exit;
+
+    if Result.Result then
+    begin
+        SaveConfig;
+    end;
+end;
+
+function LoadConfig():Boolean;
+Var
+  conf : TJSONConfig;
+  lastLoginTime : TDateTime;
+begin
+    Result := False;
+    conf := TJSONConfig.Create(nil);
+    try
+        conf.FileName := CONFIG_FILE;
+        
+        lastLoginTime := conf.GetValue('/LastLoginTime', 0);
+
+        if lastLoginTime > 0 then
+        begin
+            user.Account := conf.GetValue('/User/Account', '');
+            user.Url := conf.GetValue('/User/Url', '');
+            user.PassMd5 := conf.GetValue('/User/PassMd5', '');
+            user.Role := conf.GetValue('/User/Role', '');
+            user.AutoSignIn := conf.GetValue('/User/AutoSignIn', False);
+            user.RememberMe := True;
+            Result := True;
+        end;
+    finally
+        conf.Free;
+    end;
+end;
+
+procedure SaveConfig();
+Var
+  conf : TJSONConfig;
+begin
+    conf := TJSONConfig.Create(nil);
+    try
+        conf.FileName := CONFIG_FILE;
+
+        if user.RememberMe then
+        begin
+            conf.SetValue('/User/Account', user.Account);
+            conf.SetValue('/User/Url', user.Url);
+            conf.SetValue('/User/PassMd5', user.PassMd5);
+            conf.SetValue('/User/Role', user.Role);
+            conf.SetValue('/LastLoginTime', Now);
+            conf.SetValue('/User/AutoSignIn', user.AutoSignIn);
+        end
+        else
+        begin
+            conf.SetValue('/User/Account', '');
+            conf.SetValue('/User/Url', '');
+            conf.SetValue('/User/PassMd5', '');
+            conf.SetValue('/User/Role', '');
+            conf.SetValue('/LastLoginTime', 0);
+            conf.SetValue('/User/AutoSignIn', False);
+        end;
+
+        conf.Flush;
+    finally
+        conf.Free;
+    end;
 end;
 
 procedure InitZentaoAPI();
 begin
+    session := TJSONObject.Create(['undefined', True]);
+
     http := TFPHTTPClient.Create(nil);
 
     (* init browsename *)

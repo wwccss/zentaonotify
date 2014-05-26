@@ -17,6 +17,8 @@ uses
 type
     { TLoginForm }
     TLoginForm = class(TForm)
+        CheckBoxRememberMe: TCheckBox;
+        CheckBoxAutoSignIn: TCheckBox;
         EditAddress:     TEdit;
         EditUsername:    TEdit;
         EditPassword:    TEdit;
@@ -30,16 +32,22 @@ type
         BitBtnLogin:     TBitBtn;
         
         procedure BitBtnLoginClick(Sender: TObject);
+        procedure CheckBoxAutoSignInChange(Sender: TObject);
+        procedure CheckBoxRememberMeChange(Sender: TObject);
         procedure EditEnter(Sender: TObject);
         procedure EditExit(Sender: TObject);
         procedure EditChange(Sender: TObject);
+        procedure EditPasswordChange(Sender: TObject);
         procedure EditPasswordEnter(Sender: TObject);
         procedure EditPasswordExit(Sender: TObject);
+        procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
+        procedure FormShow(Sender: TObject);
         procedure LabelBtnAboutClick(Sender: TObject);
         procedure LabelResult1Click(Sender: TObject);
         procedure ShowResultMessage(message: string);
         procedure HideResultMessage();
+        procedure TryAutoLogin();
         procedure LoginCompleted(e: TRunWorkerCompletedEventArgs);
         function Logining(arg: TObject):TRunWorkerCompletedEventArgs;
         function CheckInputs: boolean;
@@ -52,6 +60,8 @@ type
 
 var
     LoginForm: TLoginForm;
+    FirstShow: boolean;
+    PassMd5 : string;
 
 implementation
 
@@ -103,14 +113,25 @@ begin
         BitBtnLogin.Enabled := False;
 
         user.Account  := EditUsername.Text;
-        user.Password := EditPassword.Text;
-        user.PassMd5  := MD5Print(MD5String(user.Password));
+        user.PassMd5  := PassMd5;
         user.Url      := EditAddress.Text;
-
-        InitZentaoAPI();
 
         TBackgroundWorker.Create(@Logining, @LoginCompleted);
     end;
+end;
+
+procedure TLoginForm.CheckBoxAutoSignInChange(Sender: TObject);
+begin
+    if CheckBoxAutoSignIn.Checked then
+        CheckBoxRememberMe.Checked := True;
+    user.AutoSignIn := CheckBoxAutoSignIn.Checked;
+end;
+
+procedure TLoginForm.CheckBoxRememberMeChange(Sender: TObject);
+begin
+    if not CheckBoxRememberMe.Checked then
+        CheckBoxAutoSignIn.Checked := False;
+    user.RememberMe := CheckBoxRememberMe.Checked;
 end;
 
 (* Handle event: on textbox blur *)
@@ -138,6 +159,13 @@ begin
     ;
 end;
 
+procedure TLoginForm.EditPasswordChange(Sender: TObject);
+begin
+    EditChange(Sender);
+
+    PassMd5 := MD5Print(MD5String(EditPassword.Text));
+end;
+
 (* Handle event: on password textbox focus *)
 procedure TLoginForm.EditPasswordEnter(Sender: TObject);
 begin
@@ -151,6 +179,12 @@ begin
     EditExit(Sender);
     if EditPassword.Text = EditPassword.Hint then
         EditPassword.PasswordChar := #0;
+end;
+
+procedure TLoginForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+    // save config changed
+    SaveConfig;
 end;
 
 procedure TLoginForm.LoginCompleted(e: TRunWorkerCompletedEventArgs);
@@ -188,12 +222,36 @@ end;
 procedure TLoginForm.FormCreate(Sender: TObject);
 begin
     inherited;
-    session := TJSONObject.Create(['undefined', True]);
+    FirstShow := True;
 
-    // Test data
-    EditAddress.Text  := 'http://zentao.com/';
-    EditUsername.Text := 'hello';
-    EditPassword.Text := '123321';
+    InitZentaoAPI();
+end;
+
+procedure TLoginForm.FormShow(Sender: TObject);
+begin
+    if FirstShow then
+    begin
+        FirstShow := False;
+        TryAutoLogin;
+    end;
+end;
+
+procedure TLoginForm.TryAutoLogin();
+begin
+    if LoadConfig() then
+    begin
+        EditPassword.Text := user.PassMd5;
+        EditAddress.Text := user.Url;
+        EditUsername.Text := user.Account;
+        PassMd5 := user.PassMd5;
+        CheckBoxRememberMe.Checked := True;
+
+        if user.AutoSignIn then
+        begin
+           TBackgroundWorker.Create(@Logining, @LoginCompleted);
+           CheckBoxAutoSignIn.Checked := True;
+        end;
+    end;
 end;
 
 procedure TLoginForm.LabelBtnAboutClick(Sender: TObject);

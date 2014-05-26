@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 1968
+  Left = 1954
   Height = 748
-  Top = 148
+  Top = 130
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 748
@@ -4494,10 +4494,10 @@ object MainForm: TMainForm
     OnClick = HidePopup
     object Label2: TLabel
       Cursor = crHandPoint
-      Left = 272
+      Left = 280
       Height = 27
       Top = 6
-      Width = 70
+      Width = 62
       Alignment = taCenter
       Anchors = [akTop, akRight]
       AutoSize = False

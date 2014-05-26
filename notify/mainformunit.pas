@@ -558,6 +558,7 @@ begin
     end;
     finally
     end;
+    
     LoginForm.Close;
 end;
 

@@ -1,7 +1,7 @@
 object LoginForm: TLoginForm
-  Left = 962
+  Left = 556
   Height = 555
-  Top = 234
+  Top = 266
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -311,7 +311,9 @@ object LoginForm: TLoginForm
     0000C00300008001000000000000000000000000000000000000000000000000
     0000000000000000000080010000C0030000E0070000F00F0000
   }
+  OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.2.2.0'
   object ImageBackground: TImage
@@ -2425,7 +2427,7 @@ object LoginForm: TLoginForm
     Color = clNone
     EchoMode = emPassword
     Font.Color = clGray
-    OnChange = EditChange
+    OnChange = EditPasswordChange
     OnEnter = EditPasswordEnter
     OnExit = EditPasswordExit
     ParentFont = False
@@ -2491,5 +2493,23 @@ object LoginForm: TLoginForm
     ParentColor = False
     ParentFont = False
     OnClick = LabelBtnAboutClick
+  end
+  object CheckBoxRememberMe: TCheckBox
+    Left = 35
+    Height = 24
+    Top = 392
+    Width = 84
+    Caption = '保存密码'
+    OnChange = CheckBoxRememberMeChange
+    TabOrder = 4
+  end
+  object CheckBoxAutoSignIn: TCheckBox
+    Left = 164
+    Height = 24
+    Top = 392
+    Width = 84
+    Caption = '自动登录'
+    OnChange = CheckBoxAutoSignInChange
+    TabOrder = 5
   end
 end
