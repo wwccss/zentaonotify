@@ -9,6 +9,7 @@ uses
     md5,
     fphttpclient,
     LCLIntf,
+    Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons, ActnList,
     fpjson, jsonparser;
 
     { Record }
@@ -85,6 +86,11 @@ var
     BrowsePagers:   array[BrowseType] of array[BrowseSubType] of PageRecord;
     BrowseMd5:      array[BrowseType] of string;
     PopWindowData:  TDataResult;
+    MainFormWindow: TForm;
+
+const
+    ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
+    ONEDAYSECONDS = 24 * 60 * 60;
 
 implementation
 

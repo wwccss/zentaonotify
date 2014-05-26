@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 552
+  Left = 529
   Height = 700
-  Top = 249
+  Top = 218
   Width = 1400
   Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 700

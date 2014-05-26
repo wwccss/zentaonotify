@@ -1,8 +1,9 @@
 object PopWindow: TPopWindow
-  Left = 1202
+  Left = 1289
   Height = 224
-  Top = 474
+  Top = 571
   Width = 270
+  AlphaBlend = True
   BorderStyle = bsNone
   Caption = '新的条目'
   ClientHeight = 224
@@ -123,17 +124,26 @@ object PopWindow: TPopWindow
       OnClick = SpeedButton1Click
     end
     object Label1: TLabel
+      Cursor = crHandPoint
       Left = 6
       Height = 20
+      Hint = '打开主窗口'
       Top = 4
       Width = 48
       Caption = 'Label1'
+      Font.Color = 13392660
       ParentColor = False
+      ParentFont = False
+      OnClick = Label1lClick
+      OnMouseEnter = Label1MouseEnter
+      OnMouseLeave = Label1MouseLeave
     end
   end
   object Timer1: TTimer
     Interval = 40
     OnTimer = Timer1Timer
+    OnStartTimer = Timer1StartTimer
+    OnStopTimer = Timer1StopTimer
     left = 200
     top = 2
   end

@@ -163,7 +163,6 @@ type
 
 const
     TryLoadTabInterval = 5.0 / (24 * 60);
-    ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
 
 var
     MainForm:      TMainForm;
@@ -314,7 +313,6 @@ begin
         if (Now - LastSyncTime[TabGroup[i]]) > ((2 * 60 * 1000) / ONEDAYMILLIONSECONDS) then
         begin
             LoadTabData(TabGroup[i]);
-            ShowMessage('自动同步于： ' + FormatDateTime('YYYY-MM-DD HH:NN:SS', Now));
             break;
         end;
     end;
@@ -420,11 +418,6 @@ begin
                     dataItem.Booleans['new'] := True;
                     isNew := True;
                 end;
-
-                if dataItem.Get('new', False) then
-                begin
-                    stringGrid.Cells[0, index - 1] := '+' + id;
-                end;
             end;
         end;
 
@@ -523,9 +516,9 @@ begin
     Logout;
     try
     begin
-        BrowseTrack[TabGroup[0]].Free;
         BrowseTrack[TabGroup[1]].Free;
         BrowseTrack[TabGroup[2]].Free;
+        BrowseTrack[TabGroup[3]].Free;
     end;
     finally
     end;
@@ -541,6 +534,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
     FirstShow := True;
     AverageWaitingTime := 2000 / ONEDAYMILLIONSECONDS; // 2 seconds
+    MainFormWindow := MainForm;
 end;
 
 procedure TMainForm.InitTabMenu();
