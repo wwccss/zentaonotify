@@ -9,7 +9,9 @@ uses
     ExtCtrls, Buttons,
     md5,
     fpjson, jsonparser,
+    LCLIntf,
     ZentaoAPIUnit,
+    AboutUnit,
     BackgroundWorkerUnit;
 
 type
@@ -20,7 +22,8 @@ type
         EditPassword:    TEdit;
         ImageBackground: TImage;
         LabelResult:     TLabel;
-        Memo1: TMemo;
+        LabelResult1: TLabel;
+        LabelBtnAbout: TLabel;
         ShapeAddress:    TShape;
         ShapeUsername:   TShape;
         ShapePassword:   TShape;
@@ -33,6 +36,8 @@ type
         procedure EditPasswordEnter(Sender: TObject);
         procedure EditPasswordExit(Sender: TObject);
         procedure FormCreate(Sender: TObject);
+        procedure LabelBtnAboutClick(Sender: TObject);
+        procedure LabelResult1Click(Sender: TObject);
         procedure ShowResultMessage(message: string);
         procedure HideResultMessage();
         procedure LoginCompleted(e: TRunWorkerCompletedEventArgs);
@@ -59,7 +64,7 @@ uses MainFormUnit;
 (* Check inputs *)
 function TLoginForm.CheckInputs(): boolean;
 begin
-    Result := True;
+    Result := False;
     if (EditAddress.Text = '') or (EditAddress.Text = EditAddress.Hint) then
     begin
         ShowResultMessage('请填写禅道地址。');
@@ -189,6 +194,16 @@ begin
     EditAddress.Text  := 'http://zentao.com/';
     EditUsername.Text := 'hello';
     EditPassword.Text := '123321';
+end;
+
+procedure TLoginForm.LabelBtnAboutClick(Sender: TObject);
+begin
+    AboutForm.ShowModal;
+end;
+
+procedure TLoginForm.LabelResult1Click(Sender: TObject);
+begin
+    OpenURL('http://www.zentao.net/');
 end;
 
 (* Hide result message *)

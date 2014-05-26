@@ -10,8 +10,10 @@ uses
     Grids, EditBtn, Menus,
     fpjson, jsonparser,
     Clipbrd, LResources,
+    LCLIntf,
     ZentaoAPIUnit,
     PopWindowUnit,
+    AboutUnit,
     BackgroundWorkerUnit;
 
 type
@@ -22,7 +24,12 @@ type
         Image1: TImage;
         Image2: TImage;
         Image3: TImage;
+        Image4: TImage;
+        Image5: TImage;
         ImageListPopupMenu: TImageList;
+        LabelPopupMenuBtnAbout: TLabel;
+        LabelPopupMenuBtnOpenWebsite: TLabel;
+        LabelPopupMenuBtnSep1: TLabel;
         LabelTodoSepLine: TLabel;
         LabelLoadingProgressbar: TLabel;
         LabelMessageClose: TLabel;
@@ -72,6 +79,12 @@ type
         LabelTodoSepLine2: TLabel;
         LabelTodoSepLine3: TLabel;
         Memo1:           TMemo;
+        MenuItemOpenWebsite: TMenuItem;
+        MenuItemSyncAll: TMenuItem;
+        MenuItem2: TMenuItem;
+        MenuItemLogout: TMenuItem;
+        MenuItemExit: TMenuItem;
+        MenuItemOpen: TMenuItem;
         MenuItemCopy: TMenuItem;
         MenuItemReloadTab: TMenuItem;
         MenuItemSep: TMenuItem;
@@ -91,6 +104,7 @@ type
         PanelNavTask:    TPanel;
         PanelNavBug:     TPanel;
         PanelNavStory:   TPanel;
+        PopupMenuMain: TPopupMenu;
         PopupMenuStringGrid: TPopupMenu;
         ShapeMenuIcon1: TShape;
         ShapeMenuIcon2: TShape;
@@ -101,10 +115,12 @@ type
         StringGridTask:  TStringGrid;
         TimerAutoSync: TTimer;
         TimerLoadingAnimate: TTimer;
+        TrayIconMain: TTrayIcon;
         procedure FormClick(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
+        procedure FormWindowStateChange(Sender: TObject);
         procedure LabelBtnMouseLeave(Sender: TObject);
         procedure LabelBtnMouseEnter(Sender: TObject);
         procedure LabelMenuClick(Sender: TObject);
@@ -117,15 +133,18 @@ type
         procedure LabelPagerBtnClick(Sender: TObject);
         procedure LabelPagerPrevMouseEnter(Sender: TObject);
         procedure LabelPagerPrevMouseLeave(Sender: TObject);
+        procedure LabelPopupMenuBtnAboutClick(Sender: TObject);
         procedure LabelPopupMenuBtnExitClick(Sender: TObject);
         procedure LabelPopupMenuBtnLogoutClick(Sender: TObject);
         procedure LabelPopupMenuBtnMouseEnter(Sender: TObject);
         procedure LabelPopupMenuBtnMouseLeave(Sender: TObject);
+        procedure LabelPopupMenuBtnOpenWebsiteClick(Sender: TObject);
         procedure LabelPopupMenuBtnSyncClick(Sender: TObject);
         procedure LabelTabMouseEnter(Sender: TObject);
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
         procedure MenuItemCopyClick(Sender: TObject);
+        procedure MenuItemOpenClick(Sender: TObject);
         procedure MenuItemReloadTabClick(Sender: TObject);
         procedure MenuItemViewObjectClick(Sender: TObject);
         procedure PanelMenuClick(Sender: TObject);
@@ -133,7 +152,7 @@ type
         procedure PanelPopupMenuClick(Sender: TObject);
         procedure ShowMessage(Message: string; msgType: string = 'danger');
         procedure HideMessage();
-        procedure LoadTabData(tabName: BrowseType; pageID: string = '');
+        procedure LoadTabData(tabName: BrowseType; pageID: string = ''; mute: boolean = False);
         procedure LoadTabDataCompleted(e: TRunWorkerCompletedEventArgs);
         function LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
         procedure StringGridDblClick(Sender: TObject);
@@ -145,6 +164,7 @@ type
         procedure TimerLoadingAnimateStartTimer(Sender: TObject);
         procedure TimerLoadingAnimateStopTimer(Sender: TObject);
         procedure TimerLoadingAnimateTimer(Sender: TObject);
+        procedure TrayIconMainDblClick(Sender: TObject);
         procedure TryLoadTabData(tabName: BrowseType);
         procedure InitTabMenu();
         procedure InitSubMenu();
@@ -172,7 +192,7 @@ var
     MainForm:      TMainForm;
     CurrentTab:    BrowseType;
     CurrentItemId: string;
-    FirstShow:     boolean;
+    NotReady:     boolean;
     LastSyncTime:  array[BrowseType] of TDateTime;
     ActiveSubMenu: array[BrowseType] of BrowseSubType;
     StringGrids:   array[BrowseType] of TStringGrid;
@@ -195,7 +215,7 @@ begin
     LastSyncTime[btBug] := 0;
     LastSyncTime[btStory] := 0;
     LastSyncTime[btTodo] := 0;
-    LoadTabData(CurrentTab);
+    LoadTabData(CurrentTab, '', True);
 end;
 
 procedure TMainForm.HidePopup(Sender: TObject);overload;
@@ -218,12 +238,18 @@ begin
 end;
 
 (* Load tab data list with a given browse type *)
-procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = '');
+procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = ''; mute: boolean = False);
 var
     dataLoader: TBackgroundWorker;
     dataLoaderArgs : TLoadDataListArgs;
 begin
-    if IsTabLoading then
+    if NotReady then
+    begin
+        if (not mute) then ShowMessage('您还没有登录，无法获取数据。');
+        Exit;
+    end;
+
+    if IsTabLoading and (not mute) then
     begin
         ShowMessage('应用正忙，请稍后再试。', 'warning');
         Exit;
@@ -316,7 +342,7 @@ begin
     begin
         if (Now - LastSyncTime[TabGroup[i]]) > ((2 * 60 * 1000) / ONEDAYMILLIONSECONDS) then
         begin
-            LoadTabData(TabGroup[i]);
+            LoadTabData(TabGroup[i], '', True);
             break;
         end;
     end;
@@ -364,6 +390,11 @@ begin
             TimerLoadingAnimate.Enabled := False;
         end;
     end;
+end;
+
+procedure TMainForm.TrayIconMainDblClick(Sender: TObject);
+begin
+    MenuItemOpenClick(Sender);
 end;
 
 procedure TMainForm.LoadTab(dataResult: TDataResult; tab: BrowseType);
@@ -515,6 +546,8 @@ end;
 
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+    TrayIconMain.Visible := False;
+    
     // Destroy;
     Logout;
     try
@@ -535,7 +568,7 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-    FirstShow := True;
+    NotReady := True;
     AverageWaitingTime := 2000 / ONEDAYMILLIONSECONDS; // 2 seconds
     MainFormWindow := MainForm;
 end;
@@ -590,16 +623,23 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-    if FirstShow then
+    if NotReady then
     begin
+        NotReady := False;
+
         InitTabMenu;
         InitSubMenu;
 
         (* Load all data *)
         LoadAllTabsData;
 
-        FirstShow := False;
+        TimerAutoSync.Enabled := True;
     end;
+    TrayIconMain.Visible := True;
+end;
+
+procedure TMainForm.FormWindowStateChange(Sender: TObject);
+begin
 end;
 
 procedure TMainForm.LabelBtnMouseLeave(Sender: TObject);
@@ -739,10 +779,15 @@ begin
 
 end;
 
+procedure TMainForm.LabelPopupMenuBtnAboutClick(Sender: TObject);
+begin
+    PanelPopupMenu.Visible := False;
+    AboutForm.ShowModal;
+end;
+
 procedure TMainForm.LabelPopupMenuBtnExitClick(Sender: TObject);
 begin
     PanelPopupMenu.Visible := False;
-
     Close;
 end;
 
@@ -757,8 +802,10 @@ begin
     if r.Result then
     begin
         LoginForm.Show;
+        LoginForm.WindowState := wsNormal;
         MainForm.Hide;
-        FirstShow := True;
+        NotReady := True;
+        TrayIconMain.Visible := False;
     end
     else
     begin
@@ -783,6 +830,11 @@ begin
     labelSender.Color := clNone;
     labelSender.Font.Color := clDefault;
 
+end;
+
+procedure TMainForm.LabelPopupMenuBtnOpenWebsiteClick(Sender: TObject);
+begin
+    OpenURL(User.Url);
 end;
 
 procedure TMainForm.LabelPopupMenuBtnSyncClick(Sender: TObject);
@@ -884,6 +936,12 @@ procedure TMainForm.MenuItemCopyClick(Sender: TObject);
 begin
 end;
 
+procedure TMainForm.MenuItemOpenClick(Sender: TObject);
+begin
+    Show;
+    WindowState := wsNormal;
+end;
+
 procedure TMainForm.MenuItemReloadTabClick(Sender: TObject);
 begin
     LoadTabData(CurrentTab);
@@ -901,12 +959,11 @@ end;
 
 procedure TMainForm.PanelMessageClick(Sender: TObject);
 begin
-
+    HidePopup;
 end;
 
 procedure TMainForm.PanelPopupMenuClick(Sender: TObject);
 begin
-
 end;
 
 (* Hide result message *)
