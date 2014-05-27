@@ -27,7 +27,7 @@ msgstr "首页"
 
 #: stringsunit.rsisbusy
 msgid "应用正忙，请稍后再试#227+"
-msgstr "应用正忙，请稍后再试#227+"
+msgstr "应用正忙，请稍后再试"
 
 #: stringsunit.rslastpage
 msgctxt "stringsunit.rslastpage"
@@ -49,11 +49,11 @@ msgstr ""
 
 #: stringsunit.rsnodatamessage
 msgid "暂时没有数据#227#130"
-msgstr "暂时没有数据#227#130"
+msgstr "暂时没有数据"
 
 #: stringsunit.rsnotreadymessage
 msgid "您还没有登录，无法获取数据#227#130"
-msgstr "您还没有登录，无法获取数据#227#130"
+msgstr "您还没有登录，无法获取数据"
 
 #: stringsunit.rspagerinfoformat
 msgid "第 %d - %d 条，共 %d 条"
@@ -65,19 +65,19 @@ msgstr "新的条目: %s [%d]"
 
 #: stringsunit.rsprevpage
 msgid "上#228#184#233#161#181"
-msgstr ""
+msgstr "上一页"
 
 #: stringsunit.rsrequirepassword
 msgid "请填写禅道密码#227#130"
-msgstr "请填写禅道密码#227#130"
+msgstr "请填写禅道密码"
 
 #: stringsunit.rsrequireusername
 msgid "请填写用户名#227#130"
-msgstr "请填写用户名#227#130"
+msgstr "请填写用户名"
 
 #: stringsunit.rsrequirezentaoaddress
 msgid "请填写禅道地#229#157#227#130"
-msgstr "请填写禅道地#229#157#227#130"
+msgstr "请填写禅道地"
 
 #: stringsunit.rsstory
 #, fuzzy
@@ -136,6 +136,10 @@ msgstr "保存密码"
 msgctxt "tloginform.editaddress.hint"
 msgid "禅道地址 (http://zentao.net)"
 msgstr "禅道地址 (http://zentao.net)"
+
+#: tloginform.editaddress.text
+msgid "123abcABC 中文"
+msgstr ""
 
 #: tloginform.editpassword.hint
 msgctxt "TLOGINFORM.EDITPASSWORD.HINT"

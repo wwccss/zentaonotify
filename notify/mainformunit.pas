@@ -407,8 +407,9 @@ begin
 
         if dataResult.FirstPage then
         begin
-            noTrack  := track.indexOf('#') < 0;
-            if noTrack then track.Add('#');
+           noTrack  := (track.indexOf('#') < 0);
+           if noTrack then
+              track.Add('#');
         end;
 
         (* clean all cells *)
@@ -507,7 +508,7 @@ begin
 
     labelPagerPrev.Caption := rsPrevPage;
     labelPagerNext.Caption := rsNextPage; 
-    
+
     if pager.Total > 0 then
     begin
         labelPagerInfo.Caption := Format(rsPagerInfoFormat, [Min(pager.Total, (
@@ -546,9 +547,10 @@ begin
     Logout;
     try
     begin
-        BrowseTrack[TabGroup[1]].Free;
-        BrowseTrack[TabGroup[2]].Free;
-        BrowseTrack[TabGroup[3]].Free;
+        BrowseTrack[btTodo].Create;
+        BrowseTrack[btBug].Create;
+        BrowseTrack[btTask].Create;
+        BrowseTrack[btStory].Create;
     end;
     finally
     end;
@@ -574,6 +576,9 @@ begin
     TabGroup[1] := btTodo;
     BrowseTrack[btTodo] := TStringList.Create;
     BrowseTrack[btBug] := TStringList.Create;
+    BrowseTrack[btTask] := TStringList.Create;
+    BrowseTrack[btStory] := TStringList.Create;
+
     if (user.Role = 'qa') or (user.Role = 'qd') then
     begin
         LabelTab2.Caption := rsBug;
@@ -585,7 +590,7 @@ begin
 
         TabGroup[2] := btBug;
         TabGroup[3] := btTask;
-        BrowseTrack[btTask] := TStringList.Create;
+        // BrowseTrack[btTask] := TStringList.Create;
     end
     else if (user.Role = 'po') or (user.Role = 'pd') then
     begin
@@ -598,7 +603,7 @@ begin
 
         TabGroup[2] := btStory;
         TabGroup[3] := btBug;
-        BrowseTrack[btStory] := TStringList.Create;
+        // BrowseTrack[btStory] := TStringList.Create;
     end;
 
     IsTabLoading := False;
@@ -1012,6 +1017,8 @@ begin
         'zh_tw': MenuItem6.Checked := True;
         'en': MenuItem7.Checked := True;
     end;
+
+    user.Lang := ALang;
 end;
 
 end.

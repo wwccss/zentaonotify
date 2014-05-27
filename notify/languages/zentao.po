@@ -124,6 +124,10 @@ msgctxt "tloginform.editaddress.hint"
 msgid "禅道地址 (http://zentao.net)"
 msgstr ""
 
+#: tloginform.editaddress.text
+msgid "123abcABC 中文"
+msgstr ""
+
 #: tloginform.editpassword.hint
 msgctxt "TLOGINFORM.EDITPASSWORD.HINT"
 msgid "密码"

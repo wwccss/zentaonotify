@@ -32,6 +32,7 @@ type
         MenuItemLangZHTW: TMenuItem;
         MenuItemLangEN: TMenuItem;
         MenuItemLangZHCN: TMenuItem;
+        Panel1: TPanel;
         PopupMenuLang: TPopupMenu;
         ShapeAddress:    TShape;
         ShapeUsername:   TShape;
@@ -270,6 +271,9 @@ begin
         PassMd5 := user.PassMd5;
         CheckBoxRememberMe.Checked := True;
 
+        if user.Lang <> '' then
+            SelectLanguage(user.Lang);
+
         if user.AutoSignIn then
         begin
            TBackgroundWorker.Create(@Logining, @LoginCompleted);
@@ -322,6 +326,8 @@ begin
         'zh_tw': MenuItemLangZHTW.Checked := True;
         'en': MenuItemLangEN.Checked := True;
     end;
+
+    user.Lang := ALang;
 end;
 
 end.

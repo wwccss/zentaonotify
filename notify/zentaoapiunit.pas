@@ -387,7 +387,7 @@ begin
             end
             else
             begin
-                Result := Result + '-id_desc-';
+                Result := Result + 'id_desc-';
             end;
             Result := Result + config.Get('recTotal', '') + '-' +
                 config.Get('recPerPage', '') + '-' + pageID;
@@ -580,7 +580,7 @@ begin
             conf.SetValue('/User/Role', user.Role);
             conf.SetValue('/LastLoginTime', Now);
             conf.SetValue('/User/AutoSignIn', user.AutoSignIn);
-            conf.SetValue('/Lang', user.Lang);
+            conf.SetValue('/User/Lang', user.Lang);
         end
         else
         begin
@@ -590,6 +590,7 @@ begin
             conf.SetValue('/User/Role', '');
             conf.SetValue('/LastLoginTime', 0);
             conf.SetValue('/User/AutoSignIn', False);
+            conf.SetValue('/User/Lang', '');
         end;
 
         conf.Flush;

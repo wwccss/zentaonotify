@@ -45,7 +45,7 @@ msgstr "Loging..."
 
 #: stringsunit.rsnextpage
 msgid "下#228#184#233#161#181"
-msgstr ""
+msgstr "Next"
 
 #: stringsunit.rsnodatamessage
 msgid "暂时没有数据#227#130"
@@ -65,7 +65,7 @@ msgstr "New item(s): %s [%d]"
 
 #: stringsunit.rsprevpage
 msgid "上#228#184#233#161#181"
-msgstr ""
+msgstr "Prev"
 
 #: stringsunit.rsrequirepassword
 msgid "请填写禅道密码#227#130"
@@ -136,6 +136,10 @@ msgstr "Remember"
 msgctxt "tloginform.editaddress.hint"
 msgid "禅道地址 (http://zentao.net)"
 msgstr "Zentao address (http://zentao.net)"
+
+#: tloginform.editaddress.text
+msgid "123abcABC 中文"
+msgstr ""
 
 #: tloginform.editpassword.hint
 msgctxt "TLOGINFORM.EDITPASSWORD.HINT"

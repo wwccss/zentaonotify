@@ -1,7 +1,7 @@
 inherited LoginForm: TLoginForm
-  Left = 2455
+  Left = 701
   Height = 555
-  Top = 221
+  Top = 259
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -2360,20 +2360,22 @@ inherited LoginForm: TLoginForm
     Pen.Cosmetic = False
   end
   object EditAddress: TEdit[2]
-    Left = 37
-    Height = 20
+    Left = 39
+    Height = 17
     Hint = '禅道地址 (http://zentao.net)'
-    Top = 239
-    Width = 211
+    Top = 241
+    Width = 209
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
     Font.Color = clGray
+    Font.Height = -12
     OnChange = EditChange
     OnEnter = EditEnter
     OnExit = EditExit
     ParentFont = False
     TabOrder = 0
+    Text = '123abcABC 中文'
   end
   object ShapeUsername: TShape[3]
     Left = 33
@@ -2386,15 +2388,16 @@ inherited LoginForm: TLoginForm
     Pen.Cosmetic = False
   end
   object EditUsername: TEdit[4]
-    Left = 37
-    Height = 20
+    Left = 39
+    Height = 17
     Hint = '用户名'
-    Top = 274
-    Width = 211
+    Top = 276
+    Width = 209
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
     Font.Color = clGray
+    Font.Height = -12
     OnChange = EditChange
     OnEnter = EditEnter
     OnExit = EditExit
@@ -2413,16 +2416,17 @@ inherited LoginForm: TLoginForm
     Pen.Cosmetic = False
   end
   object EditPassword: TEdit[6]
-    Left = 37
-    Height = 20
+    Left = 39
+    Height = 17
     Hint = '密码'
-    Top = 310
-    Width = 211
+    Top = 312
+    Width = 209
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
     EchoMode = emPassword
     Font.Color = clGray
+    Font.Height = -12
     OnChange = EditPasswordChange
     OnEnter = EditPasswordEnter
     OnExit = EditPasswordExit
@@ -2432,7 +2436,7 @@ inherited LoginForm: TLoginForm
   end
   object BitBtnLogin: TBitBtn[7]
     Left = 33
-    Height = 45
+    Height = 37
     Hint = '登录'
     Top = 339
     Width = 221
@@ -2477,12 +2481,12 @@ inherited LoginForm: TLoginForm
   end
   object LabelBtnLanguage: TLabel[10]
     Cursor = crHandPoint
-    Left = 190
-    Height = 20
+    Left = 207
+    Height = 17
     Top = 8
-    Width = 90
+    Width = 73
     Alignment = taRightJustify
-    Anchors = [akLeft, akBottom]
+    Anchors = [akTop, akRight]
     Caption = 'Language ▼'
     Font.Color = 14803425
     Layout = tlCenter
@@ -2491,30 +2495,13 @@ inherited LoginForm: TLoginForm
     PopupMenu = PopupMenuLang
     OnClick = LabelBtnLanguageClick
   end
-  object CheckBoxRememberMe: TCheckBox[11]
-    Left = 35
-    Height = 24
-    Top = 392
-    Width = 84
-    Caption = '保存密码'
-    OnChange = CheckBoxRememberMeChange
-    TabOrder = 4
-  end
-  object CheckBoxAutoSignIn: TCheckBox[12]
-    Left = 150
-    Height = 24
-    Top = 392
-    Width = 84
-    Caption = '自动登录'
-    OnChange = CheckBoxAutoSignInChange
-    TabOrder = 5
-  end
-  object LabelBtnAbout: TLabel[13]
+  object LabelBtnAbout: TLabel[11]
     Cursor = crHandPoint
-    Left = 150
-    Height = 20
+    Left = 172
+    Height = 17
     Top = 8
-    Width = 30
+    Width = 24
+    Alignment = taRightJustify
     Anchors = [akTop, akRight]
     Caption = '关于'
     Font.Color = 14803425
@@ -2523,7 +2510,37 @@ inherited LoginForm: TLoginForm
     ParentFont = False
     OnClick = LabelBtnAboutClick
   end
-  object PopupMenuLang: TPopupMenu[14]
+  object Panel1: TPanel[12]
+    Left = 1
+    Height = 17
+    Top = 389
+    Width = 281
+    BevelOuter = bvNone
+    ClientHeight = 17
+    ClientWidth = 281
+    Color = 15708723
+    ParentColor = False
+    TabOrder = 4
+    object CheckBoxRememberMe: TCheckBox
+      Left = 36
+      Height = 21
+      Top = 0
+      Width = 70
+      Caption = '保存密码'
+      OnChange = CheckBoxRememberMeChange
+      TabOrder = 0
+    end
+    object CheckBoxAutoSignIn: TCheckBox
+      Left = 144
+      Height = 21
+      Top = 0
+      Width = 70
+      Caption = '自动登录'
+      OnChange = CheckBoxAutoSignInChange
+      TabOrder = 1
+    end
+  end
+  object PopupMenuLang: TPopupMenu[13]
     left = 8
     top = 6
     object MenuItemLangZHCN: TMenuItem

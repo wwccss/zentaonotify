@@ -1,9 +1,9 @@
 inherited MainForm: TMainForm
-  Left = 2032
-  Height = 748
-  Top = 113
+  Left = 2119
+  Height = 680
+  Top = 126
   Width = 350
-  ClientHeight = 748
+  ClientHeight = 680
   ClientWidth = 350
   Constraints.MaxHeight = 870
   Constraints.MaxWidth = 350
@@ -4477,12 +4477,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavTodo: TPanel[1]
     Left = 0
-    Height = 708
+    Height = 640
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 708
+    ClientHeight = 640
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -4490,14 +4490,14 @@ inherited MainForm: TMainForm
     TabOrder = 1
     object StringGridTodo: TStringGrid
       Left = 0
-      Height = 638
+      Height = 570
       Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 0
+      ColCount = 3
       Columns = <      
         item
           Alignment = taCenter
@@ -4522,10 +4522,12 @@ inherited MainForm: TMainForm
       FixedCols = 0
       FixedRows = 0
       Flat = True
+      Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellEllipsis]
-      RowCount = 0
+      ParentFont = False
       ScrollBars = ssAutoVertical
       TabOrder = 0
+      TitleFont.Height = -13
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown
       OnSelectCell = StringGridTodoSelectCell
@@ -4547,12 +4549,13 @@ inherited MainForm: TMainForm
       object LabelMenu1: TLabel
         Cursor = crHandPoint
         Left = 10
-        Height = 20
+        Height = 19
         Hint = 'today'
         Top = 10
-        Width = 30
+        Width = 26
         Caption = '今日'
         Font.Color = 13392660
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4562,13 +4565,14 @@ inherited MainForm: TMainForm
       object LabelMenu2: TLabel
         Tag = 1
         Cursor = crHandPoint
-        Left = 52
-        Height = 20
+        Left = 48
+        Height = 19
         Hint = 'yesterday'
         Top = 10
-        Width = 30
+        Width = 26
         Caption = '昨日'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4578,13 +4582,14 @@ inherited MainForm: TMainForm
       object LabelMenu3: TLabel
         Tag = 2
         Cursor = crHandPoint
-        Left = 94
-        Height = 20
+        Left = 86
+        Height = 19
         Hint = 'thisweek'
         Top = 10
-        Width = 30
+        Width = 26
         Caption = '本周'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4594,13 +4599,14 @@ inherited MainForm: TMainForm
       object LabelMenu4: TLabel
         Tag = 3
         Cursor = crHandPoint
-        Left = 136
-        Height = 20
+        Left = 124
+        Height = 19
         Hint = 'lastweek'
         Top = 10
-        Width = 30
+        Width = 26
         Caption = '上周'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4621,7 +4627,7 @@ inherited MainForm: TMainForm
     object PanelPagerTodo: TPanel
       Left = 50
       Height = 30
-      Top = 678
+      Top = 610
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -4722,12 +4728,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavTask: TPanel[2]
     Left = 350
-    Height = 708
+    Height = 640
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 708
+    ClientHeight = 640
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -4735,14 +4741,14 @@ inherited MainForm: TMainForm
     object StringGridTask: TStringGrid
       Tag = 1
       Left = 0
-      Height = 638
+      Height = 570
       Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 0
+      ColCount = 3
       Columns = <      
         item
           Alignment = taCenter
@@ -4766,10 +4772,12 @@ inherited MainForm: TMainForm
       FixedCols = 0
       FixedRows = 0
       Flat = True
+      Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
-      RowCount = 0
+      ParentFont = False
       ScrollBars = ssAutoVertical
       TabOrder = 0
+      TitleFont.Height = -13
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown
     end
@@ -4792,12 +4800,13 @@ inherited MainForm: TMainForm
         Tag = 4
         Cursor = crHandPoint
         Left = 10
-        Height = 20
+        Height = 19
         Hint = 'assignedTo'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '指派给我'
         Font.Color = 13392660
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4807,13 +4816,14 @@ inherited MainForm: TMainForm
       object LabelMenu6: TLabel
         Tag = 5
         Cursor = crHandPoint
-        Left = 82
-        Height = 20
+        Left = 74
+        Height = 19
         Hint = 'openedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我创建'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4823,13 +4833,14 @@ inherited MainForm: TMainForm
       object LabelMenu7: TLabel
         Tag = 8
         Cursor = crHandPoint
-        Left = 154
-        Height = 20
+        Left = 138
+        Height = 19
         Hint = 'finishedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我完成'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4839,13 +4850,14 @@ inherited MainForm: TMainForm
       object LabelMenu8: TLabel
         Tag = 7
         Cursor = crHandPoint
-        Left = 226
-        Height = 20
+        Left = 202
+        Height = 19
         Hint = 'closedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我关闭'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -4857,7 +4869,7 @@ inherited MainForm: TMainForm
       Tag = 1
       Left = 50
       Height = 30
-      Top = 678
+      Top = 610
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -4948,12 +4960,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavBug: TPanel[3]
     Left = 700
-    Height = 708
+    Height = 640
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 708
+    ClientHeight = 640
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -4961,14 +4973,14 @@ inherited MainForm: TMainForm
     object StringGridBug: TStringGrid
       Tag = 2
       Left = 0
-      Height = 638
+      Height = 570
       Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 0
+      ColCount = 3
       Columns = <      
         item
           Alignment = taCenter
@@ -4992,10 +5004,12 @@ inherited MainForm: TMainForm
       FixedCols = 0
       FixedRows = 0
       Flat = True
+      Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
-      RowCount = 0
+      ParentFont = False
       ScrollBars = ssAutoVertical
       TabOrder = 0
+      TitleFont.Height = -13
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown
     end
@@ -5018,12 +5032,13 @@ inherited MainForm: TMainForm
         Tag = 4
         Cursor = crHandPoint
         Left = 10
-        Height = 20
+        Height = 19
         Hint = 'assignedTo'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '指派给我'
         Font.Color = 13392660
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5033,13 +5048,14 @@ inherited MainForm: TMainForm
       object LabelMenu10: TLabel
         Tag = 5
         Cursor = crHandPoint
-        Left = 82
-        Height = 20
+        Left = 74
+        Height = 19
         Hint = 'openedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我创建'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5049,13 +5065,14 @@ inherited MainForm: TMainForm
       object LabelMenu11: TLabel
         Tag = 9
         Cursor = crHandPoint
-        Left = 154
-        Height = 20
+        Left = 138
+        Height = 19
         Hint = 'resolvedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我解决'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5065,13 +5082,14 @@ inherited MainForm: TMainForm
       object LabelMenu12: TLabel
         Tag = 7
         Cursor = crHandPoint
-        Left = 226
-        Height = 20
+        Left = 202
+        Height = 19
         Hint = 'closedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我关闭'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5083,7 +5101,7 @@ inherited MainForm: TMainForm
       Tag = 2
       Left = 50
       Height = 30
-      Top = 678
+      Top = 610
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -5174,12 +5192,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavStory: TPanel[4]
     Left = 1050
-    Height = 708
+    Height = 640
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 708
+    ClientHeight = 640
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -5187,14 +5205,14 @@ inherited MainForm: TMainForm
     object StringGridStory: TStringGrid
       Tag = 3
       Left = 0
-      Height = 638
+      Height = 570
       Top = 40
       Width = 350
       AlternateColor = clNone
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 0
+      ColCount = 3
       Columns = <      
         item
           Alignment = taCenter
@@ -5218,10 +5236,12 @@ inherited MainForm: TMainForm
       FixedCols = 0
       FixedRows = 0
       Flat = True
+      Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
-      RowCount = 0
+      ParentFont = False
       ScrollBars = ssAutoVertical
       TabOrder = 0
+      TitleFont.Height = -13
       OnDblClick = StringGridDblClick
       OnMouseDown = StringGridMouseDown
     end
@@ -5244,12 +5264,13 @@ inherited MainForm: TMainForm
         Tag = 4
         Cursor = crHandPoint
         Left = 10
-        Height = 20
+        Height = 19
         Hint = 'assignedTo'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '指派给我'
         Font.Color = 13392660
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5259,13 +5280,14 @@ inherited MainForm: TMainForm
       object LabelMenu14: TLabel
         Tag = 5
         Cursor = crHandPoint
-        Left = 82
-        Height = 20
+        Left = 74
+        Height = 19
         Hint = 'openedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我创建'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5275,13 +5297,14 @@ inherited MainForm: TMainForm
       object LabelMenu15: TLabel
         Tag = 6
         Cursor = crHandPoint
-        Left = 154
-        Height = 20
+        Left = 138
+        Height = 19
         Hint = 'finishedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我评审'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5291,13 +5314,14 @@ inherited MainForm: TMainForm
       object LabelMenu16: TLabel
         Tag = 7
         Cursor = crHandPoint
-        Left = 226
-        Height = 20
+        Left = 202
+        Height = 19
         Hint = 'closedBy'
         Top = 10
-        Width = 60
+        Width = 52
         Caption = '由我关闭'
         Font.Color = 6118749
+        Font.Height = -13
         ParentColor = False
         ParentFont = False
         OnClick = LabelMenuClick
@@ -5309,7 +5333,7 @@ inherited MainForm: TMainForm
       Tag = 3
       Left = 50
       Height = 30
-      Top = 678
+      Top = 610
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -5415,10 +5439,10 @@ inherited MainForm: TMainForm
     Visible = False
     object LabelMessageClose: TLabel
       Cursor = crHandPoint
-      Left = 1348
-      Height = 20
-      Top = 7
-      Width = 45
+      Left = 299
+      Height = 17
+      Top = 9
+      Width = 37
       Caption = '× 关闭'
       Font.Color = clGray
       ParentColor = False
@@ -5426,7 +5450,7 @@ inherited MainForm: TMainForm
       OnClick = LabelMessageCloseClick
     end
     object LabelMessage: TLabel
-      Left = 11
+      Left = 10
       Height = 40
       Top = 0
       Width = 283
@@ -6061,11 +6085,83 @@ inherited MainForm: TMainForm
     top = 8
     object MenuItemSyncAll1: TMenuItem
       Caption = '立即同步'
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000666666006666
+        660066666600666666006666662E6666668F666666D3666666F6666666F66666
+        66CF6666668A6666662766666600666666006666660066666600666666006666
+        66006666660966666691666666FE666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FD666666936666660766666600666666006666668F6666
+        6606666666B9666666FF666666FA666666966666663266666608666666086666
+        66356666668F666666F8666666FF666666BB6666660866666600666666FF6666
+        66DE666666FF666666E666666637666666006666660066666600666666006666
+        6600666666006666662F666666E5666666FF6666669466666600666666FF6666
+        66FF666666FE6666663C66666600666666006666660066666600666666006666
+        6600666666006666660066666630666666F9666666FD6666662B666666FF6666
+        66FF666666FF666666C566666611666666006666660066666600666666006666
+        660066666600666666006666660066666693666666FF66666691666666FF6666
+        66FF666666FF666666FF666666D36666661A6666660066666600666666006666
+        660066666600666666006666660066666636666666FF666666D3666666006666
+        6600666666006666660066666600666666006666660066666600666666006666
+        6600666666006666660066666600666666006666660066666600666666006666
+        6600666666006666660066666600666666006666660066666600666666006666
+        6600666666006666660066666600666666006666660066666600666666D56666
+        66FF666666346666660066666600666666006666660066666600666666006666
+        66006666660066666680666666FF666666FF666666FF666666FF666666956666
+        66FF666666906666660066666600666666006666660066666600666666006666
+        6600666666006666660066666679666666FF666666FF666666FF6666662E6666
+        66FE666666F86666662D66666600666666006666660066666600666666006666
+        6600666666006666660066666638666666FA666666FF666666FF666666006666
+        6697666666FF666666E46666662E666666006666660066666600666666006666
+        66006666660066666634666666E5666666FF666666D1666666FF666666006666
+        6609666666BC666666FF666666F76666668E6666663466666611666666196666
+        664066666696666666F7666666FF666666B5666666046666667A666666006666
+        66006666660766666695666666FD666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FC66666685666666066666660066666600666666006666
+        66006666660066666600666666286666668B666666CF666666EA666666E86666
+        66D16666668B6666662566666600666666006666660066666600
+      }
       ImageIndex = 0
       OnClick = LabelPopupMenuBtnSyncClick
     end
     object MenuItemOpenWebsite1: TMenuItem
       Caption = '访问网站'
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00666666FF6666
+        66FF666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FF6666660066666600666666FF6666
+        66FF666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FF6666660066666600666666FF6666
+        66FF666666006666660066666600666666006666660066666600666666006666
+        66006666660066666600666666FF666666FF6666660066666600666666FF6666
+        66FF666666006666660066666600666666006666660066666600666666006666
+        66006666660066666600666666FF666666FF6666660066666600666666FF6666
+        66FF666666006666660166666687666666026666660066666600666666006666
+        6600666666006666660066666662666666F96666660066666600666666FF6666
+        66FF6666660066666600666666D4666666B66666661E66666600666666006666
+        660066666600666666A1666666086666663D6666660066666600666666FF6666
+        66FF66666600666666006666667E666666FF666666F36666669B666666416666
+        662066666611666666FF666666CC6666661E6666660066666600666666FF6666
+        66FF66666600666666006666660F666666E9666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666EA6666664066666600666666FF6666
+        66FF66666600666666006666660066666642666666FA666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FF666666FB6666666E666666FF6666
+        66FF666666FF666666FF666666CC6666661E66666644666666EA666666FF6666
+        66FF666666FF666666FF666666FF666666FF666666F66666665D666666FF6666
+        66FF666666FF666666FF666666FF666666EA666666406666660D666666756666
+        66D3666666F9666666FF666666FF666666E16666663366666600666666006666
+        6600666666006666660066666600666666006666660066666600666666006666
+        660066666600666666FF666666BF666666156666660066666600666666006666
+        6600666666006666660066666600666666006666660066666600666666006666
+        6600666666006666669066666604666666006666660066666600FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+      }
       ImageIndex = 4
       OnClick = LabelPopupMenuBtnOpenWebsiteClick
     end
@@ -6074,6 +6170,42 @@ inherited MainForm: TMainForm
     end
     object MenuItem4: TMenuItem
       Caption = 'Language'
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF006666660266666657666666B4666666E3666666FF666666E36666
+        66B36666665566666602FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF0066666624666666CA666666F0666666EF66666650666666FF666666516666
+        66F0666666F0666666C866666623FFFFFF00FFFFFF00FFFFFF00FFFFFF006666
+        6624666666EA66666671666666D466666646FFFFFF00666666FFFFFFFF006666
+        6649666666D366666672666666E966666622FFFFFF00FFFFFF00666666036666
+        66CC6666666D6666664B666666BFFFFFFF00FFFFFF00666666FFFFFFFF00FFFF
+        FF00666666C16666664A6666666F666666CA66666602FFFFFF006666665B6666
+        66FF666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FF66666658FFFFFF00666666B76666
+        6653FFFFFF00666666CF66666633FFFFFF00FFFFFF00666666FFFFFFFF00FFFF
+        FF0066666634666666CEFFFFFF0066666655666666B3FFFFFF00666666E96666
+        6618FFFFFF00666666EE66666612FFFFFF00FFFFFF00666666FFFFFFFF00FFFF
+        FF0066666613666666EDFFFFFF0066666619666666E7FFFFFF00666666FF6666
+        66FF666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FF666666FFFFFFFF00666666E96666
+        6618FFFFFF00666666ED66666613FFFFFF00FFFFFF00666666FFFFFFFF00FFFF
+        FF0066666613666666ECFFFFFF0066666619666666E7FFFFFF00666666B76666
+        6656FFFFFF00666666CC66666635FFFFFF00FFFFFF00666666FFFFFFFF00FFFF
+        FF0066666636666666CCFFFFFF0066666658666666B3FFFFFF006666665B6666
+        66FF666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FF66666658FFFFFF00666666036666
+        66CC6666667766666647666666C3FFFFFF00FFFFFF00666666FFFFFFFF00FFFF
+        FF00666666C56666664566666678666666CA66666602FFFFFF00FFFFFF006666
+        6624666666EB66666671666666D466666646FFFFFF00666666FFFFFFFF006666
+        6649666666D266666673666666EA66666622FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF0066666624666666CA666666F0666666EF66666650666666FF666666516666
+        66F0666666F0666666C866666623FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF006666660266666657666666B4666666E3666666FF666666E36666
+        66B36666665566666602FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+      }
       ImageIndex = 3
       object MenuItem5: TMenuItem
         AutoCheck = True
@@ -6107,11 +6239,83 @@ inherited MainForm: TMainForm
     end
     object MenuItemLogout1: TMenuItem
       Caption = '注销'
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF006666663D666666E1666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666E06666663DFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00666666E0666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666E0FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FFFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FFFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FFFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00666666FF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666FFFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00666666DF666666FF666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666FF666666DEFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF006666663D666666DA666666FF666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666FF666666DA6666663DFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00666666FFFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00666666FFFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00666666FFFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00666666FFFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00666666E166666620FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF0066666621666666E0FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF0066666673666666C266666625FFFFFF00FFFFFF006666
+        6625666666C266666672FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF006666660166666676666666DF666666FF666666FF6666
+        66DF6666667566666601FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+      }
       ImageIndex = 1
       OnClick = LabelPopupMenuBtnLogoutClick
     end
     object MenuItemExit1: TMenuItem
       Caption = '退出'
+      Bitmap.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000064000000640000000000000000000000FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00666666166666667F666666CA666666F5666666F56666
+        66CA6666667E66666615FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF006666665A666666F4666666FF666666FF666666FF666666FF6666
+        66FF666666FF666666F366666657FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF0066666655666666FE666666FF666666AC6666663D66666608666666096666
+        663E666666AE666666FF666666FE66666652FFFFFF00FFFFFF00FFFFFF006666
+        6615666666F1666666FF6666667EFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF0066666681666666FF666666EF66666613FFFFFF00FFFFFF006666
+        6682666666FF666666B2FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00666666B5666666FF6666667FFFFFFF00FFFFFF006666
+        66D1666666FF6666663DFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF0066666640666666FF666666CEFFFFFF00FFFFFF006666
+        66F3666666FF6666660BFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF006666660D666666FF666666F2FFFFFF00FFFFFF006666
+        66EC666666FF6666660FFFFFFF00FFFFFF00FFFFFF00666666C3666666C1FFFF
+        FF00FFFFFF00FFFFFF0066666611666666FF666666F5FFFFFF00FFFFFF006666
+        66C9666666FF66666642FFFFFF00FFFFFF00FFFFFF00666666FF666666FFFFFF
+        FF00FFFFFF00FFFFFF0066666644666666FF666666D1FFFFFF00FFFFFF006666
+        667D666666FF666666B0FFFFFF00FFFFFF00FFFFFF00666666FF666666FFFFFF
+        FF00FFFFFF00FFFFFF00666666B2666666FF6666667BFFFFFF00FFFFFF006666
+        6612666666F0666666FF6666667BFFFFFF00FFFFFF00666666FF666666FFFFFF
+        FF00FFFFFF006666667D666666FF666666EE66666610FFFFFF00FFFFFF00FFFF
+        FF006666664F666666FD666666FFFFFFFF00FFFFFF00666666FF666666FFFFFF
+        FF00FFFFFF00666666FF666666FC6666664EFFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF006666664D666666E7FFFFFF00FFFFFF00666666FF666666FFFFFF
+        FF00FFFFFF00666666E66666664AFFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF0066666612FFFFFF00FFFFFF00666666FF666666FFFFFF
+        FF00FFFFFF0066666611FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00666666C0666666BEFFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+        FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00
+      }
       ImageIndex = 2
       OnClick = OnExit
     end
