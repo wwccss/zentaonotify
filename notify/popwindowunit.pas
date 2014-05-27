@@ -8,13 +8,15 @@ uses
     Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
     Grids, Buttons, StdCtrls,
     fpjson, jsonparser,
+    LocalizedForms,
+    StringsUnit,
     ZentaoAPIUnit;
 
 type
 
     { TPopWindow }
 
-    TPopWindow = class(TForm)
+    TPopWindow = class(TLocalizedForm)
         Label1: TLabel;
         Panel1: TPanel;
         Panel2: TPanel;
@@ -88,7 +90,7 @@ begin
             StringGridDataList.Cells[1, index - 1] := title;
         end;
 
-        Caption := '新的条目: ' + BrowseNames[PopWindowData.Tab] + ' [' + IntToStr(index) + ']';
+        Caption := Format(rsPopWindowTitle, [BrowseNames[PopWindowData.Tab], index]);
         Label1.Caption := Caption;
     end
 end;

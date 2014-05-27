@@ -8,7 +8,7 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, LoginFormUnit, ZentaoAPIUnit, MainFormUnit,
-  BackgroundWorkerUnit, PopWindowUnit, AboutUnit;
+  BackgroundWorkerUnit, PopWindowUnit, AboutUnit, localizedforms, StringsUnit;
 
 {$R *.res}
 

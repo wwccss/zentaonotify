@@ -1,0 +1,642 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: zentao notify 1.3\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Catouse <catouse@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: en\n"
+
+#: stringsunit.rsappname
+msgid "禅道桌面提醒工具"
+msgstr "Zentao notify"
+
+#: stringsunit.rsbug
+msgctxt "stringsunit.rsbug"
+msgid "Bug"
+msgstr "Bug"
+
+#: stringsunit.rsfirstpage
+msgid "首页"
+msgstr "First"
+
+#: stringsunit.rsisbusy
+msgid "应用正忙，请稍后再试#227+"
+msgstr "Busy now, try again later."
+
+#: stringsunit.rslastpage
+msgctxt "stringsunit.rslastpage"
+msgid "末页"
+msgstr "Last"
+
+#: stringsunit.rslogin
+msgctxt "stringsunit.rslogin"
+msgid "登录"
+msgstr "Login"
+
+#: stringsunit.rsloging
+msgid "登录中..."
+msgstr "Loging..."
+
+#: stringsunit.rsnextpage
+msgid "下#228#184#233#161#181"
+msgstr ""
+
+#: stringsunit.rsnodatamessage
+msgid "暂时没有数据#227#130"
+msgstr "No data"
+
+#: stringsunit.rsnotreadymessage
+msgid "您还没有登录，无法获取数据#227#130"
+msgstr "Can not get data when you has not login  in."
+
+#: stringsunit.rspagerinfoformat
+msgid "第 %d - %d 条，共 %d 条"
+msgstr "%d - %d of %d"
+
+#: stringsunit.rspopwindowtitle
+msgid "新的条目: %s [%d]"
+msgstr "New item(s): %s [%d]"
+
+#: stringsunit.rsprevpage
+msgid "上#228#184#233#161#181"
+msgstr ""
+
+#: stringsunit.rsrequirepassword
+msgid "请填写禅道密码#227#130"
+msgstr "Password required."
+
+#: stringsunit.rsrequireusername
+msgid "请填写用户名#227#130"
+msgstr "Username required."
+
+#: stringsunit.rsrequirezentaoaddress
+msgid "请填写禅道地#229#157#227#130"
+msgstr "Zentao address required."
+
+#: stringsunit.rsstory
+#, fuzzy
+#| msgid "需求"
+msgid "#233#156#230#177#130"
+msgstr "Story"
+
+#: stringsunit.rstask
+msgctxt "stringsunit.rstask"
+msgid "任务"
+msgstr "Task"
+
+#: taboutform.caption
+msgid "关于禅道桌面提醒工具"
+msgstr "About zentao notify"
+
+#: taboutform.labelversion.caption
+msgid "v 1.2.0"
+msgstr ""
+
+#: taboutform.labelversion1.caption
+msgid "检查更新"
+msgstr "Check updates"
+
+#: taboutform.labelversion2.caption
+msgid "访问禅道"
+msgstr "Visit zentao"
+
+#: taboutform.labelversion3.caption
+msgid "由禅道开源驱动"
+msgstr "Powered by zentao"
+
+#: tlocalizedform.caption
+msgid "LocalizedForm"
+msgstr ""
+
+#: tloginform.bitbtnlogin.caption
+msgctxt "TLOGINFORM.BITBTNLOGIN.CAPTION"
+msgid "登录"
+msgstr "Login"
+
+#: tloginform.bitbtnlogin.hint
+msgctxt "tloginform.bitbtnlogin.hint"
+msgid "登录"
+msgstr "Login"
+
+#: tloginform.checkboxautosignin.caption
+msgid "自动登录"
+msgstr "Login auto"
+
+#: tloginform.checkboxrememberme.caption
+msgid "保存密码"
+msgstr "Remember"
+
+#: tloginform.editaddress.hint
+msgctxt "tloginform.editaddress.hint"
+msgid "禅道地址 (http://zentao.net)"
+msgstr "Zentao address (http://zentao.net)"
+
+#: tloginform.editpassword.hint
+msgctxt "TLOGINFORM.EDITPASSWORD.HINT"
+msgid "密码"
+msgstr "Password"
+
+#: tloginform.editusername.hint
+msgctxt "tloginform.editusername.hint"
+msgid "用户名"
+msgstr "Username"
+
+#: tloginform.labelbtnabout.caption
+msgctxt "tloginform.labelbtnabout.caption"
+msgid "关于"
+msgstr "About"
+
+#: tloginform.labelbtnlanguage.caption
+msgid "Language ▼"
+msgstr ""
+
+#: tloginform.labelresult.caption
+msgid "请填写禅道地址"
+msgstr "Zentao address required"
+
+#: tloginform.labelresult1.caption
+msgid "www.zentao.net"
+msgstr ""
+
+#: tloginform.menuitemlangen.caption
+msgctxt "tloginform.menuitemlangen.caption"
+msgid "English"
+msgstr ""
+
+#: tloginform.menuitemlangen.hint
+msgctxt "tloginform.menuitemlangen.hint"
+msgid "en"
+msgstr ""
+
+#: tloginform.menuitemlangzhcn.caption
+msgctxt "tloginform.menuitemlangzhcn.caption"
+msgid "简体中文"
+msgstr ""
+
+#: tloginform.menuitemlangzhcn.hint
+msgctxt "tloginform.menuitemlangzhcn.hint"
+msgid "zh_cn"
+msgstr ""
+
+#: tloginform.menuitemlangzhtw.caption
+msgctxt "tloginform.menuitemlangzhtw.caption"
+msgid "繁体中文"
+msgstr ""
+
+#: tloginform.menuitemlangzhtw.hint
+msgctxt "tloginform.menuitemlangzhtw.hint"
+msgid "zh_tw"
+msgstr ""
+
+#: tloginform.shapepassword.hint
+msgctxt "tloginform.shapepassword.hint"
+msgid "密码"
+msgstr "Password"
+
+#: tmainform.label2.caption
+msgid "新建"
+msgstr "New"
+
+#: tmainform.labelmenu1.caption
+msgid "今日"
+msgstr "Today"
+
+#: tmainform.labelmenu1.hint
+msgid "today"
+msgstr ""
+
+#: tmainform.labelmenu10.caption
+msgctxt "TMAINFORM.LABELMENU10.CAPTION"
+msgid "由我创建"
+msgstr "MyOpened"
+
+#: tmainform.labelmenu10.hint
+msgctxt "TMAINFORM.LABELMENU10.HINT"
+msgid "openedBy"
+msgstr ""
+
+#: tmainform.labelmenu11.caption
+msgid "由我解决"
+msgstr "MyResolved"
+
+#: tmainform.labelmenu11.hint
+msgid "resolvedBy"
+msgstr ""
+
+#: tmainform.labelmenu12.caption
+msgctxt "TMAINFORM.LABELMENU12.CAPTION"
+msgid "由我关闭"
+msgstr "MyClosed"
+
+#: tmainform.labelmenu12.hint
+msgctxt "TMAINFORM.LABELMENU12.HINT"
+msgid "closedBy"
+msgstr ""
+
+#: tmainform.labelmenu13.caption
+msgctxt "TMAINFORM.LABELMENU13.CAPTION"
+msgid "指派给我"
+msgstr "ToMe"
+
+#: tmainform.labelmenu13.hint
+msgctxt "TMAINFORM.LABELMENU13.HINT"
+msgid "assignedTo"
+msgstr ""
+
+#: tmainform.labelmenu14.caption
+msgctxt "TMAINFORM.LABELMENU14.CAPTION"
+msgid "由我创建"
+msgstr "MyOpened"
+
+#: tmainform.labelmenu14.hint
+msgctxt "TMAINFORM.LABELMENU14.HINT"
+msgid "openedBy"
+msgstr ""
+
+#: tmainform.labelmenu15.caption
+msgid "由我评审"
+msgstr "MyReviewed"
+
+#: tmainform.labelmenu15.hint
+msgctxt "TMAINFORM.LABELMENU15.HINT"
+msgid "finishedBy"
+msgstr ""
+
+#: tmainform.labelmenu16.caption
+msgctxt "TMAINFORM.LABELMENU16.CAPTION"
+msgid "由我关闭"
+msgstr "MyClosed"
+
+#: tmainform.labelmenu16.hint
+msgctxt "TMAINFORM.LABELMENU16.HINT"
+msgid "closedBy"
+msgstr ""
+
+#: tmainform.labelmenu2.caption
+msgid "昨日"
+msgstr "Yesterday"
+
+#: tmainform.labelmenu2.hint
+msgid "yesterday"
+msgstr ""
+
+#: tmainform.labelmenu3.caption
+msgid "本周"
+msgstr "ThisWeek"
+
+#: tmainform.labelmenu3.hint
+msgid "thisweek"
+msgstr ""
+
+#: tmainform.labelmenu4.caption
+msgid "上周"
+msgstr "LastWeek"
+
+#: tmainform.labelmenu4.hint
+msgid "lastweek"
+msgstr ""
+
+#: tmainform.labelmenu5.caption
+msgctxt "tmainform.labelmenu5.caption"
+msgid "指派给我"
+msgstr "ToMe"
+
+#: tmainform.labelmenu5.hint
+msgctxt "tmainform.labelmenu5.hint"
+msgid "assignedTo"
+msgstr ""
+
+#: tmainform.labelmenu6.caption
+msgctxt "tmainform.labelmenu6.caption"
+msgid "由我创建"
+msgstr "MyOpened"
+
+#: tmainform.labelmenu6.hint
+msgctxt "tmainform.labelmenu6.hint"
+msgid "openedBy"
+msgstr ""
+
+#: tmainform.labelmenu7.caption
+msgid "由我完成"
+msgstr "MyFinished"
+
+#: tmainform.labelmenu7.hint
+msgctxt "tmainform.labelmenu7.hint"
+msgid "finishedBy"
+msgstr ""
+
+#: tmainform.labelmenu8.caption
+msgctxt "tmainform.labelmenu8.caption"
+msgid "由我关闭"
+msgstr "MyClosed"
+
+#: tmainform.labelmenu8.hint
+msgctxt "tmainform.labelmenu8.hint"
+msgid "closedBy"
+msgstr ""
+
+#: tmainform.labelmenu9.caption
+msgctxt "TMAINFORM.LABELMENU9.CAPTION"
+msgid "指派给我"
+msgstr "ToMe"
+
+#: tmainform.labelmenu9.hint
+msgctxt "TMAINFORM.LABELMENU9.HINT"
+msgid "assignedTo"
+msgstr ""
+
+#: tmainform.labelmenuicon.hint
+msgctxt "TMAINFORM.LABELMENUICON.HINT"
+msgid "bug"
+msgstr ""
+
+#: tmainform.labelmessage.caption
+msgid ":)"
+msgstr ""
+
+#: tmainform.labelmessageclose.caption
+msgid "× 关闭"
+msgstr "× Close"
+
+#: tmainform.labelpagerbuglast.hint
+msgctxt "TMAINFORM.LABELPAGERBUGLAST.HINT"
+msgid "last"
+msgstr ""
+
+#: tmainform.labelpagerbugnext.hint
+msgctxt "TMAINFORM.LABELPAGERBUGNEXT.HINT"
+msgid "next"
+msgstr ""
+
+#: tmainform.labelpagerbugprev.hint
+msgctxt "TMAINFORM.LABELPAGERBUGPREV.HINT"
+msgid "prev"
+msgstr ""
+
+#: tmainform.labelpagerstorylast.hint
+msgctxt "TMAINFORM.LABELPAGERSTORYLAST.HINT"
+msgid "last"
+msgstr ""
+
+#: tmainform.labelpagerstorynext.hint
+msgctxt "TMAINFORM.LABELPAGERSTORYNEXT.HINT"
+msgid "next"
+msgstr ""
+
+#: tmainform.labelpagerstoryprev.hint
+msgctxt "TMAINFORM.LABELPAGERSTORYPREV.HINT"
+msgid "prev"
+msgstr ""
+
+#: tmainform.labelpagertasklast.hint
+msgctxt "TMAINFORM.LABELPAGERTASKLAST.HINT"
+msgid "last"
+msgstr ""
+
+#: tmainform.labelpagertasknext.hint
+msgctxt "TMAINFORM.LABELPAGERTASKNEXT.HINT"
+msgid "next"
+msgstr ""
+
+#: tmainform.labelpagertaskprev.hint
+msgctxt "TMAINFORM.LABELPAGERTASKPREV.HINT"
+msgid "prev"
+msgstr ""
+
+#: tmainform.labelpagertodolast.hint
+msgctxt "tmainform.labelpagertodolast.hint"
+msgid "last"
+msgstr ""
+
+#: tmainform.labelpagertodonext.hint
+msgctxt "tmainform.labelpagertodonext.hint"
+msgid "next"
+msgstr ""
+
+#: tmainform.labelpagertodoprev.hint
+msgctxt "tmainform.labelpagertodoprev.hint"
+msgid "prev"
+msgstr ""
+
+#: tmainform.labeltab1.caption
+msgid "待办"
+msgstr "Todo"
+
+#: tmainform.labeltab1.hint
+msgid "todo"
+msgstr ""
+
+#: tmainform.labeltab2.caption
+msgctxt "tmainform.labeltab2.caption"
+msgid "任务"
+msgstr "Task"
+
+#: tmainform.labeltab2.hint
+msgid "task"
+msgstr ""
+
+#: tmainform.labeltab3.caption
+msgctxt "tmainform.labeltab3.caption"
+msgid "Bug"
+msgstr "Bug"
+
+#: tmainform.labeltab3.hint
+msgctxt "tmainform.labeltab3.hint"
+msgid "bug"
+msgstr ""
+
+#: tmainform.menuitem1.caption
+msgctxt "tmainform.menuitem1.caption"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem2.caption
+msgctxt "TMAINFORM.MENUITEM2.CAPTION"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem3.caption
+msgctxt "tmainform.menuitem3.caption"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitem4.caption
+msgid "Language"
+msgstr ""
+
+#: tmainform.menuitem5.caption
+msgctxt "tmainform.menuitem5.caption"
+msgid "简体中文"
+msgstr ""
+
+#: tmainform.menuitem5.hint
+msgctxt "tmainform.menuitem5.hint"
+msgid "zh_cn"
+msgstr ""
+
+#: tmainform.menuitem6.caption
+msgctxt "tmainform.menuitem6.caption"
+msgid "繁體中文"
+msgstr ""
+
+#: tmainform.menuitem6.hint
+msgctxt "tmainform.menuitem6.hint"
+msgid "zh_tw"
+msgstr ""
+
+#: tmainform.menuitem7.caption
+msgctxt "tmainform.menuitem7.caption"
+msgid "English"
+msgstr ""
+
+#: tmainform.menuitem7.hint
+msgctxt "tmainform.menuitem7.hint"
+msgid "en"
+msgstr ""
+
+#: tmainform.menuitemabout.caption
+msgctxt "tmainform.menuitemabout.caption"
+msgid "关于"
+msgstr "About"
+
+#: tmainform.menuitemcopy.caption
+msgid "复制"
+msgstr "Copy"
+
+#: tmainform.menuitemexit.caption
+msgctxt "tmainform.menuitemexit.caption"
+msgid "退出"
+msgstr "Exit"
+
+#: tmainform.menuitemexit1.caption
+msgctxt "tmainform.menuitemexit1.caption"
+msgid "退出"
+msgstr "Exit"
+
+#: tmainform.menuitemlogout.caption
+msgctxt "tmainform.menuitemlogout.caption"
+msgid "注销"
+msgstr "Logout"
+
+#: tmainform.menuitemlogout1.caption
+msgctxt "tmainform.menuitemlogout1.caption"
+msgid "注销"
+msgstr "Logout"
+
+#: tmainform.menuitemopen.caption
+msgid "打开"
+msgstr "Open"
+
+#: tmainform.menuitemopenwebsite.caption
+msgctxt "tmainform.menuitemopenwebsite.caption"
+msgid "访问网站"
+msgstr "Website"
+
+#: tmainform.menuitemopenwebsite1.caption
+msgctxt "tmainform.menuitemopenwebsite1.caption"
+msgid "访问网站"
+msgstr "Website"
+
+#: tmainform.menuitemreloadtab.caption
+msgid "更新列表"
+msgstr "Synchronize"
+
+#: tmainform.menuitemsep.caption
+msgctxt "tmainform.menuitemsep.caption"
+msgid "-"
+msgstr ""
+
+#: tmainform.menuitemsyncall.caption
+msgctxt "tmainform.menuitemsyncall.caption"
+msgid "立即同步"
+msgstr "Synchronize"
+
+#: tmainform.menuitemsyncall1.caption
+msgctxt "tmainform.menuitemsyncall1.caption"
+msgid "立即同步"
+msgstr "Synchronize"
+
+#: tmainform.menuitemviewobject.caption
+msgid "在浏览器中查看"
+msgstr "Open in browser"
+
+#: tmainform.stringgridbug.columns[0].title.caption
+msgctxt "TMAINFORM.STRINGGRIDBUG.COLUMNS[0].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridbug.columns[1].title.caption
+msgctxt "TMAINFORM.STRINGGRIDBUG.COLUMNS[1].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridbug.columns[2].title.caption
+msgctxt "TMAINFORM.STRINGGRIDBUG.COLUMNS[2].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridstory.columns[0].title.caption
+msgctxt "TMAINFORM.STRINGGRIDSTORY.COLUMNS[0].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridstory.columns[1].title.caption
+msgctxt "TMAINFORM.STRINGGRIDSTORY.COLUMNS[1].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridstory.columns[2].title.caption
+msgctxt "TMAINFORM.STRINGGRIDSTORY.COLUMNS[2].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridtask.columns[0].title.caption
+msgctxt "TMAINFORM.STRINGGRIDTASK.COLUMNS[0].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridtask.columns[1].title.caption
+msgctxt "TMAINFORM.STRINGGRIDTASK.COLUMNS[1].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridtask.columns[2].title.caption
+msgctxt "TMAINFORM.STRINGGRIDTASK.COLUMNS[2].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridtodo.columns[0].title.caption
+msgctxt "tmainform.stringgridtodo.columns[0].title.caption"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridtodo.columns[1].title.caption
+msgctxt "TMAINFORM.STRINGGRIDTODO.COLUMNS[1].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tmainform.stringgridtodo.columns[2].title.caption
+msgctxt "TMAINFORM.STRINGGRIDTODO.COLUMNS[2].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tpopwindow.label1.hint
+msgid "打开主窗口"
+msgstr "Open main window"
+
+#: tpopwindow.stringgriddatalist.columns[0].title.caption
+msgctxt "TPOPWINDOW.STRINGGRIDDATALIST.COLUMNS[0].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+
+#: tpopwindow.stringgriddatalist.columns[1].title.caption
+msgctxt "TPOPWINDOW.STRINGGRIDDATALIST.COLUMNS[1].TITLE.CAPTION"
+msgid "Title"
+msgstr ""
+

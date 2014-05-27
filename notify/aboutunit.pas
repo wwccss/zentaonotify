@@ -7,18 +7,22 @@ interface
 uses
     Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
     LCLIntf,
+    LocalizedForms,
+    StringsUnit,
+    ZentaoAPIUnit,
     StdCtrls;
 
 type
 
     { TAboutForm }
 
-    TAboutForm = class(TForm)
+    TAboutForm = class(TLocalizedForm)
         Image1: TImage;
         LabelVersion: TLabel;
         LabelVersion1: TLabel;
         LabelVersion2: TLabel;
         LabelVersion3: TLabel;
+        procedure FormCreate(Sender: TObject);
         procedure LabelMouseEnter(Sender: TObject);
         procedure LabelMouseLeave(Sender: TObject);
         procedure LabelVersion1MouseMove(Sender: TObject; Shift: TShiftState;
@@ -46,6 +50,11 @@ var
 begin
     labelSender := Sender as TLabel;
     labelSender.Color := $00e6953e;
+end;
+
+procedure TAboutForm.FormCreate(Sender: TObject);
+begin
+    LabelVersion.Caption := GetBuildVersion('build %d.%d.%d');
 end;
 
 procedure TAboutForm.LabelMouseLeave(Sender: TObject);

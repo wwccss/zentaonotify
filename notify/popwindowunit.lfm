@@ -1,11 +1,10 @@
-object PopWindow: TPopWindow
+inherited PopWindow: TPopWindow
   Left = 746
   Height = 224
   Top = 496
   Width = 270
   AlphaBlend = True
   BorderStyle = bsNone
-  Caption = '新的条目'
   ClientHeight = 224
   ClientWidth = 270
   Color = clNone
@@ -4320,8 +4319,7 @@ object PopWindow: TPopWindow
   }
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '1.2.2.0'
-  object Panel1: TPanel
+  object Panel1: TPanel[0]
     Left = 0
     Height = 224
     Top = 0
@@ -4329,7 +4327,6 @@ object PopWindow: TPopWindow
     Align = alClient
     BevelOuter = bvNone
     BorderStyle = bsSingle
-    Caption = 'Panel1'
     ClientHeight = 220
     ClientWidth = 266
     Color = 15461355
@@ -4343,7 +4340,6 @@ object PopWindow: TPopWindow
       Anchors = [akTop, akLeft, akRight, akBottom]
       BevelOuter = bvNone
       BorderStyle = bsSingle
-      Caption = 'Panel2'
       ClientHeight = 180
       ClientWidth = 250
       Color = clWhite
@@ -4435,11 +4431,10 @@ object PopWindow: TPopWindow
     object Label1: TLabel
       Cursor = crHandPoint
       Left = 6
-      Height = 20
+      Height = 1
       Hint = '打开主窗口'
       Top = 4
-      Width = 48
-      Caption = 'Label1'
+      Width = 1
       Font.Color = 13392660
       ParentColor = False
       ParentFont = False
@@ -4448,7 +4443,7 @@ object PopWindow: TPopWindow
       OnMouseLeave = Label1MouseLeave
     end
   end
-  object Timer1: TTimer
+  object Timer1: TTimer[1]
     Interval = 40
     OnTimer = Timer1Timer
     OnStartTimer = Timer1StartTimer

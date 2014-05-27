@@ -1,11 +1,10 @@
-object LoginForm: TLoginForm
-  Left = 556
+inherited LoginForm: TLoginForm
+  Left = 2455
   Height = 555
-  Top = 266
+  Top = 221
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = '禅道桌面提醒工具1.2'
   ClientHeight = 555
   ClientWidth = 286
   Icon.Data = {
@@ -315,8 +314,7 @@ object LoginForm: TLoginForm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
-  LCLVersion = '1.2.2.0'
-  object ImageBackground: TImage
+  object ImageBackground: TImage[0]
     Left = 0
     Height = 555
     Top = 0
@@ -2351,7 +2349,7 @@ object LoginForm: TLoginForm
     Proportional = True
     Stretch = True
   end
-  object ShapeAddress: TShape
+  object ShapeAddress: TShape[1]
     Left = 33
     Height = 30
     Top = 234
@@ -2361,7 +2359,7 @@ object LoginForm: TLoginForm
     Pen.Color = 13527554
     Pen.Cosmetic = False
   end
-  object EditAddress: TEdit
+  object EditAddress: TEdit[2]
     Left = 37
     Height = 20
     Hint = '禅道地址 (http://zentao.net)'
@@ -2376,9 +2374,8 @@ object LoginForm: TLoginForm
     OnExit = EditExit
     ParentFont = False
     TabOrder = 0
-    Text = '禅道地址 (http://zentao.net)'
   end
-  object ShapeUsername: TShape
+  object ShapeUsername: TShape[3]
     Left = 33
     Height = 30
     Top = 269
@@ -2388,7 +2385,7 @@ object LoginForm: TLoginForm
     Pen.Color = 13527554
     Pen.Cosmetic = False
   end
-  object EditUsername: TEdit
+  object EditUsername: TEdit[4]
     Left = 37
     Height = 20
     Hint = '用户名'
@@ -2403,9 +2400,8 @@ object LoginForm: TLoginForm
     OnExit = EditExit
     ParentFont = False
     TabOrder = 1
-    Text = '用户名'
   end
-  object ShapePassword: TShape
+  object ShapePassword: TShape[5]
     Left = 33
     Height = 30
     Hint = '密码'
@@ -2416,7 +2412,7 @@ object LoginForm: TLoginForm
     Pen.Color = 13527554
     Pen.Cosmetic = False
   end
-  object EditPassword: TEdit
+  object EditPassword: TEdit[6]
     Left = 37
     Height = 20
     Hint = '密码'
@@ -2433,9 +2429,8 @@ object LoginForm: TLoginForm
     ParentFont = False
     PasswordChar = '*'
     TabOrder = 2
-    Text = '密码'
   end
-  object BitBtnLogin: TBitBtn
+  object BitBtnLogin: TBitBtn[7]
     Left = 33
     Height = 45
     Hint = '登录'
@@ -2447,7 +2442,7 @@ object LoginForm: TLoginForm
     OnClick = BitBtnLoginClick
     TabOrder = 3
   end
-  object LabelResult: TLabel
+  object LabelResult: TLabel[8]
     Left = 0
     Height = 36
     Top = 188
@@ -2464,7 +2459,7 @@ object LoginForm: TLoginForm
     Transparent = False
     Visible = False
   end
-  object LabelResult1: TLabel
+  object LabelResult1: TLabel[9]
     Cursor = crHandPoint
     Left = 0
     Height = 36
@@ -2480,21 +2475,23 @@ object LoginForm: TLoginForm
     ParentFont = False
     OnClick = LabelResult1Click
   end
-  object LabelBtnAbout: TLabel
+  object LabelBtnLanguage: TLabel[10]
     Cursor = crHandPoint
-    Left = 10
+    Left = 190
     Height = 20
-    Top = 528
-    Width = 30
+    Top = 8
+    Width = 90
+    Alignment = taRightJustify
     Anchors = [akLeft, akBottom]
-    Caption = '关于'
-    Font.Color = 13392660
+    Caption = 'Language ▼'
+    Font.Color = 14803425
     Layout = tlCenter
     ParentColor = False
     ParentFont = False
-    OnClick = LabelBtnAboutClick
+    PopupMenu = PopupMenuLang
+    OnClick = LabelBtnLanguageClick
   end
-  object CheckBoxRememberMe: TCheckBox
+  object CheckBoxRememberMe: TCheckBox[11]
     Left = 35
     Height = 24
     Top = 392
@@ -2503,13 +2500,53 @@ object LoginForm: TLoginForm
     OnChange = CheckBoxRememberMeChange
     TabOrder = 4
   end
-  object CheckBoxAutoSignIn: TCheckBox
-    Left = 164
+  object CheckBoxAutoSignIn: TCheckBox[12]
+    Left = 150
     Height = 24
     Top = 392
     Width = 84
     Caption = '自动登录'
     OnChange = CheckBoxAutoSignInChange
     TabOrder = 5
+  end
+  object LabelBtnAbout: TLabel[13]
+    Cursor = crHandPoint
+    Left = 150
+    Height = 20
+    Top = 8
+    Width = 30
+    Anchors = [akTop, akRight]
+    Caption = '关于'
+    Font.Color = 14803425
+    Layout = tlCenter
+    ParentColor = False
+    ParentFont = False
+    OnClick = LabelBtnAboutClick
+  end
+  object PopupMenuLang: TPopupMenu[14]
+    left = 8
+    top = 6
+    object MenuItemLangZHCN: TMenuItem
+      AutoCheck = True
+      Caption = '简体中文'
+      Checked = True
+      Hint = 'zh_cn'
+      RadioItem = True
+      OnClick = MenuItemLangClick
+    end
+    object MenuItemLangZHTW: TMenuItem
+      AutoCheck = True
+      Caption = '繁体中文'
+      Hint = 'zh_tw'
+      RadioItem = True
+      OnClick = MenuItemLangClick
+    end
+    object MenuItemLangEN: TMenuItem
+      AutoCheck = True
+      Caption = 'English'
+      Hint = 'en'
+      RadioItem = True
+      OnClick = MenuItemLangClick
+    end
   end
 end

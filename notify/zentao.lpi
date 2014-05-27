@@ -13,6 +13,7 @@
       <Icon Value="0"/>
     </General>
     <i18n>
+      <EnableI18N Value="True"/>
       <OutDir Value="languages"/>
     </i18n>
     <VersionInfo>
@@ -83,7 +84,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="11">
       <Unit0>
         <Filename Value="zentao.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -131,6 +132,27 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="AboutUnit"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="localizedforms.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="localizedforms.lrt"/>
+        <IsPartOfProject Value="True"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="localizedforms.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LocalizedForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="LocalizedForms"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="stringsunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="StringsUnit"/>
+      </Unit10>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

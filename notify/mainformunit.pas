@@ -14,22 +14,17 @@ uses
     ZentaoAPIUnit,
     PopWindowUnit,
     AboutUnit,
+    LocalizedForms,
+    Translations, DefaultTranslator,
+    StringsUnit,
     BackgroundWorkerUnit;
 
 type
 
     { TMainForm }
 
-    TMainForm = class(TForm)
-        Image1: TImage;
-        Image2: TImage;
-        Image3: TImage;
-        Image4: TImage;
-        Image5: TImage;
+    TMainForm = class(TLocalizedForm)
         ImageListPopupMenu: TImageList;
-        LabelPopupMenuBtnAbout: TLabel;
-        LabelPopupMenuBtnOpenWebsite: TLabel;
-        LabelPopupMenuBtnSep1: TLabel;
         LabelTodoSepLine: TLabel;
         LabelLoadingProgressbar: TLabel;
         LabelMessageClose: TLabel;
@@ -50,8 +45,6 @@ type
         LabelPagerBugPrev: TLabel;
         LabelPagerStoryPrev: TLabel;
         LabelPagerTodoPrev: TLabel;
-        LabelPopupMenuBtnSync: TLabel;
-        LabelPopupMenuBtnSep: TLabel;
         LabelMenu10: TLabel;
         LabelMenu11: TLabel;
         LabelMenu12: TLabel;
@@ -69,8 +62,6 @@ type
         LabelMenu7: TLabel;
         LabelMenu8: TLabel;
         LabelMenu9: TLabel;
-        LabelPopupMenuBtnLogout: TLabel;
-        LabelPopupMenuBtnExit: TLabel;
         LabelTab3:       TLabel;
         LabelTab1:       TLabel;
         LabelTab2:       TLabel;
@@ -79,7 +70,17 @@ type
         LabelTodoSepLine2: TLabel;
         LabelTodoSepLine3: TLabel;
         Memo1:           TMemo;
+        MenuItem1: TMenuItem;
+        MenuItem4: TMenuItem;
+        MenuItem5: TMenuItem;
+        MenuItem6: TMenuItem;
+        MenuItem7: TMenuItem;
+        MenuItemAbout: TMenuItem;
+        MenuItem3: TMenuItem;
+        MenuItemExit1: TMenuItem;
+        MenuItemLogout1: TMenuItem;
         MenuItemOpenWebsite: TMenuItem;
+        MenuItemOpenWebsite1: TMenuItem;
         MenuItemSyncAll: TMenuItem;
         MenuItem2: TMenuItem;
         MenuItemLogout: TMenuItem;
@@ -88,13 +89,13 @@ type
         MenuItemCopy: TMenuItem;
         MenuItemReloadTab: TMenuItem;
         MenuItemSep: TMenuItem;
+        MenuItemSyncAll1: TMenuItem;
         MenuItemViewObject: TMenuItem;
         PanelMessage: TPanel;
         PanelPagerTask: TPanel;
         PanelPagerBug: TPanel;
         PanelPagerStory: TPanel;
         PanelPagerTodo: TPanel;
-        PanelPopupMenu: TPanel;
         PanelMenuBug: TPanel;
         PanelMenuStory: TPanel;
         PanelMenuTodo: TPanel;
@@ -105,6 +106,7 @@ type
         PanelNavBug:     TPanel;
         PanelNavStory:   TPanel;
         PopupMenuMain: TPopupMenu;
+        PopupMenuNav: TPopupMenu;
         PopupMenuStringGrid: TPopupMenu;
         ShapeMenuIcon1: TShape;
         ShapeMenuIcon2: TShape;
@@ -120,7 +122,6 @@ type
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
-        procedure FormWindowStateChange(Sender: TObject);
         procedure LabelBtnMouseLeave(Sender: TObject);
         procedure LabelBtnMouseEnter(Sender: TObject);
         procedure LabelMenuClick(Sender: TObject);
@@ -133,8 +134,9 @@ type
         procedure LabelPagerBtnClick(Sender: TObject);
         procedure LabelPagerPrevMouseEnter(Sender: TObject);
         procedure LabelPagerPrevMouseLeave(Sender: TObject);
-        procedure LabelPopupMenuBtnAboutClick(Sender: TObject);
-        procedure LabelPopupMenuBtnExitClick(Sender: TObject);
+        procedure MenuItemLangClick(Sender: TObject);
+        procedure OnShowAbout(Sender: TObject);
+        procedure OnExit(Sender: TObject);
         procedure LabelPopupMenuBtnLogoutClick(Sender: TObject);
         procedure LabelPopupMenuBtnMouseEnter(Sender: TObject);
         procedure LabelPopupMenuBtnMouseLeave(Sender: TObject);
@@ -143,13 +145,9 @@ type
         procedure LabelTabMouseEnter(Sender: TObject);
         procedure LabelTabMouseLeave(Sender: TObject);
         procedure LabelTabClick(Sender: TObject);
-        procedure MenuItemCopyClick(Sender: TObject);
         procedure MenuItemOpenClick(Sender: TObject);
         procedure MenuItemReloadTabClick(Sender: TObject);
         procedure MenuItemViewObjectClick(Sender: TObject);
-        procedure PanelMenuClick(Sender: TObject);
-        procedure PanelMessageClick(Sender: TObject);
-        procedure PanelPopupMenuClick(Sender: TObject);
         procedure ShowMessage(Message: string; msgType: string = 'danger');
         procedure HideMessage();
         procedure LoadTabData(tabName: BrowseType; pageID: string = ''; mute: boolean = False);
@@ -168,12 +166,13 @@ type
         procedure TryLoadTabData(tabName: BrowseType);
         procedure InitTabMenu();
         procedure InitSubMenu();
-        procedure HidePopup();overload;
-        procedure HidePopup(Sender: TObject);overload;
         procedure LoadAllTabsData();
         procedure ShowPager(pager: PageRecord; tab: BrowseType);
         procedure ChangeTab(tab: BrowseType; tabLabel: TLabel);
-    
+
+    protected
+        procedure UpdateTranslation(ALang: String); override;
+
     private
         procedure LoadTab(dataResult: TDataResult; tab: BrowseType);
 
@@ -218,17 +217,6 @@ begin
     LoadTabData(CurrentTab, '', True);
 end;
 
-procedure TMainForm.HidePopup(Sender: TObject);overload;
-begin
-    HidePopup;
-end;
-
-procedure TMainForm.HidePopup();overload;
-begin
-    PanelPopupMenu.Visible := False;
-    HideMessage;
-end;
-
 procedure TMainForm.TryLoadTabData(tabName: BrowseType);
 begin
     if (Now - LastSyncTime[tabName]) > TryLoadTabInterval then
@@ -245,13 +233,13 @@ var
 begin
     if NotReady then
     begin
-        if (not mute) then ShowMessage('您还没有登录，无法获取数据。');
+        if (not mute) then ShowMessage(rsNotReadyMessage);
         Exit;
     end;
 
     if IsTabLoading and (not mute) then
     begin
-        ShowMessage('应用正忙，请稍后再试。', 'warning');
+        ShowMessage(rsIsBusy, 'warning');
         Exit;
     end;
 
@@ -516,9 +504,15 @@ begin
     labelPagerPrev.Visible := False;
     labelPagerNext.Visible := False;
     labelPagerLast.Visible := False;
+
+    labelPagerPrev.Caption := rsPrevPage;
+    labelPagerNext.Caption := rsNextPage; 
+    
     if pager.Total > 0 then
     begin
-        labelPagerInfo.Caption := Format('第 %d - %d 条，共 %d 条', [Min(pager.Total,(pager.PageID - 1) * pager.PerPage + 1), Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
+        labelPagerInfo.Caption := Format(rsPagerInfoFormat, [Min(pager.Total, (
+            pager.PageID - 1) * pager.PerPage + 1), Min(pager.Total,
+            pager.PageID * pager.PerPage), pager.Total]);
         labelPagerPrev.Visible := True;
         labelPagerInfo.Visible := True;
         labelPagerLast.Visible := True;
@@ -528,18 +522,18 @@ begin
         labelPagerLast.Enabled := pager.PageTotal > 1;
         if pager.PageID = pager.PageTotal then
         begin
-            labelPagerLast.Caption := '首页';
+            labelPagerLast.Caption := rsFirstPage;
             labelPagerLast.Hint := 'first';
         end
         else
         begin
-            labelPagerLast.Caption := '末页';
+            labelPagerLast.Caption := rsLastPage;
             labelPagerLast.Hint := 'last';
         end;
     end
     else
     begin
-        labelPagerInfo.Caption := '暂时没有数据。';
+        labelPagerInfo.Caption := rsNoDataMessage;
         labelPagerInfo.Visible := True;
     end;
 end;
@@ -564,7 +558,6 @@ end;
 
 procedure TMainForm.FormClick(Sender: TObject);
 begin
-    HidePopup;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -572,6 +565,8 @@ begin
     NotReady := True;
     AverageWaitingTime := 2000 / ONEDAYMILLIONSECONDS; // 2 seconds
     MainFormWindow := MainForm;
+
+    Caption := rsAppName + ' ' + GetBuildVersion('%d.%d');
 end;
 
 procedure TMainForm.InitTabMenu();
@@ -581,10 +576,10 @@ begin
     BrowseTrack[btBug] := TStringList.Create;
     if (user.Role = 'qa') or (user.Role = 'qd') then
     begin
-        LabelTab2.Caption := 'Bug';
+        LabelTab2.Caption := rsBug;
         LabelTab2.Hint    := 'bug';
         LabelTab2.Tag     := 2;
-        LabelTab3.Caption := '任务';
+        LabelTab3.Caption := rsTask;
         LabelTab3.Hint    := 'task';
         LabelTab3.Tag     := 1;
 
@@ -594,10 +589,10 @@ begin
     end
     else if (user.Role = 'po') or (user.Role = 'pd') then
     begin
-        LabelTab2.Caption := '需求';
+        LabelTab2.Caption := rsStory;
         LabelTab2.Hint    := 'story';
         LabelTab2.Tag     := 3;
-        LabelTab3.Caption := 'Bug';
+        LabelTab3.Caption := rsBug;
         LabelTab3.Hint    := 'bug';
         LabelTab3.Tag     := 2;
 
@@ -639,10 +634,6 @@ begin
     TrayIconMain.Visible := True;
 end;
 
-procedure TMainForm.FormWindowStateChange(Sender: TObject);
-begin
-end;
-
 procedure TMainForm.LabelBtnMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
@@ -667,8 +658,6 @@ var
     subMenu     : BrowseSubType;
     i           : integer;
 begin
-    HidePopup;
-
     labelSender := Sender as TLabel;
     menuParent  := labelSender.Parent as TPanel;
     tab         := BrowseTypes[menuParent.Tag];
@@ -696,9 +685,8 @@ end;
 
 procedure TMainForm.LabelMenuIconClick(Sender: TObject);
 begin
-    PanelPopupMenu.Top := 40;
-    PanelPopupMenu.Visible := (not PanelPopupMenu.Visible);
     HideMessage;
+    PopupMenuNav.Popup;
 end;
 
 procedure TMainForm.LabelMenuIconMouseEnter(Sender: TObject);
@@ -780,15 +768,20 @@ begin
 
 end;
 
-procedure TMainForm.LabelPopupMenuBtnAboutClick(Sender: TObject);
+procedure TMainForm.MenuItemLangClick(Sender: TObject);
+var senderMenuItem: TMenuItem;
 begin
-    PanelPopupMenu.Visible := False;
+    senderMenuItem := Sender as TMenuItem;
+    SelectLanguage(senderMenuItem.Hint);
+end;
+
+procedure TMainForm.OnShowAbout(Sender: TObject);
+begin
     AboutForm.ShowModal;
 end;
 
-procedure TMainForm.LabelPopupMenuBtnExitClick(Sender: TObject);
+procedure TMainForm.OnExit(Sender: TObject);
 begin
-    PanelPopupMenu.Visible := False;
     Close;
 end;
 
@@ -796,8 +789,6 @@ procedure TMainForm.LabelPopupMenuBtnLogoutClick(Sender: TObject);
 var
     r: HandleResult;
 begin
-    PanelPopupMenu.Visible := False;
-
     r := Logout;
 
     if r.Result then
@@ -841,7 +832,6 @@ end;
 procedure TMainForm.LabelPopupMenuBtnSyncClick(Sender: TObject);
 begin
     LoadAllTabsData;
-    PanelPopupMenu.Visible := False;
 end;
 
 procedure TMainForm.LabelTabMouseEnter(Sender: TObject);
@@ -916,8 +906,6 @@ var
     labelSender: TLabel;
     tab:         BrowseType;
 begin
-    HidePopup;
-
     labelSender := Sender as TLabel;
     tab         := BrowseTypes[labelSender.Tag];
 
@@ -931,10 +919,6 @@ begin
     begin
         LoadTabData(tab);
     end;
-end;
-
-procedure TMainForm.MenuItemCopyClick(Sender: TObject);
-begin
 end;
 
 procedure TMainForm.MenuItemOpenClick(Sender: TObject);
@@ -951,20 +935,6 @@ end;
 procedure TMainForm.MenuItemViewObjectClick(Sender: TObject);
 begin
     ViewObject(CurrentTab, CurrentItemId);
-end;
-
-procedure TMainForm.PanelMenuClick(Sender: TObject);
-begin
-    HidePopup;
-end;
-
-procedure TMainForm.PanelMessageClick(Sender: TObject);
-begin
-    HidePopup;
-end;
-
-procedure TMainForm.PanelPopupMenuClick(Sender: TObject);
-begin
 end;
 
 (* Hide result message *)
@@ -1020,6 +990,28 @@ begin
     Memo1.Top := 0;
     Memo1.Visible := True;
     Memo1.Lines.Text    := Memo1.Lines.Text + Message + LineEnding;
+end;
+
+procedure TMainForm.UpdateTranslation(ALang: String);
+begin
+    inherited;
+
+    if (user.Role = 'qa') or (user.Role = 'qd') then
+    begin
+        LabelTab2.Caption := rsBug;
+        LabelTab3.Caption := rsTask;
+    end
+    else if (user.Role = 'po') or (user.Role = 'pd') then
+    begin
+        LabelTab2.Caption := rsStory;
+        LabelTab3.Caption := rsBug;
+    end;
+
+    case ALang of
+        'zh_cn': MenuItem5.Checked := True;
+        'zh_tw': MenuItem6.Checked := True;
+        'en': MenuItem7.Checked := True;
+    end;
 end;
 
 end.

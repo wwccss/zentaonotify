@@ -9,23 +9,30 @@ uses
     ExtCtrls, Buttons,
     md5,
     fpjson, jsonparser,
-    LCLIntf,
+    LCLIntf, Menus,
     ZentaoAPIUnit,
     AboutUnit,
+    LocalizedForms,
+    StringsUnit,
     BackgroundWorkerUnit;
 
 type
     { TLoginForm }
-    TLoginForm = class(TForm)
+    TLoginForm = class(TLocalizedForm)
         CheckBoxRememberMe: TCheckBox;
         CheckBoxAutoSignIn: TCheckBox;
         EditAddress:     TEdit;
         EditUsername:    TEdit;
         EditPassword:    TEdit;
         ImageBackground: TImage;
+        LabelBtnAbout: TLabel;
         LabelResult:     TLabel;
         LabelResult1: TLabel;
-        LabelBtnAbout: TLabel;
+        LabelBtnLanguage: TLabel;
+        MenuItemLangZHTW: TMenuItem;
+        MenuItemLangEN: TMenuItem;
+        MenuItemLangZHCN: TMenuItem;
+        PopupMenuLang: TPopupMenu;
         ShapeAddress:    TShape;
         ShapeUsername:   TShape;
         ShapePassword:   TShape;
@@ -44,13 +51,18 @@ type
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
         procedure LabelBtnAboutClick(Sender: TObject);
+        procedure LabelBtnLanguageClick(Sender: TObject);
         procedure LabelResult1Click(Sender: TObject);
+        procedure MenuItemLangClick(Sender: TObject);
         procedure ShowResultMessage(message: string);
         procedure HideResultMessage();
         procedure TryAutoLogin();
         procedure LoginCompleted(e: TRunWorkerCompletedEventArgs);
         function Logining(arg: TObject):TRunWorkerCompletedEventArgs;
         function CheckInputs: boolean;
+
+    protected
+        procedure UpdateTranslation(ALang: String); override;
 
     private
         { private declarations }
@@ -77,15 +89,15 @@ begin
     Result := False;
     if (EditAddress.Text = '') or (EditAddress.Text = EditAddress.Hint) then
     begin
-        ShowResultMessage('请填写禅道地址。');
+        ShowResultMessage(rsRequireZentaoAddress);
     end
     else if (EditUsername.Text = '') or (EditUsername.Text = EditUsername.Hint) then
     begin
-        ShowResultMessage('请填写用户名。');
+        ShowResultMessage(rsRequireUsername);
     end
     else if (EditPassword.Text = '') or (EditPassword.Text = EditPassword.Hint) then
     begin
-        ShowResultMessage('请填写禅道密码。');
+        ShowResultMessage(rsRequirePassword);
     end
     else
     begin
@@ -109,7 +121,7 @@ procedure TLoginForm.BitBtnLoginClick(Sender: TObject);
 begin
     if CheckInputs() then
     begin
-        BitBtnLogin.Caption := '登录中...';
+        BitBtnLogin.Caption := rsLoging;
         BitBtnLogin.Enabled := False;
 
         user.Account  := EditUsername.Text;
@@ -191,7 +203,7 @@ procedure TLoginForm.LoginCompleted(e: TRunWorkerCompletedEventArgs);
 var
     r: HandleResult;
 begin
-    BitBtnLogin.Caption := '登录';
+    BitBtnLogin.Caption := rsLogin;
     BitBtnLogin.Enabled := True;
 
     r.Result := e.Result;
@@ -203,7 +215,6 @@ begin
     end
     else
     begin
-        ShowResultMessage('登录成功！');
         HideResultMessage;
         LoginForm.Hide;
         MainForm.Show;
@@ -224,6 +235,8 @@ begin
     inherited;
     FirstShow := True;
 
+    Caption := rsAppName + ' ' + GetBuildVersion('%d.%d');
+
     InitZentaoAPI();
 end;
 
@@ -232,7 +245,18 @@ begin
     if FirstShow then
     begin
         FirstShow := False;
+
+        EditAddress.Text := EditAddress.Hint;
+        EditUsername.Text := EditUsername.Hint;
+        EditPassword.Text := EditPassword.Hint;
+
         TryAutoLogin;
+    end;
+
+    case CurrentLang of
+        'zh_cn': MenuItemLangZHCN.Checked := True;
+        'zh_tw': MenuItemLangZHTW.Checked := True;
+        'en': MenuItemLangEN.Checked := True;
     end;
 end;
 
@@ -259,9 +283,22 @@ begin
     AboutForm.ShowModal;
 end;
 
+procedure TLoginForm.LabelBtnLanguageClick(Sender: TObject);
+begin
+    PopupMenuLang.Popup;
+end;
+
 procedure TLoginForm.LabelResult1Click(Sender: TObject);
 begin
     OpenURL('http://www.zentao.net/');
+end;
+
+procedure TLoginForm.MenuItemLangClick(Sender: TObject);
+var senderMenuItem: TMenuItem;
+begin
+    senderMenuItem := Sender as TMenuItem;
+
+    SelectLanguage(senderMenuItem.Hint);
 end;
 
 (* Hide result message *)
@@ -274,6 +311,17 @@ procedure TLoginForm.ShowResultMessage(message: string);
 begin
     LabelResult.Caption := message;
     LabelResult.Visible := True;
+end;
+
+procedure TLoginForm.UpdateTranslation(ALang: String);
+begin
+    inherited;
+
+    case ALang of
+        'zh_cn': MenuItemLangZHCN.Checked := True;
+        'zh_tw': MenuItemLangZHTW.Checked := True;
+        'en': MenuItemLangEN.Checked := True;
+    end;
 end;
 
 end.

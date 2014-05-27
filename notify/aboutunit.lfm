@@ -1,7 +1,7 @@
-object AboutForm: TAboutForm
-  Left = 2252
+inherited AboutForm: TAboutForm
+  Left = 2572
   Height = 280
-  Top = 390
+  Top = 370
   Width = 500
   BorderStyle = bsToolWindow
   Caption = '关于禅道桌面提醒工具'
@@ -310,9 +310,9 @@ object AboutForm: TAboutForm
     0000C00300008001000000000000000000000000000000000000000000000000
     0000000000000000000080010000C0030000E0070000F00F0000
   }
+  OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '1.2.2.0'
-  object Image1: TImage
+  object Image1: TImage[0]
     Left = 0
     Height = 280
     Top = 0
@@ -1503,7 +1503,7 @@ object AboutForm: TAboutForm
       FC160000000049454E44AE426082
     }
   end
-  object LabelVersion: TLabel
+  object LabelVersion: TLabel[1]
     Cursor = crHandPoint
     Left = -2
     Height = 36
@@ -1518,11 +1518,11 @@ object AboutForm: TAboutForm
     ParentColor = False
     ParentFont = False
   end
-  object LabelVersion1: TLabel
+  object LabelVersion1: TLabel[2]
     Cursor = crHandPoint
-    Left = 56
+    Left = 296
     Height = 36
-    Top = 230
+    Top = 160
     Width = 110
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
@@ -1534,15 +1534,16 @@ object AboutForm: TAboutForm
     ParentColor = False
     ParentFont = False
     Transparent = False
+    Visible = False
     OnMouseEnter = LabelMouseEnter
     OnMouseLeave = LabelMouseLeave
   end
-  object LabelVersion2: TLabel
+  object LabelVersion2: TLabel[3]
     Cursor = crHandPoint
-    Left = 181
+    Left = 88
     Height = 36
-    Top = 230
-    Width = 110
+    Top = 232
+    Width = 150
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
@@ -1557,11 +1558,11 @@ object AboutForm: TAboutForm
     OnMouseEnter = LabelMouseEnter
     OnMouseLeave = LabelMouseLeave
   end
-  object LabelVersion3: TLabel
+  object LabelVersion3: TLabel[4]
     Cursor = crHandPoint
-    Left = 306
+    Left = 264
     Height = 36
-    Top = 230
+    Top = 232
     Width = 150
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]

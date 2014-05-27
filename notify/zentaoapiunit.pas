@@ -13,7 +13,6 @@ uses
     Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons, ActnList,
     fpjson, jsonparser;
 
-    { Record }
 type
 
     BrowseType        = (btTodo = 0, btTask = 1, btBug = 2, btStory = 3);
@@ -21,6 +20,8 @@ type
         3, assignedTo = 4, openedBy = 5, reviewedBy = 6, closedBy = 7, finishedBy =
         8, resolvedBy = 9);
     
+    { Record }
+
     UserConfig = record
         Url:      string;
         Account:  string;
@@ -28,6 +29,7 @@ type
         Role:     string;
         AutoSignIn: boolean;
         RememberMe: boolean;
+        Lang:     string;
     end;
 
     HandleResult = record
@@ -76,6 +78,7 @@ function Min(a: integer; b: integer): integer;
 function ViewObject(objType: BrowseType; id: string): boolean;
 procedure SaveConfig();
 function LoadConfig():Boolean;
+function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 
 var
     user:           UserConfig;
@@ -136,7 +139,7 @@ begin
     begin
         if (pageID = 'next') or (pageID = 'n') then
         begin
-            pageID := IntToStr(Max(pager.PageID + 1, pager.PageTotal));
+            pageID := IntToStr(Min(pager.PageID + 1, pager.PageTotal));
         end
         else if (pageID = 'prev') or (pageID = 'p') then
         begin
@@ -552,6 +555,7 @@ begin
             user.PassMd5 := conf.GetValue('/User/PassMd5', '');
             user.Role := conf.GetValue('/User/Role', '');
             user.AutoSignIn := conf.GetValue('/User/AutoSignIn', False);
+            user.Lang := conf.GetValue('/User/Lang', 'zh_cn');
             user.RememberMe := True;
             Result := True;
         end;
@@ -576,6 +580,7 @@ begin
             conf.SetValue('/User/Role', user.Role);
             conf.SetValue('/LastLoginTime', Now);
             conf.SetValue('/User/AutoSignIn', user.AutoSignIn);
+            conf.SetValue('/Lang', user.Lang);
         end
         else
         begin
@@ -667,4 +672,11 @@ begin
     end;
 end;
 
+function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
+begin
+    // todo: get the real version info with os api.
+    Result:=Format(formatStr, [1,3,0,0]);
+end;
+
 end.
+
