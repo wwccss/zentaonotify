@@ -212,7 +212,7 @@ procedure TMainForm.LoadAllTabsData();
 begin
     LastSyncTime[btStory] := 0;
     LastSyncTime[btBug] := 0;
-    LastSyncTime[btStory] := 0;
+    LastSyncTime[btTask] := 0;
     LastSyncTime[btTodo] := 0;
     LoadTabData(CurrentTab, '', True);
 end;
@@ -581,19 +581,6 @@ begin
 
     if (user.Role = 'qa') or (user.Role = 'qd') then
     begin
-        LabelTab2.Caption := rsBug;
-        LabelTab2.Hint    := 'bug';
-        LabelTab2.Tag     := 2;
-        LabelTab3.Caption := rsTask;
-        LabelTab3.Hint    := 'task';
-        LabelTab3.Tag     := 1;
-
-        TabGroup[2] := btBug;
-        TabGroup[3] := btTask;
-        // BrowseTrack[btTask] := TStringList.Create;
-    end
-    else if (user.Role = 'po') or (user.Role = 'pd') then
-    begin
         LabelTab2.Caption := rsStory;
         LabelTab2.Hint    := 'story';
         LabelTab2.Tag     := 3;
@@ -603,7 +590,18 @@ begin
 
         TabGroup[2] := btStory;
         TabGroup[3] := btBug;
-        // BrowseTrack[btStory] := TStringList.Create;
+    end
+    else //if (user.Role = 'po') or (user.Role = 'pd') then
+    begin
+        LabelTab2.Caption := rsBug;
+        LabelTab2.Hint    := 'bug';
+        LabelTab2.Tag     := 2;
+        LabelTab3.Caption := rsTask;
+        LabelTab3.Hint    := 'task';
+        LabelTab3.Tag     := 1;
+
+        TabGroup[2] := btBug;
+        TabGroup[3] := btTask;
     end;
 
     IsTabLoading := False;
@@ -1001,15 +999,15 @@ procedure TMainForm.UpdateTranslation(ALang: String);
 begin
     inherited;
 
-    if (user.Role = 'qa') or (user.Role = 'qd') then
-    begin
-        LabelTab2.Caption := rsBug;
-        LabelTab3.Caption := rsTask;
-    end
-    else if (user.Role = 'po') or (user.Role = 'pd') then
+    if (user.Role = 'po') or (user.Role = 'pd') then
     begin
         LabelTab2.Caption := rsStory;
         LabelTab3.Caption := rsBug;
+    end
+    else// if (user.Role = 'qa') or (user.Role = 'qd') then
+    begin
+        LabelTab2.Caption := rsBug;
+        LabelTab3.Caption := rsTask;
     end;
 
     case ALang of

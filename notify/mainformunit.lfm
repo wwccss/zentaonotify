@@ -1,10 +1,10 @@
 inherited MainForm: TMainForm
-  Left = 2119
+  Left = 2028
   Height = 680
-  Top = 126
-  Width = 350
+  Top = 211
+  Width = 1400
   ClientHeight = 680
-  ClientWidth = 350
+  ClientWidth = 1400
   Constraints.MaxHeight = 870
   Constraints.MaxWidth = 350
   Constraints.MinHeight = 168
@@ -4328,11 +4328,11 @@ inherited MainForm: TMainForm
     Left = 0
     Height = 40
     Top = 0
-    Width = 350
+    Width = 1400
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
     ClientHeight = 40
-    ClientWidth = 350
+    ClientWidth = 1400
     Color = 13392660
     ParentColor = False
     TabOrder = 0
@@ -4402,9 +4402,9 @@ inherited MainForm: TMainForm
       OnMouseLeave = LabelTabMouseLeave
     end
     object Memo1: TMemo
-      Left = 1036
+      Left = 1000
       Height = 50
-      Top = -103
+      Top = 0
       Width = 364
       BorderStyle = bsNone
       TabOrder = 0
@@ -4497,7 +4497,7 @@ inherited MainForm: TMainForm
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 3
+      ColCount = 0
       Columns = <      
         item
           Alignment = taCenter
@@ -4525,6 +4525,7 @@ inherited MainForm: TMainForm
       Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellEllipsis]
       ParentFont = False
+      RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
       TitleFont.Height = -13
@@ -4748,7 +4749,7 @@ inherited MainForm: TMainForm
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 3
+      ColCount = 0
       Columns = <      
         item
           Alignment = taCenter
@@ -4775,6 +4776,7 @@ inherited MainForm: TMainForm
       Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
       ParentFont = False
+      RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
       TitleFont.Height = -13
@@ -4980,7 +4982,7 @@ inherited MainForm: TMainForm
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 3
+      ColCount = 0
       Columns = <      
         item
           Alignment = taCenter
@@ -5007,6 +5009,7 @@ inherited MainForm: TMainForm
       Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
       ParentFont = False
+      RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
       TitleFont.Height = -13
@@ -5212,7 +5215,7 @@ inherited MainForm: TMainForm
       Anchors = [akTop, akLeft, akRight, akBottom]
       BorderStyle = bsNone
       Color = clWhite
-      ColCount = 3
+      ColCount = 0
       Columns = <      
         item
           Alignment = taCenter
@@ -5239,6 +5242,7 @@ inherited MainForm: TMainForm
       Font.Height = -13
       Options = [goFixedVertLine, goFixedHorzLine, goHorzLine, goRangeSelect, goRowSelect, goSmoothScroll, goCellHints, goCellEllipsis, goRowHighlight]
       ParentFont = False
+      RowCount = 0
       ScrollBars = ssAutoVertical
       TabOrder = 0
       TitleFont.Height = -13
@@ -5426,17 +5430,28 @@ inherited MainForm: TMainForm
     Left = 0
     Height = 40
     Top = 80
-    Width = 350
+    Width = 1400
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
     ClientHeight = 40
-    ClientWidth = 350
+    ClientWidth = 1400
     Color = 15073254
     Font.Color = 2268964
     ParentColor = False
     ParentFont = False
     TabOrder = 5
     Visible = False
+    object LabelMessage: TLabel
+      Left = 10
+      Height = 40
+      Top = 0
+      Width = 1333
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = ':)'
+      Layout = tlCenter
+      ParentColor = False
+    end
     object LabelMessageClose: TLabel
       Cursor = crHandPoint
       Left = 299
@@ -5448,17 +5463,6 @@ inherited MainForm: TMainForm
       ParentColor = False
       ParentFont = False
       OnClick = LabelMessageCloseClick
-    end
-    object LabelMessage: TLabel
-      Left = 10
-      Height = 40
-      Top = 0
-      Width = 283
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = False
-      Caption = ':)'
-      Layout = tlCenter
-      ParentColor = False
     end
   end
   object PopupMenuStringGrid: TPopupMenu[6]
@@ -5735,7 +5739,6 @@ inherited MainForm: TMainForm
     top = 8
   end
   object TimerAutoSync: TTimer[9]
-    Enabled = False
     Interval = 2000
     OnTimer = TimerAutoSyncTimer
     left = 456

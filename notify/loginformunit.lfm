@@ -2375,7 +2375,6 @@ inherited LoginForm: TLoginForm
     OnExit = EditExit
     ParentFont = False
     TabOrder = 0
-    Text = '123abcABC 中文'
   end
   object ShapeUsername: TShape[3]
     Left = 33
@@ -2454,7 +2453,6 @@ inherited LoginForm: TLoginForm
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
-    Caption = '请填写禅道地址'
     Color = clRed
     Font.Color = clWhite
     Layout = tlCenter
