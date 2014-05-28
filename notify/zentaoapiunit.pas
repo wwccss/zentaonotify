@@ -279,7 +279,9 @@ function GetAPI(const Params: array of const): string;
 var
     config:  TJSONObject;
     viewType, moduleName, methodName, password, pageID: string;
-    item:    TJSONEnum;
+    item:    TJSONData;
+    i: Integer;
+    key: string;
     nameSet: TStringList;
 begin
     config     := TJSONObject.Create(Params);
@@ -308,12 +310,12 @@ begin
                 '&methodName=' + config.Get('methodName', '') + '&params=';
             nameSet    := TStringList.Create;
             nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
-            for item in config do
-            begin
-                if (nameSet.indexOf(item.Key) > 0) then
-                    continue;
-                Result := Result + item.Key + '=' + item.Value.AsString + '&';
-            end;
+            // for item in config do
+            // begin
+            //     if (nameSet.indexOf(item.Key) > 0) then
+            //         continue;
+            //     Result := Result + item.Key + '=' + item.Value.AsString + '&';
+            // end;
             nameSet.Free;
         end;
 
@@ -368,15 +370,18 @@ begin
         if moduleName = 'my' then
             Result := Result + config.Get('type', '') + '-';
 
-        for item in config do
+        for i:=0 to (config.Count-1) do
         begin
+            item := config.items[i];
+            key := config.Names[i];
+
             nameSet    := TStringList.Create;
             nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
-            if (nameSet.indexOf(item.Key) > 0) then
+            if (nameSet.indexOf(key) > 0) then
                 continue;
-            if (methodName <> 'view') or (item.key <> 'id') then
-                Result := Result + item.Key + '=';
-            Result := Result + item.Value.AsString + '-';
+            if (methodName <> 'view') or (key <> 'id') then
+                Result := Result + key + '=';
+            Result := Result + item.AsString + '-';
             nameSet.Free;
         end;
 

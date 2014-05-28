@@ -57,8 +57,8 @@ procedure TPopWindow.ShowDataList();
 var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
-    dataRow:  TJSONEnum;
-    index:    integer;
+    dataRow:  TJSONData;
+    index,i:    integer;
     title:    string;
 begin
     if PopWindowData = nil then Exit;
@@ -74,9 +74,10 @@ begin
         index := 0;
 
         (* convert data *)
-        for dataRow in dataList do
+        for i:=0 to (dataList.Count-1) do
         begin
-            dataItem := TJSONObject(dataRow.Value);
+            dataRow := dataList.Items[i];
+            dataItem := TJSONObject(dataRow);
             if not dataItem.Get('new', False) then
                 continue;
 

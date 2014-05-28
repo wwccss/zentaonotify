@@ -402,8 +402,8 @@ procedure TMainForm.LoadTab(dataResult: TDataResult; tab: BrowseType);
 var
     Data, dataItem: TJSONObject;
     dataList: TJSONArray;
-    dataRow:  TJSONEnum;
-    index:    integer;
+    dataRow:  TJSONData;
+    index, i:    integer;
     track: TStringList;
     stringGrid: TStringGrid;
     noTrack, isNew: boolean;
@@ -431,10 +431,11 @@ begin
         index := 0;
 
         { convert data }
-        for dataRow in dataList do
+        for i:=0 to (dataList.Count-1) do
         begin
+            dataRow := dataList.Items[i];
+            dataItem := TJSONObject(dataRow);
             index    := index + 1;
-            dataItem := TJSONObject(dataRow.Value);
             id := dataItem.Get('id', '');
             title := dataItem.Get('name', '-');
             if title = '-' then title := dataItem.Get('title', '-');
