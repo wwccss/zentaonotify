@@ -2361,20 +2361,21 @@ inherited LoginForm: TLoginForm
   end
   object EditAddress: TEdit[2]
     Left = 39
-    Height = 17
+    Height = 19
     Hint = '禅道地址 (http://zentao.net)'
-    Top = 241
+    Top = 239
     Width = 209
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
     Font.Color = clGray
-    Font.Height = -12
+    Font.Height = -13
     OnChange = EditChange
     OnEnter = EditEnter
     OnExit = EditExit
     ParentFont = False
     TabOrder = 0
+    Text = 'ABCabc123中文'
   end
   object ShapeUsername: TShape[3]
     Left = 33
@@ -2388,15 +2389,15 @@ inherited LoginForm: TLoginForm
   end
   object EditUsername: TEdit[4]
     Left = 39
-    Height = 17
+    Height = 19
     Hint = '用户名'
-    Top = 276
+    Top = 274
     Width = 209
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
     Font.Color = clGray
-    Font.Height = -12
+    Font.Height = -13
     OnChange = EditChange
     OnEnter = EditEnter
     OnExit = EditExit
@@ -2416,16 +2417,16 @@ inherited LoginForm: TLoginForm
   end
   object EditPassword: TEdit[6]
     Left = 39
-    Height = 17
+    Height = 19
     Hint = '密码'
-    Top = 312
+    Top = 310
     Width = 209
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
     EchoMode = emPassword
     Font.Color = clGray
-    Font.Height = -12
+    Font.Height = -13
     OnChange = EditPasswordChange
     OnEnter = EditPasswordEnter
     OnExit = EditPasswordExit
