@@ -3,9 +3,10 @@ program zentao;
 {$mode objfpc}{$H+}
 
 uses
-  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  {$ifdef unix}
   cthreads,
-  {$ENDIF}{$ENDIF}
+  cmem, // the c memory manager is on some systems much faster for multi-threading
+  {$endif}
   Interfaces, // this includes the LCL widgetset
   Forms, runtimetypeinfocontrols, LoginFormUnit, ZentaoAPIUnit, MainFormUnit,
   BackgroundWorkerUnit, PopWindowUnit, AboutUnit, localizedforms, StringsUnit;
