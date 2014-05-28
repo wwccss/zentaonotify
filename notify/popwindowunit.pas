@@ -52,6 +52,7 @@ implementation
 
 { TPopWindow }
 
+{ Show data list }
 procedure TPopWindow.ShowDataList();
 var
     Data, dataItem: TJSONObject;
@@ -95,22 +96,26 @@ begin
     end
 end;
 
+{ Handle event of data grid: view object with default browser }
 procedure TPopWindow.StringGridDataListClick(Sender: TObject);
 begin
     ViewObject(PopWindowData.Tab, StringGridDataList.Cells[0, StringGridDataList.Selection.Bottom]);
 end;
 
+{ Handle event when animate timer start }
 procedure TPopWindow.Timer1StartTimer(Sender: TObject);
 begin
     StartTime := Now;
     AlphaBlendValue := 255;
 end;
 
+{ Handle event when animate timer stop }
 procedure TPopWindow.Timer1StopTimer(Sender: TObject);
 begin
     HideWindow;
 end;
 
+{ Handle animate with timer }
 procedure TPopWindow.Timer1Timer(Sender: TObject);
 begin
     if PopTop > (Screen.PrimaryMonitor.WorkareaRect.bottom - Height) then
@@ -133,11 +138,13 @@ begin
     end;
 end;
 
+{ Handle event of speed button: close popup window }
 procedure TPopWindow.SpeedButton1Click(Sender: TObject);
 begin
     HideWindow;
 end;
 
+{ Handle event on form show }
 procedure TPopWindow.FormShow(Sender: TObject);
 begin
     ShowDataList;
@@ -146,6 +153,7 @@ begin
     Timer1.Enabled := True;
 end;
 
+{ Handle click event of label: open main window}
 procedure TPopWindow.Label1lClick(Sender: TObject);
 begin
     MainFormWindow.WindowState := wsNormal;
@@ -154,21 +162,25 @@ begin
     HideWindow;
 end;
 
+{ Handle mouse enter event of label: change style }
 procedure TPopWindow.Label1MouseEnter(Sender: TObject);
 begin
     Label1.Font.Color := $00FC8032;
 end;
 
+{ Handle mouse leave event of label: change style }
 procedure TPopWindow.Label1MouseLeave(Sender: TObject);
 begin
     Label1.Font.Color := $00CC5B14;
 end;
 
+{ Handle event on form create }
 procedure TPopWindow.FormCreate(Sender: TObject);
 begin
     Top := Screen.PrimaryMonitor.Height;
 end;
 
+{ Hide popup window }
 procedure TPopWindow.HideWindow();
 begin
     Hide;

@@ -20,8 +20,7 @@ type
         3, assignedTo = 4, openedBy = 5, reviewedBy = 6, closedBy = 7, finishedBy =
         8, resolvedBy = 9);
     
-    { Record }
-
+    { User config }
     UserConfig = record
         Url:      string;
         Account:  string;
@@ -32,12 +31,14 @@ type
         Lang:     string;
     end;
 
+    { Handle result }
     HandleResult = record
         Result:  boolean;
         Message: string;
         Sender:  TObject;
     end;
 
+    { Page record }
     PageRecord = record
         Status:     string;
         PageID:     integer;
@@ -47,6 +48,7 @@ type
         PageCookie: string;
     end;
 
+    { Date result }
     TDataResult = class(TObject)
         Result:  Boolean;
         Message: String;
@@ -494,6 +496,7 @@ begin
         Result.Message := '获取角色信息失败。';
 end;
 
+{ Logout }
 function Logout(): HandleResult;
 var
     url, response: string;
@@ -536,6 +539,7 @@ begin
     end;
 end;
 
+{ Load config }
 function LoadConfig():Boolean;
 Var
   conf : TJSONConfig;
@@ -564,6 +568,7 @@ begin
     end;
 end;
 
+{ Save config }
 procedure SaveConfig();
 Var
   conf : TJSONConfig;
@@ -599,6 +604,7 @@ begin
     end;
 end;
 
+{ Init zentao API }
 procedure InitZentaoAPI();
 begin
     session := TJSONObject.Create(['undefined', True]);
@@ -644,11 +650,13 @@ begin
     BrowseSubTypes[9] := resolvedBy;
 end;
 
+{ Destory resources }
 procedure Destroy();
 begin
     http.Free;
 end;
 
+{ Get max one between two intergers }
 function Max(a: integer; b: integer): integer;
 begin
     if a > b then
@@ -661,6 +669,7 @@ begin
     end;
 end;
 
+{ Get min one between two intergers }
 function Min(a: integer; b: integer): integer;
 begin
     if a < b then
@@ -673,6 +682,7 @@ begin
     end;
 end;
 
+{ Get build version }
 function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 begin
     // todo: get the real version info with os api.

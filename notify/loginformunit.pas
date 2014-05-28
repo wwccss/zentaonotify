@@ -84,7 +84,7 @@ uses MainFormUnit;
 
 { TLoginForm members }
 
-(* Check inputs *)
+{ Check inputs }
 function TLoginForm.CheckInputs(): boolean;
 begin
     Result := False;
@@ -107,7 +107,7 @@ begin
     end;
 end;
 
-(* Handle event: on textbox focus *)
+{ Handle event: on textbox focus }
 procedure TLoginForm.EditEnter(Sender: TObject);
 var
     EditSender: TEdit;
@@ -117,7 +117,7 @@ begin
         EditSender.Text := '';
 end;
 
-(* Handle event: on click the login button *)
+{ Handle event: on click the login button }
 procedure TLoginForm.BitBtnLoginClick(Sender: TObject);
 begin
     if CheckInputs() then
@@ -133,6 +133,7 @@ begin
     end;
 end;
 
+{ Handle change event of checkbox: set value of user config}
 procedure TLoginForm.CheckBoxAutoSignInChange(Sender: TObject);
 begin
     if CheckBoxAutoSignIn.Checked then
@@ -140,6 +141,7 @@ begin
     user.AutoSignIn := CheckBoxAutoSignIn.Checked;
 end;
 
+{ Handle change event of checkbox: set value of user config}
 procedure TLoginForm.CheckBoxRememberMeChange(Sender: TObject);
 begin
     if not CheckBoxRememberMe.Checked then
@@ -147,7 +149,7 @@ begin
     user.RememberMe := CheckBoxRememberMe.Checked;
 end;
 
-(* Handle event: on textbox blur *)
+{ Handle event: on textbox blur }
 procedure TLoginForm.EditExit(Sender: TObject);
 var
     EditSender: TEdit;
@@ -157,7 +159,7 @@ begin
         EditSender.Text := EditSender.Hint;
 end;
 
-(* Handle event: on textbox changed *)
+{ Handle event: on textbox changed }
 procedure TLoginForm.EditChange(Sender: TObject);
 var
     EditSender: TEdit;
@@ -172,6 +174,7 @@ begin
     ;
 end;
 
+{ Handle change event of textbox: set value of user config}
 procedure TLoginForm.EditPasswordChange(Sender: TObject);
 begin
     EditChange(Sender);
@@ -179,14 +182,14 @@ begin
     PassMd5 := MD5Print(MD5String(EditPassword.Text));
 end;
 
-(* Handle event: on password textbox focus *)
+{ Handle event: on password textbox focus }
 procedure TLoginForm.EditPasswordEnter(Sender: TObject);
 begin
     EditEnter(Sender);
     EditPassword.PasswordChar := '*';
 end;
 
-(* Handle event: on password textbox blur *)
+{ Handle event: on password textbox blur }
 procedure TLoginForm.EditPasswordExit(Sender: TObject);
 begin
     EditExit(Sender);
@@ -194,12 +197,14 @@ begin
         EditPassword.PasswordChar := #0;
 end;
 
+{ Handle change on form create }
 procedure TLoginForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     // save config changed
     SaveConfig;
 end;
 
+{ Be called by background work on login completed }
 procedure TLoginForm.LoginCompleted(e: TRunWorkerCompletedEventArgs);
 var
     r: HandleResult;
@@ -222,6 +227,7 @@ begin
     end;
 end;
 
+{ Be called by background work on running }
 function TLoginForm.Logining(arg: TObject): TRunWorkerCompletedEventArgs;
 var
     r: HandleResult;
@@ -231,6 +237,7 @@ begin
     Result.Message := r.Message;
 end;
 
+{ Handle event on from create }
 procedure TLoginForm.FormCreate(Sender: TObject);
 begin
     inherited;
@@ -241,6 +248,7 @@ begin
     InitZentaoAPI();
 end;
 
+{ Handle event on from show }
 procedure TLoginForm.FormShow(Sender: TObject);
 begin
     if FirstShow then
@@ -261,6 +269,7 @@ begin
     end;
 end;
 
+{ Load config and try login }
 procedure TLoginForm.TryAutoLogin();
 begin
     if LoadConfig() then
@@ -282,21 +291,25 @@ begin
     end;
 end;
 
+{ Handle event: open about window}
 procedure TLoginForm.LabelBtnAboutClick(Sender: TObject);
 begin
     AboutForm.ShowModal;
 end;
 
+{ Handle event:  show popup}
 procedure TLoginForm.LabelBtnLanguageClick(Sender: TObject);
 begin
     PopupMenuLang.Popup;
 end;
 
+{ Handle event: open zentao with default browser }
 procedure TLoginForm.LabelResult1Click(Sender: TObject);
 begin
     OpenURL('http://www.zentao.net/');
 end;
 
+{ Handle event of menu item: changed language }
 procedure TLoginForm.MenuItemLangClick(Sender: TObject);
 var senderMenuItem: TMenuItem;
 begin
@@ -305,12 +318,13 @@ begin
     SelectLanguage(senderMenuItem.Hint);
 end;
 
-(* Hide result message *)
+{ Hide result message }
 procedure TLoginForm.HideResultMessage();
 begin
     LabelResult.Visible := False;
 end;
 
+{ Show result message }
 procedure TLoginForm.ShowResultMessage(message: string);
 begin
     LabelResult.Caption := message;

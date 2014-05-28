@@ -118,7 +118,6 @@ type
         TimerAutoSync: TTimer;
         TimerLoadingAnimate: TTimer;
         TrayIconMain: TTrayIcon;
-        procedure FormClick(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
@@ -208,6 +207,8 @@ uses LoginFormUnit;
 {$R *.lfm}
 
 { TMainForm }
+
+{ Load all tabs }
 procedure TMainForm.LoadAllTabsData();
 begin
     LastSyncTime[btStory] := 0;
@@ -217,6 +218,7 @@ begin
     LoadTabData(CurrentTab, '', True);
 end;
 
+{ Try load tab}
 procedure TMainForm.TryLoadTabData(tabName: BrowseType);
 begin
     if (Now - LastSyncTime[tabName]) > TryLoadTabInterval then
@@ -225,7 +227,7 @@ begin
     end;
 end;
 
-(* Load tab data list with a given browse type *)
+{ Load tab data list with a given browse type }
 procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = ''; mute: boolean = False);
 var
     dataLoader: TBackgroundWorker;
@@ -255,6 +257,7 @@ begin
     dataLoader.RunWorkerAsync(dataLoaderArgs);
 end;
 
+{ Handle tab load completed }
 procedure TMainForm.LoadTabDataCompleted(e: TRunWorkerCompletedEventArgs);
 var
     data: TDataResult;
@@ -271,6 +274,7 @@ begin
     data.Free;
 end;
 
+{ Handle tab loading procedure }
 function TMainForm.LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
 var
     data: TDataResult;
@@ -287,6 +291,7 @@ begin
     dataLoaderArgs.Free;
 end;
 
+{ Handle double click event of data grid row}
 procedure TMainForm.StringGridDblClick(Sender: TObject);
 var
     stringGridSender: TStringGrid;
@@ -297,6 +302,7 @@ begin
     ViewObject(tab, stringGridSender.Cells[0, stringGridSender.Selection.Bottom]);
 end;
 
+{ Handle mouse down event of data grid  }
 procedure TMainForm.StringGridMouseDown(Sender: TObject;
     Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
@@ -318,11 +324,13 @@ begin
     end;
 end;
 
+{ Handle select cell event of data grid }
 procedure TMainForm.StringGridTodoSelectCell(Sender: TObject; aCol,
     aRow: Integer; var CanSelect: Boolean);
 begin
 end;
 
+{ Hanlde sync procedure of timer }
 procedure TMainForm.TimerAutoSyncTimer(Sender: TObject);
 var i:Integer;
 begin
@@ -336,6 +344,7 @@ begin
     end;
 end;
 
+{ Handle event when animate timer start }
 procedure TMainForm.TimerLoadingAnimateStartTimer(Sender: TObject);
 begin
     StartLoadingTime := Now;
@@ -344,12 +353,14 @@ begin
     LabelLoadingProgressbar.Visible := True;
 end;
 
+{ Handle event on animate timer stop }
 procedure TMainForm.TimerLoadingAnimateStopTimer(Sender: TObject);
 begin
     AverageWaitingTime := 0.8 * AverageWaitingTime + 0.2 * (StopLoadingTime - StartLoadingTime);
     LabelLoadingProgressbar.Visible := False;
 end;
 
+{ run animate with timer }
 procedure TMainForm.TimerLoadingAnimateTimer(Sender: TObject);
 var
     n : TDateTime;
@@ -380,11 +391,13 @@ begin
     end;
 end;
 
+{ Handle double click event of tray icon }
 procedure TMainForm.TrayIconMainDblClick(Sender: TObject);
 begin
     MenuItemOpenClick(Sender);
 end;
 
+{ Load tab by an given tab name }
 procedure TMainForm.LoadTab(dataResult: TDataResult; tab: BrowseType);
 var
     Data, dataItem: TJSONObject;
@@ -412,12 +425,12 @@ begin
               track.Add('#');
         end;
 
-        (* clean all cells *)
+        { clean all cells }
         stringGrid.Clean;
         stringGrid.RowCount := 0;
         index := 0;
 
-        (* convert data *)
+        { convert data }
         for dataRow in dataList do
         begin
             index    := index + 1;
@@ -462,6 +475,7 @@ begin
     end;
 end;
 
+{ update pager content }
 procedure TMainForm.ShowPager(pager: PageRecord; tab: BrowseType);
 var
     labelPagerInfo, labelPagerPrev, labelPagerNext, labelPagerLast: TLabel;
@@ -539,6 +553,7 @@ begin
     end;
 end;
 
+{ Handle event before window form close }
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     TrayIconMain.Visible := False;
@@ -558,10 +573,7 @@ begin
     LoginForm.Close;
 end;
 
-procedure TMainForm.FormClick(Sender: TObject);
-begin
-end;
-
+{ Handle event on form create }
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
     NotReady := True;
@@ -571,6 +583,7 @@ begin
     Caption := rsAppName + ' ' + GetBuildVersion('%d.%d');
 end;
 
+{ Init tab menu }
 procedure TMainForm.InitTabMenu();
 begin
     TabGroup[1] := btTodo;
@@ -612,6 +625,7 @@ begin
     StringGrids[btBug] := StringGridBug;
 end;
 
+{ Init sub menu }
 procedure TMainForm.InitSubMenu();
 begin
     ActiveSubMenu[btTask] := assignedTo;
@@ -620,6 +634,7 @@ begin
     ActiveSubMenu[btBug] := assignedTo;
 end;
 
+{ Handle event on form show }
 procedure TMainForm.FormShow(Sender: TObject);
 begin
     if NotReady then
@@ -629,7 +644,7 @@ begin
         InitTabMenu;
         InitSubMenu;
 
-        (* Load all data *)
+        { Load all data }
         LoadAllTabsData;
 
         TimerAutoSync.Enabled := True;
@@ -637,6 +652,7 @@ begin
     TrayIconMain.Visible := True;
 end;
 
+{ Handle mouse leave event of lable: changed style }
 procedure TMainForm.LabelBtnMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
@@ -645,6 +661,7 @@ begin
     labelSender.Color := 16547890;
 end;
 
+{ Handle mouse enter event of lable: changed style }
 procedure TMainForm.LabelBtnMouseEnter(Sender: TObject);
 var
     labelSender: TLabel;
@@ -653,6 +670,7 @@ begin
     labelSender.Color := 13392660;
 end;
 
+{ Handle click event of lable: changed tab and load it }
 procedure TMainForm.LabelMenuClick(Sender: TObject);
 var
     labelSender : TLabel;
@@ -686,12 +704,14 @@ begin
     LoadTabData(tab);
 end;
 
+{ Handle click event of lable: open popup menu }
 procedure TMainForm.LabelMenuIconClick(Sender: TObject);
 begin
     HideMessage;
     PopupMenuNav.Popup;
 end;
 
+{ Handle mouse enter event of lable: changed style }
 procedure TMainForm.LabelMenuIconMouseEnter(Sender: TObject);
 begin
     LabelMenuIcon.Color := 16547890;
@@ -700,6 +720,7 @@ begin
     ShapeMenuIcon3.Brush.Color := clWhite;
 end;
 
+{ Handle mouse leave event of lable: changed style }
 procedure TMainForm.LabelMenuIconMouseLeave(Sender: TObject);
 begin
     LabelMenuIcon.Color := $00CC5B14;
@@ -708,6 +729,7 @@ begin
     ShapeMenuIcon3.Brush.Color := clSilver;
 end;
 
+{ Handle mouse enter event of lable: changed style }
 procedure TMainForm.LabelMenuMouseEnter(Sender: TObject);
 var
     labelSender : TLabel;
@@ -723,6 +745,7 @@ begin
     end;
 end;
 
+{ Handle mouse leave event of lable: changed style }
 procedure TMainForm.LabelMenuMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
@@ -738,11 +761,13 @@ begin
     end;
 end;
 
+{ Handle click event of lable: close the message panel }
 procedure TMainForm.LabelMessageCloseClick(Sender: TObject);
 begin
     HideMessage;
 end;
 
+{ Handle click event of lable: reload data on page id changed }
 procedure TMainForm.LabelPagerBtnClick(Sender: TObject);
 var
     labelSender: TLabel;
@@ -753,6 +778,7 @@ begin
     LoadTabData(tab, labelSender.Hint);
 end;
 
+{ Handle mouse enter event of lable: changed styel of label btn }
 procedure TMainForm.LabelPagerPrevMouseEnter(Sender: TObject);
 var
     labelSender: TLabel;
@@ -762,6 +788,7 @@ begin
 
 end;
 
+{ Handle mouse leave event of lable: changed styel of label btn }
 procedure TMainForm.LabelPagerPrevMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
@@ -771,6 +798,7 @@ begin
 
 end;
 
+{ Change language }
 procedure TMainForm.MenuItemLangClick(Sender: TObject);
 var senderMenuItem: TMenuItem;
 begin
@@ -778,16 +806,19 @@ begin
     SelectLanguage(senderMenuItem.Hint);
 end;
 
+{ Show about window }
 procedure TMainForm.OnShowAbout(Sender: TObject);
 begin
     AboutForm.ShowModal;
 end;
 
+{ Close window}
 procedure TMainForm.OnExit(Sender: TObject);
 begin
     Close;
 end;
 
+{ Handle click event of label btn: logout }
 procedure TMainForm.LabelPopupMenuBtnLogoutClick(Sender: TObject);
 var
     r: HandleResult;
@@ -808,6 +839,7 @@ begin
     end;
 end;
 
+{ Handle mouse enter event of label: changed label style}
 procedure TMainForm.LabelPopupMenuBtnMouseEnter(Sender: TObject);
 var
     labelSender: TLabel;
@@ -817,6 +849,7 @@ begin
     labelSender.Font.Color := clWhite;
 end;
 
+{ Handle mouse leave event of label: changed label style}
 procedure TMainForm.LabelPopupMenuBtnMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
@@ -827,16 +860,19 @@ begin
 
 end;
 
+{ Handle click event of label: open website with default browser }
 procedure TMainForm.LabelPopupMenuBtnOpenWebsiteClick(Sender: TObject);
 begin
     OpenURL(User.Url);
 end;
 
+{ Handle click event of lable: reload content of all tabs }
 procedure TMainForm.LabelPopupMenuBtnSyncClick(Sender: TObject);
 begin
     LoadAllTabsData;
 end;
 
+{ Handle mouse enter event of tab label }
 procedure TMainForm.LabelTabMouseEnter(Sender: TObject);
 var
     labelSender: TLabel;
@@ -848,6 +884,7 @@ begin
     end;
 end;
 
+{ Handle mouse leave event of tab label }
 procedure TMainForm.LabelTabMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
@@ -859,9 +896,10 @@ begin
     end;
 end;
 
+{ Changed current tab }
 procedure TMainForm.ChangeTab(tab: BrowseType; tabLabel: TLabel);
 begin
-    (* reset tab label color *)
+    { reset tab label color }
     LabelTab1.Color      := 13392660;
     LabelTab1.Font.Color := clWhite;
     LabelTab2.Color      := 13392660;
@@ -869,12 +907,12 @@ begin
     LabelTab3.Color      := 13392660;
     LabelTab3.Font.Color := clWhite;
 
-    (* changed current tab color *)
+    { changed current tab color }
     tabLabel.Color := 16380651;
     tabLabel.Font.Color := 13392660;
     CurrentTab := tab;
 
-    (* hide other panel *)
+    { hide other panel }
     PanelNavTodo.Visible  := False;
     PanelNavTask.Visible  := False;
     PanelNavBug.Visible   := False;
@@ -904,6 +942,7 @@ begin
     end;
 end;
 
+{ Handle the click event of tab label }
 procedure TMainForm.LabelTabClick(Sender: TObject);
 var
     labelSender: TLabel;
@@ -924,28 +963,32 @@ begin
     end;
 end;
 
+{ Handle click event of menu item: open main window }
 procedure TMainForm.MenuItemOpenClick(Sender: TObject);
 begin
     Show;
     WindowState := wsNormal;
 end;
 
+{ Handle click event of menu item: reload current tab data }
 procedure TMainForm.MenuItemReloadTabClick(Sender: TObject);
 begin
     LoadTabData(CurrentTab);
 end;
 
+{ Handle click event of menu item: view object with default browser }
 procedure TMainForm.MenuItemViewObjectClick(Sender: TObject);
 begin
     ViewObject(CurrentTab, CurrentItemId);
 end;
 
-(* Hide result message *)
+{ Hide result message }
 procedure TMainForm.HideMessage();
 begin
     PanelMessage.Visible := False;
 end;
 
+{ Show message }
 procedure TMainForm.ShowMessage(Message: string; msgType: string = 'danger');
 begin
     LabelMessage.Caption := Message;
@@ -995,6 +1038,7 @@ begin
     Memo1.Lines.Text    := Memo1.Lines.Text + Message + LineEnding;
 end;
 
+{ Update translation }
 procedure TMainForm.UpdateTranslation(ALang: String);
 begin
     inherited;
