@@ -2510,11 +2510,11 @@ inherited LoginForm: TLoginForm
   end
   object Panel1: TPanel[12]
     Left = 1
-    Height = 17
+    Height = 20
     Top = 389
     Width = 281
     BevelOuter = bvNone
-    ClientHeight = 17
+    ClientHeight = 20
     ClientWidth = 281
     Color = 15708723
     ParentColor = False
