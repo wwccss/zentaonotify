@@ -1,7 +1,7 @@
 inherited AboutForm: TAboutForm
-  Left = 2572
+  Left = 2243
   Height = 280
-  Top = 370
+  Top = 348
   Width = 500
   BorderStyle = bsToolWindow
   Caption = '关于禅道桌面提醒工具'
@@ -1542,7 +1542,7 @@ inherited AboutForm: TAboutForm
     Cursor = crHandPoint
     Left = 88
     Height = 36
-    Top = 232
+    Top = 222
     Width = 150
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
@@ -1562,7 +1562,7 @@ inherited AboutForm: TAboutForm
     Cursor = crHandPoint
     Left = 264
     Height = 36
-    Top = 232
+    Top = 222
     Width = 150
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]

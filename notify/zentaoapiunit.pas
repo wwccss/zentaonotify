@@ -19,16 +19,16 @@ type
     BrowseSubType     = (today = 0, yesterday = 1, thisweek = 2, lastweek =
         3, assignedTo = 4, openedBy = 5, reviewedBy = 6, closedBy = 7, finishedBy =
         8, resolvedBy = 9);
-    
+
     { User config }
     UserConfig = record
-        Url:      string;
-        Account:  string;
-        PassMd5:  string;
-        Role:     string;
+        Url:        string;
+        Account:    string;
+        PassMd5:    string;
+        Role:       string;
         AutoSignIn: boolean;
         RememberMe: boolean;
-        Lang:     string;
+        Lang:       string;
     end;
 
     { Handle result }
@@ -50,16 +50,16 @@ type
 
     { Date result }
     TDataResult = class(TObject)
-        Result:  Boolean;
-        Message: String;
-        Data:    TJSONObject;
-        Pager:   PageRecord;
-        IsNew:   Boolean;
-        FirstPage: Boolean;
-        Tab: BrowseType;
-        SubType: BrowseSubType;
+        Result:    boolean;
+        Message:   string;
+        Data:      TJSONObject;
+        Pager:     PageRecord;
+        IsNew:     boolean;
+        FirstPage: boolean;
+        Tab:       BrowseType;
+        SubType:   BrowseSubType;
 
-        Constructor Create;
+        constructor Create;
     end;
 
 { Function declarations }
@@ -79,7 +79,7 @@ function Max(a: integer; b: integer): integer;
 function Min(a: integer; b: integer): integer;
 function ViewObject(objType: BrowseType; id: string): boolean;
 procedure SaveConfig();
-function LoadConfig():Boolean;
+function LoadConfig(): boolean;
 function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 
 var
@@ -99,39 +99,40 @@ var
 
 const
     ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
-    ONEDAYSECONDS = 24 * 60 * 60;
-    CONFIG_FILE = 'config.json';
+    ONEDAYSECONDS        = 24 * 60 * 60;
+    CONFIG_FILE          = 'config.json';
 
 implementation
 
-Constructor TDataResult.Create;
+constructor TDataResult.Create;
 begin
-    IsNew := False;
-    Result := True;
+    IsNew     := False;
+    Result    := True;
     FirstPage := False;
 end;
 
 (* View object in browser *)
 function ViewObject(objType: BrowseType; id: string): boolean;
 begin
-    if Copy(id,1,1) = '#' then
+    if Copy(id, 1, 1) = '#' then
         id := Copy(id, 2, Length(id) - 1);
-    Result := OpenURL(GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']));
+    Result := OpenURL(GetAPI(['module', BrowseName[objType], 'method',
+        'view', 'id', id, 'viewType', 'html']));
 end;
 
 (* Load Data from server with zentao api and return in a list *)
 function LoadDataList(obj: BrowseType; objType: BrowseSubType;
     pageID: string = ''): TDataResult;
 var
-    response, md5:  string;
+    response, md5: string;
     Data, pageData: TJSONObject;
     url:       string;
     pager:     PageRecord;
     pageNum:   integer;
     firstPage: boolean;
 begin
-    Result := TDataResult.Create;
-    Result.Tab := obj;
+    Result         := TDataResult.Create;
+    Result.Tab     := obj;
     Result.SubType := objType;
 
     (* init page *)
@@ -168,7 +169,7 @@ begin
     begin
         pageID := '';
     end;
-    firstPage := (pageID = '');
+    firstPage        := (pageID = '');
     Result.FirstPage := firstPage;
 
     (* get url *)
@@ -181,12 +182,12 @@ begin
         response := http.Get(url);
         try
             (* prepare data *)
-            Data     := TJSONObject(TJSONParser.Create(response).Parse);
+            Data := TJSONObject(TJSONParser.Create(response).Parse);
 
             md5 := Data.Get('md5', '');
             if firstPage and (md5 <> '') and (md5 <> BrowseMd5[obj]) then
             begin
-                Result.IsNew := True;
+                Result.IsNew   := True;
                 BrowseMd5[obj] := md5;
             end;
 
@@ -280,8 +281,8 @@ var
     config:  TJSONObject;
     viewType, moduleName, methodName, password, pageID: string;
     item:    TJSONData;
-    i: Integer;
-    key: string;
+    i:       integer;
+    key:     string;
     nameSet: TStringList;
 begin
     config     := TJSONObject.Create(Params);
@@ -306,10 +307,11 @@ begin
 
         if (moduleName = 'api') and (LowerCase(methodName) = 'getmodel') then
         begin
-            Result := Result + '&moduleName=' + config.Get('moduleName', '') +
+            Result  := Result + '&moduleName=' + config.Get('moduleName', '') +
                 '&methodName=' + config.Get('methodName', '') + '&params=';
-            nameSet    := TStringList.Create;
-            nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
+            nameSet := TStringList.Create;
+            nameSet.CommaText :=
+                ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
             // for item in config do
             // begin
             //     if (nameSet.indexOf(item.Key) > 0) then
@@ -370,18 +372,19 @@ begin
         if moduleName = 'my' then
             Result := Result + config.Get('type', '') + '-';
 
-        for i:=0 to (config.Count-1) do
+        for i := 0 to (config.Count - 1) do
         begin
             item := config.items[i];
-            key := config.Names[i];
+            key  := config.Names[i];
 
-            nameSet    := TStringList.Create;
-            nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
+            nameSet           := TStringList.Create;
+            nameSet.CommaText :=
+                ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
             if (nameSet.indexOf(key) > 0) then
                 continue;
             if (methodName <> 'view') or (key <> 'id') then
                 Result := Result + key + '=';
-            Result := Result + item.AsString + '-';
+            Result     := Result + item.AsString + '-';
             nameSet.Free;
         end;
 
@@ -508,7 +511,7 @@ var
 begin
     Result.Result := True;
 
-    url           := GetAPI(['module', 'user', 'method', 'logout']);
+    url := GetAPI(['module', 'user', 'method', 'logout']);
 
     try
         response := http.Get(url);
@@ -545,28 +548,28 @@ begin
 end;
 
 { Load config }
-function LoadConfig():Boolean;
-Var
-  conf : TJSONConfig;
-  lastLoginTime : TDateTime;
+function LoadConfig(): boolean;
+var
+    conf:          TJSONConfig;
+    lastLoginTime: TDateTime;
 begin
     Result := False;
-    conf := TJSONConfig.Create(nil);
+    conf   := TJSONConfig.Create(nil);
     try
         conf.FileName := CONFIG_FILE;
-        
+
         lastLoginTime := conf.GetValue('/LastLoginTime', 0);
 
         if lastLoginTime > 0 then
         begin
-            user.Account := conf.GetValue('/User/Account', '');
-            user.Url := conf.GetValue('/User/Url', '');
-            user.PassMd5 := conf.GetValue('/User/PassMd5', '');
-            user.Role := conf.GetValue('/User/Role', '');
+            user.Account    := conf.GetValue('/User/Account', '');
+            user.Url        := conf.GetValue('/User/Url', '');
+            user.PassMd5    := conf.GetValue('/User/PassMd5', '');
+            user.Role       := conf.GetValue('/User/Role', '');
             user.AutoSignIn := conf.GetValue('/User/AutoSignIn', False);
-            user.Lang := conf.GetValue('/User/Lang', 'zh_cn');
+            user.Lang       := conf.GetValue('/User/Lang', 'zh_cn');
             user.RememberMe := True;
-            Result := True;
+            Result          := True;
         end;
     finally
         conf.Free;
@@ -575,8 +578,8 @@ end;
 
 { Save config }
 procedure SaveConfig();
-Var
-  conf : TJSONConfig;
+var
+    conf: TJSONConfig;
 begin
     conf := TJSONConfig.Create(nil);
     try
@@ -690,9 +693,16 @@ end;
 { Get build version }
 function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 begin
+    if formatStr = '%s' then
+    begin
+        Result := 'beta';
+    end
+    else
+    begin
+        Result := Format(formatStr, [2, 0, 0, 1]);
+    end;
     // todo: get the real version info with os api.
-    Result:=Format(formatStr, [1,3,0,0]);
+
 end;
 
 end.
-

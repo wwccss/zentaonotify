@@ -17,8 +17,8 @@ type
     { TAboutForm }
 
     TAboutForm = class(TLocalizedForm)
-        Image1: TImage;
-        LabelVersion: TLabel;
+        Image1:        TImage;
+        LabelVersion:  TLabel;
         LabelVersion1: TLabel;
         LabelVersion2: TLabel;
         LabelVersion3: TLabel;
@@ -26,7 +26,7 @@ type
         procedure LabelMouseEnter(Sender: TObject);
         procedure LabelMouseLeave(Sender: TObject);
         procedure LabelVersion1MouseMove(Sender: TObject; Shift: TShiftState;
-            X, Y: Integer);
+            X, Y: integer);
         procedure LabelVersion2Click(Sender: TObject);
         procedure LabelVersion3Click(Sender: TObject);
     private
@@ -48,25 +48,25 @@ procedure TAboutForm.LabelMouseEnter(Sender: TObject);
 var
     labelSender: TLabel;
 begin
-    labelSender := Sender as TLabel;
+    labelSender       := Sender as TLabel;
     labelSender.Color := $00e6953e;
 end;
 
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
-    LabelVersion.Caption := GetBuildVersion('build %d.%d.%d');
+    LabelVersion.Caption := GetBuildVersion('build %d.%d.%d ') + GetBuildVersion('%s');
 end;
 
 procedure TAboutForm.LabelMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
 begin
-    labelSender := Sender as TLabel;
+    labelSender       := Sender as TLabel;
     labelSender.Color := $00EEA251;
 end;
 
 procedure TAboutForm.LabelVersion1MouseMove(Sender: TObject;
-    Shift: TShiftState; X, Y: Integer);
+    Shift: TShiftState; X, Y: integer);
 begin
 
 end;

@@ -11,50 +11,55 @@ uses
     {$endif}
     Classes, SysUtils;
 
-Type
-  TRunWorkerCompletedEventArgs = record
-    Result : Boolean;
-    Message : string;
-    Target : TObject;
-    Tag: Integer;
-  end;
+type
+    TRunWorkerCompletedEventArgs = record
+        Result:  boolean;
+        Message: string;
+        Target:  TObject;
+        Tag:     integer;
+    end;
 
-  TReportStatusEventArgs = record
-    Status : string;
-    Progress: Real;
-    Message: string;
-    Target: TObject;
-  end;
+    TReportStatusEventArgs = record
+        Status:   string;
+        Progress: real;
+        Message:  string;
+        Target:   TObject;
+    end;
 
-  TDoWorkEventHandler = function(arg: TObject):TRunWorkerCompletedEventArgs of Object;
-  TRunWorkerCompletedEventHandler = procedure(e: TRunWorkerCompletedEventArgs) of Object;
-  TReportStatusEventHandler = procedure(e: TReportStatusEventArgs) of Object;
-  
-  TBackgroundWorker = class(TThread)
-  private
-    DoWorkEventHandler: TDoWorkEventHandler;
-    RunWorkerCompletedEventHandler: TRunWorkerCompletedEventHandler;
-    DoWorkArgs: TObject;
-    ReportStatusEventHandler: TReportStatusEventHandler;
-    ReportStatusEventArgs: TReportStatusEventArgs;
-    RunWorkerCompletedEventArgs: TRunWorkerCompletedEventArgs;
+    TDoWorkEventHandler       = function(arg: TObject): TRunWorkerCompletedEventArgs of object;
+    TRunWorkerCompletedEventHandler = procedure(e: TRunWorkerCompletedEventArgs) of object;
+    TReportStatusEventHandler = procedure(e: TReportStatusEventArgs) of object;
 
-  protected
-    procedure Execute; override;
-    procedure Completed(Sender: TObject);
+    TBackgroundWorker = class(TThread)
+    private
+        DoWorkEventHandler: TDoWorkEventHandler;
+        RunWorkerCompletedEventHandler: TRunWorkerCompletedEventHandler;
+        DoWorkArgs:         TObject;
+        ReportStatusEventHandler: TReportStatusEventHandler;
+        ReportStatusEventArgs: TReportStatusEventArgs;
+        RunWorkerCompletedEventArgs: TRunWorkerCompletedEventArgs;
 
-  public
-    Constructor Create(createSuspended : boolean = True); overload;
-    constructor Create(doWork: TDoWorkEventHandler; workCompleted : TRunWorkerCompletedEventHandler; createSuspended: boolean = False); overload;
-    
-    property OnDoWork: TDoWorkEventHandler read DoWorkEventHandler write DoWorkEventHandler;
-    property ReportStatus: TReportStatusEventHandler read ReportStatusEventHandler write ReportStatusEventHandler;
-    property RunWorkerCompleted : TRunWorkerCompletedEventHandler read RunWorkerCompletedEventHandler  write RunWorkerCompletedEventHandler;
+    protected
+        procedure Execute; override;
+        procedure Completed(Sender: TObject);
 
-    procedure RunWorkerAsync(arg: TObject); overload;
-    procedure RunWorkerAsync(); overload;
-    procedure OnReportStatus();
-  end;
+    public
+        constructor Create(createSuspended: boolean = True); overload;
+        constructor Create(doWork: TDoWorkEventHandler;
+            workCompleted: TRunWorkerCompletedEventHandler; createSuspended: boolean = False);
+            overload;
+
+        property OnDoWork: TDoWorkEventHandler read DoWorkEventHandler
+            write DoWorkEventHandler;
+        property ReportStatus: TReportStatusEventHandler
+            read ReportStatusEventHandler write ReportStatusEventHandler;
+        property RunWorkerCompleted: TRunWorkerCompletedEventHandler
+            read RunWorkerCompletedEventHandler write RunWorkerCompletedEventHandler;
+
+        procedure RunWorkerAsync(arg: TObject); overload;
+        procedure RunWorkerAsync(); overload;
+        procedure OnReportStatus();
+    end;
 
 implementation
 
@@ -66,13 +71,15 @@ begin
     OnTerminate := @Completed;
 end;
 
-constructor TBackgroundWorker.Create(doWork: TDoWorkEventHandler; workCompleted : TRunWorkerCompletedEventHandler; createSuspended: boolean = False); overload;
+constructor TBackgroundWorker.Create(doWork: TDoWorkEventHandler;
+    workCompleted: TRunWorkerCompletedEventHandler; createSuspended: boolean = False);
+    overload;
 begin
     FreeOnTerminate := True;
     inherited Create(createSuspended);
     OnTerminate := @Completed;
 
-    OnDoWork := doWork;
+    OnDoWork           := doWork;
     RunWorkerCompleted := workCompleted;
 end;
 
@@ -104,14 +111,16 @@ begin
 end;
 
 procedure TBackgroundWorker.Execute;
-var r: TRunWorkerCompletedEventArgs;
+var
+    r: TRunWorkerCompletedEventArgs;
 begin
     ReportStatusEventArgs.Message := 'Execute begin!';
     Synchronize(@OnReportStatus);
 
     if Assigned(DoWorkEventHandler) then
     begin
-        ReportStatusEventArgs.Message := 'Assigned DoWorkEventHandler! DoWorkEventArgs.Message=';
+        ReportStatusEventArgs.Message :=
+            'Assigned DoWorkEventHandler! DoWorkEventArgs.Message=';
         Synchronize(@OnReportStatus);
 
         RunWorkerCompletedEventArgs := DoWorkEventHandler(DoWorkArgs);
@@ -125,4 +134,3 @@ begin
 end;
 
 end.
-

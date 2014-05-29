@@ -1,12 +1,12 @@
 inherited LoginForm: TLoginForm
-  Left = 701
+  Left = 637
   Height = 555
   Top = 259
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  ClientHeight = 555
-  ClientWidth = 286
+  ClientHeight = 0
+  ClientWidth = 0
   Icon.Data = {
     962500000000010004002020000001002000A810000046000000181800000100
     200088090000EE1000001414000001002000B8060000761A0000101000000100

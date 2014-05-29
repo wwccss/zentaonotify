@@ -25,24 +25,24 @@ type
     TLoginForm = class(TLocalizedForm)
         CheckBoxRememberMe: TCheckBox;
         CheckBoxAutoSignIn: TCheckBox;
-        EditAddress:     TEdit;
-        EditUsername:    TEdit;
-        EditPassword:    TEdit;
+        EditAddress:   TEdit;
+        EditUsername:  TEdit;
+        EditPassword:  TEdit;
         ImageBackground: TImage;
         LabelBtnAbout: TLabel;
-        LabelResult:     TLabel;
-        LabelResult1: TLabel;
+        LabelResult:   TLabel;
+        LabelResult1:  TLabel;
         LabelBtnLanguage: TLabel;
         MenuItemLangZHTW: TMenuItem;
         MenuItemLangEN: TMenuItem;
         MenuItemLangZHCN: TMenuItem;
-        Panel1: TPanel;
+        Panel1:        TPanel;
         PopupMenuLang: TPopupMenu;
-        ShapeAddress:    TShape;
-        ShapeUsername:   TShape;
-        ShapePassword:   TShape;
-        BitBtnLogin:     TBitBtn;
-        
+        ShapeAddress:  TShape;
+        ShapeUsername: TShape;
+        ShapePassword: TShape;
+        BitBtnLogin:   TBitBtn;
+
         procedure BitBtnLoginClick(Sender: TObject);
         procedure CheckBoxAutoSignInChange(Sender: TObject);
         procedure CheckBoxRememberMeChange(Sender: TObject);
@@ -63,11 +63,11 @@ type
         procedure HideResultMessage();
         procedure TryAutoLogin();
         procedure LoginCompleted(e: TRunWorkerCompletedEventArgs);
-        function Logining(arg: TObject):TRunWorkerCompletedEventArgs;
+        function Logining(arg: TObject): TRunWorkerCompletedEventArgs;
         function CheckInputs: boolean;
 
     protected
-        procedure UpdateTranslation(ALang: String); override;
+        procedure UpdateTranslation(ALang: string); override;
 
     private
         { private declarations }
@@ -78,7 +78,7 @@ type
 var
     LoginForm: TLoginForm;
     FirstShow: boolean;
-    PassMd5 : string;
+    PassMd5:   string;
 
 implementation
 
@@ -129,9 +129,9 @@ begin
         BitBtnLogin.Caption := rsLoging;
         BitBtnLogin.Enabled := False;
 
-        user.Account  := EditUsername.Text;
-        user.PassMd5  := PassMd5;
-        user.Url      := EditAddress.Text;
+        user.Account := EditUsername.Text;
+        user.PassMd5 := PassMd5;
+        user.Url     := EditAddress.Text;
 
         TBackgroundWorker.Create(@Logining, @LoginCompleted);
     end;
@@ -216,7 +216,7 @@ begin
     BitBtnLogin.Caption := rsLogin;
     BitBtnLogin.Enabled := True;
 
-    r.Result := e.Result;
+    r.Result  := e.Result;
     r.Message := e.Message;
 
     if not r.Result then
@@ -259,7 +259,7 @@ begin
     begin
         FirstShow := False;
 
-        EditAddress.Text := EditAddress.Hint;
+        EditAddress.Text  := EditAddress.Hint;
         EditUsername.Text := EditUsername.Hint;
         EditPassword.Text := EditPassword.Hint;
 
@@ -269,7 +269,7 @@ begin
     case CurrentLang of
         'zh_cn': MenuItemLangZHCN.Checked := True;
         'zh_tw': MenuItemLangZHTW.Checked := True;
-        'en': MenuItemLangEN.Checked := True;
+        'en': MenuItemLangEN.Checked      := True;
     end;
 end;
 
@@ -279,9 +279,9 @@ begin
     if LoadConfig() then
     begin
         EditPassword.Text := user.PassMd5;
-        EditAddress.Text := user.Url;
+        EditAddress.Text  := user.Url;
         EditUsername.Text := user.Account;
-        PassMd5 := user.PassMd5;
+        PassMd5           := user.PassMd5;
         CheckBoxRememberMe.Checked := True;
 
         if user.Lang <> '' then
@@ -289,8 +289,8 @@ begin
 
         if user.AutoSignIn then
         begin
-           TBackgroundWorker.Create(@Logining, @LoginCompleted);
-           CheckBoxAutoSignIn.Checked := True;
+            TBackgroundWorker.Create(@Logining, @LoginCompleted);
+            CheckBoxAutoSignIn.Checked := True;
         end;
     end;
 end;
@@ -315,7 +315,8 @@ end;
 
 { Handle event of menu item: changed language }
 procedure TLoginForm.MenuItemLangClick(Sender: TObject);
-var senderMenuItem: TMenuItem;
+var
+    senderMenuItem: TMenuItem;
 begin
     senderMenuItem := Sender as TMenuItem;
 
@@ -335,14 +336,14 @@ begin
     LabelResult.Visible := True;
 end;
 
-procedure TLoginForm.UpdateTranslation(ALang: String);
+procedure TLoginForm.UpdateTranslation(ALang: string);
 begin
     inherited;
 
     case ALang of
         'zh_cn': MenuItemLangZHCN.Checked := True;
         'zh_tw': MenuItemLangZHTW.Checked := True;
-        'en': MenuItemLangEN.Checked := True;
+        'en': MenuItemLangEN.Checked      := True;
     end;
 
     user.Lang := ALang;

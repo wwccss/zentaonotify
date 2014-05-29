@@ -28,7 +28,7 @@ type
         LabelTodoSepLine: TLabel;
         LabelLoadingProgressbar: TLabel;
         LabelMessageClose: TLabel;
-        LabelMessage: TLabel;
+        LabelMessage:    TLabel;
         LabelPagerTaskInfo: TLabel;
         LabelPagerBugInfo: TLabel;
         LabelPagerStoryInfo: TLabel;
@@ -45,79 +45,79 @@ type
         LabelPagerBugPrev: TLabel;
         LabelPagerStoryPrev: TLabel;
         LabelPagerTodoPrev: TLabel;
-        LabelMenu10: TLabel;
-        LabelMenu11: TLabel;
-        LabelMenu12: TLabel;
-        LabelMenu13: TLabel;
-        LabelMenu14: TLabel;
-        LabelMenu15: TLabel;
-        LabelMenu16: TLabel;
-        LabelMenu2: TLabel;
-        LabelMenu3: TLabel;
-        LabelMenu4: TLabel;
+        LabelMenu10:     TLabel;
+        LabelMenu11:     TLabel;
+        LabelMenu12:     TLabel;
+        LabelMenu13:     TLabel;
+        LabelMenu14:     TLabel;
+        LabelMenu15:     TLabel;
+        LabelMenu16:     TLabel;
+        LabelMenu2:      TLabel;
+        LabelMenu3:      TLabel;
+        LabelMenu4:      TLabel;
         Label2:          TLabel;
-        LabelMenu1: TLabel;
-        LabelMenu5: TLabel;
-        LabelMenu6: TLabel;
-        LabelMenu7: TLabel;
-        LabelMenu8: TLabel;
-        LabelMenu9: TLabel;
+        LabelMenu1:      TLabel;
+        LabelMenu5:      TLabel;
+        LabelMenu6:      TLabel;
+        LabelMenu7:      TLabel;
+        LabelMenu8:      TLabel;
+        LabelMenu9:      TLabel;
         LabelTab3:       TLabel;
         LabelTab1:       TLabel;
         LabelTab2:       TLabel;
-        LabelMenuIcon: TLabel;
+        LabelMenuIcon:   TLabel;
         LabelTodoSepLine1: TLabel;
         LabelTodoSepLine2: TLabel;
         LabelTodoSepLine3: TLabel;
         Memo1:           TMemo;
-        MenuItem1: TMenuItem;
-        MenuItem4: TMenuItem;
-        MenuItem5: TMenuItem;
-        MenuItem6: TMenuItem;
-        MenuItem7: TMenuItem;
-        MenuItemAbout: TMenuItem;
-        MenuItem3: TMenuItem;
-        MenuItemExit1: TMenuItem;
+        MenuItem1:       TMenuItem;
+        MenuItem4:       TMenuItem;
+        MenuItem5:       TMenuItem;
+        MenuItem6:       TMenuItem;
+        MenuItem7:       TMenuItem;
+        MenuItemAbout:   TMenuItem;
+        MenuItem3:       TMenuItem;
+        MenuItemExit1:   TMenuItem;
         MenuItemLogout1: TMenuItem;
         MenuItemOpenWebsite: TMenuItem;
         MenuItemOpenWebsite1: TMenuItem;
         MenuItemSyncAll: TMenuItem;
-        MenuItem2: TMenuItem;
-        MenuItemLogout: TMenuItem;
-        MenuItemExit: TMenuItem;
-        MenuItemOpen: TMenuItem;
-        MenuItemCopy: TMenuItem;
+        MenuItem2:       TMenuItem;
+        MenuItemLogout:  TMenuItem;
+        MenuItemExit:    TMenuItem;
+        MenuItemOpen:    TMenuItem;
+        MenuItemCopy:    TMenuItem;
         MenuItemReloadTab: TMenuItem;
-        MenuItemSep: TMenuItem;
+        MenuItemSep:     TMenuItem;
         MenuItemSyncAll1: TMenuItem;
         MenuItemViewObject: TMenuItem;
-        PanelMessage: TPanel;
-        PanelPagerTask: TPanel;
-        PanelPagerBug: TPanel;
+        PanelMessage:    TPanel;
+        PanelPagerTask:  TPanel;
+        PanelPagerBug:   TPanel;
         PanelPagerStory: TPanel;
-        PanelPagerTodo: TPanel;
-        PanelMenuBug: TPanel;
-        PanelMenuStory: TPanel;
-        PanelMenuTodo: TPanel;
+        PanelPagerTodo:  TPanel;
+        PanelMenuBug:    TPanel;
+        PanelMenuStory:  TPanel;
+        PanelMenuTodo:   TPanel;
         PanelMenu:       TPanel;
-        PanelMenuTask: TPanel;
+        PanelMenuTask:   TPanel;
         PanelNavTodo:    TPanel;
         PanelNavTask:    TPanel;
         PanelNavBug:     TPanel;
         PanelNavStory:   TPanel;
-        PopupMenuMain: TPopupMenu;
-        PopupMenuNav: TPopupMenu;
+        PopupMenuMain:   TPopupMenu;
+        PopupMenuNav:    TPopupMenu;
         PopupMenuStringGrid: TPopupMenu;
-        ShapeMenuIcon1: TShape;
-        ShapeMenuIcon2: TShape;
-        ShapeMenuIcon3: TShape;
+        ShapeMenuIcon1:  TShape;
+        ShapeMenuIcon2:  TShape;
+        ShapeMenuIcon3:  TShape;
         StringGridBug:   TStringGrid;
         StringGridStory: TStringGrid;
         StringGridTodo:  TStringGrid;
         StringGridTask:  TStringGrid;
-        TimerAutoSync: TTimer;
+        TimerAutoSync:   TTimer;
         TimerLoadingAnimate: TTimer;
-        TrayIconMain: TTrayIcon;
+        TrayIconMain:    TTrayIcon;
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
@@ -149,14 +149,15 @@ type
         procedure MenuItemViewObjectClick(Sender: TObject);
         procedure ShowMessage(Message: string; msgType: string = 'danger');
         procedure HideMessage();
-        procedure LoadTabData(tabName: BrowseType; pageID: string = ''; mute: boolean = False);
+        procedure LoadTabData(tabName: BrowseType; pageID: string = '';
+            mute: boolean = False);
         procedure LoadTabDataCompleted(e: TRunWorkerCompletedEventArgs);
-        function LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
+        function LoadingTabData(arg: TObject): TRunWorkerCompletedEventArgs;
         procedure StringGridDblClick(Sender: TObject);
         procedure StringGridMouseDown(Sender: TObject;
-            Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-        procedure StringGridTodoSelectCell(Sender: TObject; aCol,
-            aRow: Integer; var CanSelect: Boolean);
+            Button: TMouseButton; Shift: TShiftState; X, Y: integer);
+        procedure StringGridTodoSelectCell(Sender: TObject;
+            aCol, aRow: integer; var CanSelect: boolean);
         procedure TimerAutoSyncTimer(Sender: TObject);
         procedure TimerLoadingAnimateStartTimer(Sender: TObject);
         procedure TimerLoadingAnimateStopTimer(Sender: TObject);
@@ -170,7 +171,7 @@ type
         procedure ChangeTab(tab: BrowseType; tabLabel: TLabel);
 
     protected
-        procedure UpdateTranslation(ALang: String); override;
+        procedure UpdateTranslation(ALang: string); override;
 
     private
         procedure LoadTab(dataResult: TDataResult; tab: BrowseType);
@@ -178,26 +179,26 @@ type
     end;
 
     TLoadDataListArgs = class(TObject)
-        Tab : BrowseType;
-        SubType : BrowseSubType;
-        PageID : string;
+        Tab:     BrowseType;
+        SubType: BrowseSubType;
+        PageID:  string;
     end;
 
 const
     TryLoadTabInterval = 5.0 / (24 * 60);
 
 var
-    MainForm:      TMainForm;
-    CurrentTab:    BrowseType;
-    CurrentItemId: string;
-    NotReady:     boolean;
-    LastSyncTime:  array[BrowseType] of TDateTime;
-    ActiveSubMenu: array[BrowseType] of BrowseSubType;
-    StringGrids:   array[BrowseType] of TStringGrid;
-    BrowseTrack:   array[BrowseType] of TStringList;
-    TabGroup:      array[1..3] of BrowseType;
-    IsTabLoading: boolean;
-    AverageWaitingTime: Double; // days
+    MainForm:           TMainForm;
+    CurrentTab:         BrowseType;
+    CurrentItemId:      string;
+    NotReady:           boolean;
+    LastSyncTime:       array[BrowseType] of TDateTime;
+    ActiveSubMenu:      array[BrowseType] of BrowseSubType;
+    StringGrids:        array[BrowseType] of TStringGrid;
+    BrowseTrack:        array[BrowseType] of TStringList;
+    TabGroup:           array[1..3] of BrowseType;
+    IsTabLoading:       boolean;
+    AverageWaitingTime: double; // days
     StartLoadingTime, StopLoadingTime: TDateTime;
 
 implementation
@@ -212,9 +213,9 @@ uses LoginFormUnit;
 procedure TMainForm.LoadAllTabsData();
 begin
     LastSyncTime[btStory] := 0;
-    LastSyncTime[btBug] := 0;
-    LastSyncTime[btTask] := 0;
-    LastSyncTime[btTodo] := 0;
+    LastSyncTime[btBug]   := 0;
+    LastSyncTime[btTask]  := 0;
+    LastSyncTime[btTodo]  := 0;
     LoadTabData(CurrentTab, '', True);
 end;
 
@@ -228,14 +229,16 @@ begin
 end;
 
 { Load tab data list with a given browse type }
-procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = ''; mute: boolean = False);
+procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = '';
+    mute: boolean = False);
 var
-    dataLoader: TBackgroundWorker;
-    dataLoaderArgs : TLoadDataListArgs;
+    dataLoader:     TBackgroundWorker;
+    dataLoaderArgs: TLoadDataListArgs;
 begin
     if NotReady then
     begin
-        if (not mute) then ShowMessage(rsNotReadyMessage);
+        if (not mute) then
+            ShowMessage(rsNotReadyMessage);
         Exit;
     end;
 
@@ -245,13 +248,13 @@ begin
         Exit;
     end;
 
-    dataLoaderArgs := TLoadDataListArgs.Create;
-    dataLoaderArgs.Tab := tabName;
+    dataLoaderArgs         := TLoadDataListArgs.Create;
+    dataLoaderArgs.Tab     := tabName;
     dataLoaderArgs.SubType := ActiveSubMenu[tabName];
-    dataLoaderArgs.PageID := pageID;
+    dataLoaderArgs.PageID  := pageID;
 
     IsTabLoading := True;
-    TimerLoadingAnimate.Enabled:= true;
+    TimerLoadingAnimate.Enabled := True;
 
     dataLoader := TBackgroundWorker.Create(@LoadingTabData, @LoadTabDataCompleted, True);
     dataLoader.RunWorkerAsync(dataLoaderArgs);
@@ -260,33 +263,34 @@ end;
 { Handle tab load completed }
 procedure TMainForm.LoadTabDataCompleted(e: TRunWorkerCompletedEventArgs);
 var
-    data: TDataResult;
+    Data:    TDataResult;
     tabName: BrowseType;
 begin
-    data := e.Target as TDataResult;
+    Data    := e.Target as TDataResult;
     tabName := BrowseTypes[e.Tag];
 
-    IsTabLoading := False;
+    IsTabLoading    := False;
     StopLoadingTime := Now;
 
-    LoadTab(data, tabName);
+    LoadTab(Data, tabName);
 
-    data.Free;
+    Data.Free;
 end;
 
 { Handle tab loading procedure }
-function TMainForm.LoadingTabData(arg: TObject):TRunWorkerCompletedEventArgs;
+function TMainForm.LoadingTabData(arg: TObject): TRunWorkerCompletedEventArgs;
 var
-    data: TDataResult;
-    dataLoaderArgs : TLoadDataListArgs;
+    Data:           TDataResult;
+    dataLoaderArgs: TLoadDataListArgs;
 begin
     dataLoaderArgs := arg as TLoadDataListArgs;
-    data := LoadDataList(dataLoaderArgs.Tab, dataLoaderArgs.SubType, dataLoaderArgs.PageID);
+    Data           := LoadDataList(dataLoaderArgs.Tab, dataLoaderArgs.SubType,
+        dataLoaderArgs.PageID);
 
-    Result.Tag := Ord(dataLoaderArgs.tab);
-    Result.Result := data.Result;
-    Result.Message := data.Message;
-    Result.Target := data;
+    Result.Tag     := Ord(dataLoaderArgs.tab);
+    Result.Result  := Data.Result;
+    Result.Message := Data.Message;
+    Result.Target  := Data;
 
     dataLoaderArgs.Free;
 end;
@@ -303,10 +307,10 @@ begin
 end;
 
 { Handle mouse down event of data grid  }
-procedure TMainForm.StringGridMouseDown(Sender: TObject;
-    Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TMainForm.StringGridMouseDown(Sender: TObject; Button: TMouseButton;
+    Shift: TShiftState; X, Y: integer);
 var
-    nACol, nARow: Integer;
+    nACol, nARow:     integer;
     stringGridSender: TStringGrid;
 begin
     stringGridSender := Sender as TStringGrid;
@@ -325,18 +329,20 @@ begin
 end;
 
 { Handle select cell event of data grid }
-procedure TMainForm.StringGridTodoSelectCell(Sender: TObject; aCol,
-    aRow: Integer; var CanSelect: Boolean);
+procedure TMainForm.StringGridTodoSelectCell(Sender: TObject;
+    aCol, aRow: integer; var CanSelect: boolean);
 begin
 end;
 
 { Hanlde sync procedure of timer }
 procedure TMainForm.TimerAutoSyncTimer(Sender: TObject);
-var i:Integer;
+var
+    i: integer;
 begin
     for i := 1 to High(TabGroup) do
     begin
-        if (Now - LastSyncTime[TabGroup[i]]) > ((2 * 60 * 1000) / ONEDAYMILLIONSECONDS) then
+        if (Now - LastSyncTime[TabGroup[i]]) > ((2 * 60 * 1000) /
+            ONEDAYMILLIONSECONDS) then
         begin
             LoadTabData(TabGroup[i], '', True);
             break;
@@ -348,7 +354,7 @@ end;
 procedure TMainForm.TimerLoadingAnimateStartTimer(Sender: TObject);
 begin
     StartLoadingTime := Now;
-    IsTabLoading := True;
+    IsTabLoading     := True;
     LabelLoadingProgressbar.Width := 0;
     LabelLoadingProgressbar.Visible := True;
 end;
@@ -356,21 +362,22 @@ end;
 { Handle event on animate timer stop }
 procedure TMainForm.TimerLoadingAnimateStopTimer(Sender: TObject);
 begin
-    AverageWaitingTime := 0.8 * AverageWaitingTime + 0.2 * (StopLoadingTime - StartLoadingTime);
+    AverageWaitingTime := 0.8 * AverageWaitingTime + 0.2 *
+        (StopLoadingTime - StartLoadingTime);
     LabelLoadingProgressbar.Visible := False;
 end;
 
 { run animate with timer }
 procedure TMainForm.TimerLoadingAnimateTimer(Sender: TObject);
 var
-    n : TDateTime;
-    d : Double;
-    w : Int64;
-    nd : Double;
+    n:  TDateTime;
+    d:  double;
+    w:  int64;
+    nd: double;
 begin
     n := Now;
     d := n - StartLoadingTime;
-    w := Trunc(Width * (d/AverageWaitingTime));
+    w := Trunc(Width * (d / AverageWaitingTime));
 
     if IsTabLoading then
     begin
@@ -378,8 +385,10 @@ begin
     end
     else
     begin
-        LabelLoadingProgressbar.Width := Min(Width, LabelLoadingProgressbar.Width + Trunc((Width - LabelLoadingProgressbar.Width) / 9));
-        nd := (n-StopLoadingTime);
+        LabelLoadingProgressbar.Width :=
+            Min(Width, LabelLoadingProgressbar.Width + Trunc(
+            (Width - LabelLoadingProgressbar.Width) / 9));
+        nd := (n - StopLoadingTime);
 
         if nd > (420 / ONEDAYMILLIONSECONDS) then
             LabelLoadingProgressbar.Width := Width;
@@ -401,28 +410,28 @@ end;
 procedure TMainForm.LoadTab(dataResult: TDataResult; tab: BrowseType);
 var
     Data, dataItem: TJSONObject;
-    dataList: TJSONArray;
-    dataRow:  TJSONData;
-    index, i:    integer;
-    track: TStringList;
-    stringGrid: TStringGrid;
+    dataList:       TJSONArray;
+    dataRow:        TJSONData;
+    index, i:       integer;
+    track:          TStringList;
+    stringGrid:     TStringGrid;
     noTrack, isNew: boolean;
-    id, title: string;
+    id, title:      string;
 begin
     if dataResult.Result then
     begin
-        Data     := dataResult.Data;
-        dataList := Data.Arrays[BrowseNames[tab]];
+        Data       := dataResult.Data;
+        dataList   := Data.Arrays[BrowseNames[tab]];
         stringGrid := StringGrids[tab];
-        isNew    := False;
+        isNew      := False;
 
-        track    := BrowseTrack[tab];
+        track := BrowseTrack[tab];
 
         if dataResult.FirstPage then
         begin
-           noTrack  := (track.indexOf('#') < 0);
-           if noTrack then
-              track.Add('#');
+            noTrack := (track.indexOf('#') < 0);
+            if noTrack then
+                track.Add('#');
         end;
 
         { clean all cells }
@@ -431,14 +440,15 @@ begin
         index := 0;
 
         { convert data }
-        for i:=0 to (dataList.Count-1) do
+        for i := 0 to (dataList.Count - 1) do
         begin
-            dataRow := dataList.Items[i];
+            dataRow  := dataList.Items[i];
             dataItem := TJSONObject(dataRow);
             index    := index + 1;
-            id := dataItem.Get('id', '');
-            title := dataItem.Get('name', '-');
-            if title = '-' then title := dataItem.Get('title', '-');
+            id       := dataItem.Get('id', '');
+            title    := dataItem.Get('name', '-');
+            if title = '-' then
+                title           := dataItem.Get('title', '-');
             stringGrid.RowCount := index;
             stringGrid.Cells[0, index - 1] := '#' + id;
             stringGrid.Cells[1, index - 1] := title;
@@ -468,7 +478,7 @@ begin
         end;
 
         LastSyncTime[tab] := Now;
-        BrowseTrack[tab] := track;
+        BrowseTrack[tab]  := track;
     end
     else
     begin
@@ -510,7 +520,7 @@ begin
             labelPagerNext := LabelPagerTaskNext;
             labelPagerLast := LabelPagerTaskLast;
         end;
-        else 
+        else
         begin
             Exit;
         end;
@@ -522,13 +532,14 @@ begin
     labelPagerLast.Visible := False;
 
     labelPagerPrev.Caption := rsPrevPage;
-    labelPagerNext.Caption := rsNextPage; 
+    labelPagerNext.Caption := rsNextPage;
 
     if pager.Total > 0 then
     begin
-        labelPagerInfo.Caption := Format(rsPagerInfoFormat, [Min(pager.Total, (
-            pager.PageID - 1) * pager.PerPage + 1), Min(pager.Total,
-            pager.PageID * pager.PerPage), pager.Total]);
+        labelPagerInfo.Caption :=
+            Format(rsPagerInfoFormat,
+            [Min(pager.Total, (pager.PageID - 1) * pager.PerPage + 1),
+            Min(pager.Total, pager.PageID * pager.PerPage), pager.Total]);
         labelPagerPrev.Visible := True;
         labelPagerInfo.Visible := True;
         labelPagerLast.Visible := True;
@@ -539,12 +550,12 @@ begin
         if pager.PageID = pager.PageTotal then
         begin
             labelPagerLast.Caption := rsFirstPage;
-            labelPagerLast.Hint := 'first';
+            labelPagerLast.Hint    := 'first';
         end
         else
         begin
             labelPagerLast.Caption := rsLastPage;
-            labelPagerLast.Hint := 'last';
+            labelPagerLast.Hint    := 'last';
         end;
     end
     else
@@ -558,28 +569,28 @@ end;
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     TrayIconMain.Visible := False;
-    
+
     // Destroy;
     Logout;
     try
-    begin
-        BrowseTrack[btTodo].Create;
-        BrowseTrack[btBug].Create;
-        BrowseTrack[btTask].Create;
-        BrowseTrack[btStory].Create;
-    end;
+        begin
+            BrowseTrack[btTodo].Create;
+            BrowseTrack[btBug].Create;
+            BrowseTrack[btTask].Create;
+            BrowseTrack[btStory].Create;
+        end;
     finally
     end;
-    
+
     LoginForm.Close;
 end;
 
 { Handle event on form create }
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-    NotReady := True;
+    NotReady           := True;
     AverageWaitingTime := 2000 / ONEDAYMILLIONSECONDS; // 2 seconds
-    MainFormWindow := MainForm;
+    MainFormWindow     := MainForm;
 
     Caption := rsAppName + ' ' + GetBuildVersion('%d.%d');
 end;
@@ -587,10 +598,10 @@ end;
 { Init tab menu }
 procedure TMainForm.InitTabMenu();
 begin
-    TabGroup[1] := btTodo;
-    BrowseTrack[btTodo] := TStringList.Create;
-    BrowseTrack[btBug] := TStringList.Create;
-    BrowseTrack[btTask] := TStringList.Create;
+    TabGroup[1]          := btTodo;
+    BrowseTrack[btTodo]  := TStringList.Create;
+    BrowseTrack[btBug]   := TStringList.Create;
+    BrowseTrack[btTask]  := TStringList.Create;
     BrowseTrack[btStory] := TStringList.Create;
 
     if (user.Role = 'qa') or (user.Role = 'qd') then
@@ -620,19 +631,19 @@ begin
 
     IsTabLoading := False;
 
-    StringGrids[btTask] := StringGridTask;
-    StringGrids[btTodo] := StringGridTodo;
+    StringGrids[btTask]  := StringGridTask;
+    StringGrids[btTodo]  := StringGridTodo;
     StringGrids[btStory] := StringGridStory;
-    StringGrids[btBug] := StringGridBug;
+    StringGrids[btBug]   := StringGridBug;
 end;
 
 { Init sub menu }
 procedure TMainForm.InitSubMenu();
 begin
-    ActiveSubMenu[btTask] := assignedTo;
+    ActiveSubMenu[btTask]  := assignedTo;
     ActiveSubMenu[btStory] := assignedTo;
-    ActiveSubMenu[btTodo] := today;
-    ActiveSubMenu[btBug] := assignedTo;
+    ActiveSubMenu[btTodo]  := today;
+    ActiveSubMenu[btBug]   := assignedTo;
 end;
 
 { Handle event on form show }
@@ -674,11 +685,11 @@ end;
 { Handle click event of lable: changed tab and load it }
 procedure TMainForm.LabelMenuClick(Sender: TObject);
 var
-    labelSender : TLabel;
-    tab         : BrowseType;
-    menuParent  : TPanel;
-    subMenu     : BrowseSubType;
-    i           : integer;
+    labelSender: TLabel;
+    tab:         BrowseType;
+    menuParent:  TPanel;
+    subMenu:     BrowseSubType;
+    i:           integer;
 begin
     labelSender := Sender as TLabel;
     menuParent  := labelSender.Parent as TPanel;
@@ -701,7 +712,7 @@ begin
         end;
         labelSender.Font.Color := 13392660;
     end;
-    
+
     LoadTabData(tab);
 end;
 
@@ -715,7 +726,7 @@ end;
 { Handle mouse enter event of lable: changed style }
 procedure TMainForm.LabelMenuIconMouseEnter(Sender: TObject);
 begin
-    LabelMenuIcon.Color := 16547890;
+    LabelMenuIcon.Color        := 16547890;
     ShapeMenuIcon1.Brush.Color := clWhite;
     ShapeMenuIcon2.Brush.Color := clWhite;
     ShapeMenuIcon3.Brush.Color := clWhite;
@@ -724,7 +735,7 @@ end;
 { Handle mouse leave event of lable: changed style }
 procedure TMainForm.LabelMenuIconMouseLeave(Sender: TObject);
 begin
-    LabelMenuIcon.Color := $00CC5B14;
+    LabelMenuIcon.Color        := $00CC5B14;
     ShapeMenuIcon1.Brush.Color := clSilver;
     ShapeMenuIcon2.Brush.Color := clSilver;
     ShapeMenuIcon3.Brush.Color := clSilver;
@@ -733,13 +744,13 @@ end;
 { Handle mouse enter event of lable: changed style }
 procedure TMainForm.LabelMenuMouseEnter(Sender: TObject);
 var
-    labelSender : TLabel;
-    tab         : BrowseType;
-    menuParent  : TPanel;
+    labelSender: TLabel;
+    tab:         BrowseType;
+    menuParent:  TPanel;
 begin
-    labelSender       := Sender as TLabel;
-    menuParent        := labelSender.Parent as TPanel;
-    tab               := BrowseTypes[menuParent.Tag];
+    labelSender := Sender as TLabel;
+    menuParent  := labelSender.Parent as TPanel;
+    tab         := BrowseTypes[menuParent.Tag];
     if BrowseSubTypes[labelSender.Tag] <> ActiveSubMenu[tab] then
     begin
         labelSender.Font.Color := $00141414;
@@ -750,12 +761,12 @@ end;
 procedure TMainForm.LabelMenuMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
-    tab         : BrowseType;
-    menuParent  : TPanel;
+    tab:         BrowseType;
+    menuParent:  TPanel;
 begin
-    labelSender       := Sender as TLabel;
-    menuParent        := labelSender.Parent as TPanel;
-    tab               := BrowseTypes[menuParent.Tag];
+    labelSender := Sender as TLabel;
+    menuParent  := labelSender.Parent as TPanel;
+    tab         := BrowseTypes[menuParent.Tag];
     if BrowseSubTypes[labelSender.Tag] <> ActiveSubMenu[tab] then
     begin
         labelSender.Font.Color := $005D5D5D;
@@ -772,10 +783,10 @@ end;
 procedure TMainForm.LabelPagerBtnClick(Sender: TObject);
 var
     labelSender: TLabel;
-    tab        : BrowseType;
+    tab:         BrowseType;
 begin
-    labelSender       := Sender as TLabel;
-    tab := BrowseTypes[(labelSender.Parent as TPanel).Tag];
+    labelSender := Sender as TLabel;
+    tab         := BrowseTypes[(labelSender.Parent as TPanel).Tag];
     LoadTabData(tab, labelSender.Hint);
 end;
 
@@ -784,7 +795,7 @@ procedure TMainForm.LabelPagerPrevMouseEnter(Sender: TObject);
 var
     labelSender: TLabel;
 begin
-    labelSender       := Sender as TLabel;
+    labelSender := Sender as TLabel;
     labelSender.Font.Color := $00CC5B14;
 
 end;
@@ -794,14 +805,15 @@ procedure TMainForm.LabelPagerPrevMouseLeave(Sender: TObject);
 var
     labelSender: TLabel;
 begin
-    labelSender       := Sender as TLabel;
+    labelSender := Sender as TLabel;
     labelSender.Font.Color := $00FC8032;
 
 end;
 
 { Change language }
 procedure TMainForm.MenuItemLangClick(Sender: TObject);
-var senderMenuItem: TMenuItem;
+var
+    senderMenuItem: TMenuItem;
 begin
     senderMenuItem := Sender as TMenuItem;
     SelectLanguage(senderMenuItem.Hint);
@@ -909,9 +921,9 @@ begin
     LabelTab3.Font.Color := clWhite;
 
     { changed current tab color }
-    tabLabel.Color := 16380651;
+    tabLabel.Color      := 16380651;
     tabLabel.Font.Color := 13392660;
-    CurrentTab := tab;
+    CurrentTab          := tab;
 
     { hide other panel }
     PanelNavTodo.Visible  := False;
@@ -994,53 +1006,53 @@ procedure TMainForm.ShowMessage(Message: string; msgType: string = 'danger');
 begin
     LabelMessage.Caption := Message;
     PanelMessage.Visible := True;
-    PanelMessage.Top := 40;
+    PanelMessage.Top     := 40;
 
     case Lowercase(msgType) of
         'success':
         begin
-            PanelMessage.Color := $00E6FFE5;
+            PanelMessage.Color      := $00E6FFE5;
             PanelMessage.Font.Color := $00249F23;
         end;
         'danger':
         begin
-            PanelMessage.Color := $00e5E6ff;
+            PanelMessage.Color      := $00e5E6ff;
             PanelMessage.Font.Color := $002D32D2;
         end;
         'warning':
         begin
-            PanelMessage.Color := $00E5F4FF;
+            PanelMessage.Color      := $00E5F4FF;
             PanelMessage.Font.Color := $000086E4;
         end;
         'info':
         begin
-            PanelMessage.Color := $00FFF9E5;
+            PanelMessage.Color      := $00FFF9E5;
             PanelMessage.Font.Color := $00D7B339;
         end;
         'important':
         begin
-            PanelMessage.Color := $00E5F3FF;
+            PanelMessage.Color      := $00E5F3FF;
             PanelMessage.Font.Color := $001C5181;
         end;
         'special':
         begin
-            PanelMessage.Color := $00FFE5F7;
+            PanelMessage.Color      := $00FFE5F7;
             PanelMessage.Font.Color := $00A15789;
         end;
-        else 
+        else
         begin
-            PanelMessage.Color := $00F1F1F1;
+            PanelMessage.Color      := $00F1F1F1;
             PanelMessage.Font.Color := $00333333;
         end;
     end;
 
-    Memo1.Top := 0;
-    Memo1.Visible := True;
-    Memo1.Lines.Text    := Memo1.Lines.Text + Message + LineEnding;
+    Memo1.Top        := 0;
+    Memo1.Visible    := True;
+    Memo1.Lines.Text := Memo1.Lines.Text + Message + LineEnding;
 end;
 
 { Update translation }
-procedure TMainForm.UpdateTranslation(ALang: String);
+procedure TMainForm.UpdateTranslation(ALang: string);
 begin
     inherited;
 
@@ -1058,7 +1070,7 @@ begin
     case ALang of
         'zh_cn': MenuItem5.Checked := True;
         'zh_tw': MenuItem6.Checked := True;
-        'en': MenuItem7.Checked := True;
+        'en': MenuItem7.Checked    := True;
     end;
 
     user.Lang := ALang;

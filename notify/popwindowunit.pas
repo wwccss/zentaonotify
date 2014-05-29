@@ -17,12 +17,12 @@ type
     { TPopWindow }
 
     TPopWindow = class(TLocalizedForm)
-        Label1: TLabel;
-        Panel1: TPanel;
-        Panel2: TPanel;
+        Label1:       TLabel;
+        Panel1:       TPanel;
+        Panel2:       TPanel;
         SpeedButton1: TSpeedButton;
         StringGridDataList: TStringGrid;
-        Timer1: TTimer;
+        Timer1:       TTimer;
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
         procedure Label1lClick(Sender: TObject);
@@ -43,7 +43,7 @@ type
 
 var
     PopWindow: TPopWindow;
-    PopTop: Integer;
+    PopTop:    integer;
     StartTime: TDateTime;
 
 implementation
@@ -56,12 +56,13 @@ implementation
 procedure TPopWindow.ShowDataList();
 var
     Data, dataItem: TJSONObject;
-    dataList: TJSONArray;
-    dataRow:  TJSONData;
-    index,i:    integer;
-    title:    string;
+    dataList:       TJSONArray;
+    dataRow:        TJSONData;
+    index, i:       integer;
+    title:          string;
 begin
-    if PopWindowData = nil then Exit;
+    if PopWindowData = nil then
+        Exit;
 
     if PopWindowData.Result then
     begin
@@ -74,39 +75,42 @@ begin
         index := 0;
 
         (* convert data *)
-        for i:=0 to (dataList.Count-1) do
+        for i := 0 to (dataList.Count - 1) do
         begin
-            dataRow := dataList.Items[i];
+            dataRow  := dataList.Items[i];
             dataItem := TJSONObject(dataRow);
             if not dataItem.Get('new', False) then
                 continue;
 
-            index    := index + 1;
+            index := index + 1;
 
-            if index > 6 then break;
+            if index > 6 then
+                break;
             title := dataItem.Get('name', '-');
-            if title = '-' then title := dataItem.Get('title', '-');
+            if title = '-' then
+                title := dataItem.Get('title', '-');
 
             StringGridDataList.RowCount := index;
             StringGridDataList.Cells[0, index - 1] := '#' + dataItem.Get('id', '');
             StringGridDataList.Cells[1, index - 1] := title;
         end;
 
-        Caption := Format(rsPopWindowTitle, [BrowseNames[PopWindowData.Tab], index]);
+        Caption        := Format(rsPopWindowTitle, [BrowseNames[PopWindowData.Tab], index]);
         Label1.Caption := Caption;
-    end
+    end;
 end;
 
 { Handle event of data grid: view object with default browser }
 procedure TPopWindow.StringGridDataListClick(Sender: TObject);
 begin
-    ViewObject(PopWindowData.Tab, StringGridDataList.Cells[0, StringGridDataList.Selection.Bottom]);
+    ViewObject(PopWindowData.Tab, StringGridDataList.Cells[0,
+        StringGridDataList.Selection.Bottom]);
 end;
 
 { Handle event when animate timer start }
 procedure TPopWindow.Timer1StartTimer(Sender: TObject);
 begin
-    StartTime := Now;
+    StartTime       := Now;
     AlphaBlendValue := 255;
 end;
 
@@ -121,15 +125,16 @@ procedure TPopWindow.Timer1Timer(Sender: TObject);
 begin
     if PopTop > (Screen.PrimaryMonitor.WorkareaRect.bottom - Height) then
     begin
-        PopTop := Max(Screen.PrimaryMonitor.WorkareaRect.bottom - Height, PopTop - Trunc(Height/10));
-        Top := PopTop;
+        PopTop    := Max(Screen.PrimaryMonitor.WorkareaRect.bottom -
+            Height, PopTop - Trunc(Height / 10));
+        Top       := PopTop;
         StartTime := Now;
     end
     else
     begin
         if (Now - StartTime) > (6 / ONEDAYSECONDS) then
         begin
-            AlphaBlendValue := Min(0,AlphaBlendValue - 25);
+            AlphaBlendValue := Min(0, AlphaBlendValue - 25);
         end;
 
         if AlphaBlendValue = 0 then
@@ -149,8 +154,8 @@ end;
 procedure TPopWindow.FormShow(Sender: TObject);
 begin
     ShowDataList;
-    PopTop := Screen.PrimaryMonitor.Height;
-    Left := Screen.PrimaryMonitor.WorkareaRect.right - Width;
+    PopTop         := Screen.PrimaryMonitor.Height;
+    Left           := Screen.PrimaryMonitor.WorkareaRect.right - Width;
     Timer1.Enabled := True;
 end;
 
@@ -189,4 +194,3 @@ begin
 end;
 
 end.
-
