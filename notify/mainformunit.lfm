@@ -1,8 +1,9 @@
 inherited MainForm: TMainForm
-  Left = 2077
+  Left = 2180
   Height = 680
-  Top = 198
+  Top = 196
   Width = 350
+  BorderStyle = bsToolWindow
   ClientHeight = 680
   ClientWidth = 350
   Constraints.MaxHeight = 870
@@ -4321,6 +4322,7 @@ inherited MainForm: TMainForm
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
+  OnWindowStateChange = FormWindowStateChange
   Position = poScreenCenter
   ShowInTaskBar = stAlways
   object PanelMenu: TPanel[0]

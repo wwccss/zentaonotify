@@ -16,7 +16,7 @@ uses {$ifdef unix}
     PopWindowUnit,
     AboutUnit,
     localizedforms,
-    StringsUnit;
+    StringsUnit, CloseConfirmFormUnit;
 
 {$R *.res}
 
@@ -27,5 +27,6 @@ begin
     Application.CreateForm(TMainForm, MainForm);
     Application.CreateForm(TPopWindow, PopWindow);
     Application.CreateForm(TAboutForm, AboutForm);
+    Application.CreateForm(TCloseConfirmForm, CloseConfirmForm);
     Application.Run;
 end.

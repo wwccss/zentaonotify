@@ -1,0 +1,62 @@
+inherited CloseConfirmForm: TCloseConfirmForm
+  Left = 2053
+  Height = 164
+  Top = 441
+  Width = 265
+  Caption = '请选择'
+  ClientHeight = 164
+  ClientWidth = 265
+  Color = clWhite
+  Font.Height = -13
+  OnCreate = FormCreate
+  object RadioButton1: TRadioButton[0]
+    Tag = 1
+    Left = 40
+    Height = 23
+    Top = 48
+    Width = 74
+    Caption = '直接退出'
+    Checked = True
+    OnClick = RadioButton1Click
+    TabOrder = 2
+    TabStop = True
+  end
+  object RadioButton2: TRadioButton[1]
+    Tag = 2
+    Left = 40
+    Height = 23
+    Top = 80
+    Width = 61
+    Caption = '最小化'
+    OnClick = RadioButton1Click
+    TabOrder = 0
+  end
+  object Label1: TLabel[2]
+    Left = 24
+    Height = 19
+    Top = 16
+    Width = 104
+    Caption = '当点击关闭按钮时'
+    ParentColor = False
+  end
+  object CheckBox1: TCheckBox[3]
+    Left = 24
+    Height = 23
+    Top = 124
+    Width = 74
+    Caption = '不再询问'
+    Checked = True
+    State = cbChecked
+    TabOrder = 1
+  end
+  object Button1: TButton[4]
+    Left = 155
+    Height = 33
+    Top = 118
+    Width = 91
+    Caption = '确认'
+    Default = True
+    OnClick = Button1Click
+    TabOrder = 3
+  end
+end

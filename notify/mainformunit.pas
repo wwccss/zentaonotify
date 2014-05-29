@@ -17,6 +17,7 @@ uses
     LocalizedForms,
     Translations, DefaultTranslator,
     StringsUnit,
+    CloseConfirmFormUnit,
     BackgroundWorkerUnit;
 
 type
@@ -121,6 +122,7 @@ type
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormShow(Sender: TObject);
+        procedure FormWindowStateChange(Sender: TObject);
         procedure LabelBtnMouseLeave(Sender: TObject);
         procedure LabelBtnMouseEnter(Sender: TObject);
         procedure LabelMenuClick(Sender: TObject);
@@ -169,6 +171,7 @@ type
         procedure LoadAllTabsData();
         procedure ShowPager(pager: PageRecord; tab: BrowseType);
         procedure ChangeTab(tab: BrowseType; tabLabel: TLabel);
+        procedure ExitApp();
 
     protected
         procedure UpdateTranslation(ALang: string); override;
@@ -567,6 +570,33 @@ end;
 
 { Handle event before window form close }
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+var
+    closeOption: Integer;
+begin
+    if user.CloseOption <= 0 then
+    begin
+        CloseConfirmForm.Left := Left + Trunc((Width-CloseConfirmForm.Width)/2);
+        CloseConfirmForm.Top := Top;
+        CloseConfirmForm.ShowModal;
+        closeOption := CloseConfirmForm.ModalResult;
+    end
+    else
+    begin
+        closeOption := user.CloseOption;
+    end;
+
+    if closeOption = 2 then
+    begin
+        CloseAction := caMinimize;
+        WindowState := wsMinimized;
+        ShowInTaskBar := stNever;
+        Exit;
+    end;
+
+    ExitApp;
+end;
+
+procedure TMainForm.ExitApp();
 begin
     TrayIconMain.Visible := False;
 
@@ -662,6 +692,18 @@ begin
         TimerAutoSync.Enabled := True;
     end;
     TrayIconMain.Visible := True;
+end;
+
+procedure TMainForm.FormWindowStateChange(Sender: TObject);
+begin
+    if (WindowState <> wsMinimized) then
+    begin
+        ShowInTaskBar := stAlways;
+    end
+    else
+    begin
+        ShowInTaskBar := stNever;
+    end;
 end;
 
 { Handle mouse leave event of lable: changed style }
@@ -828,7 +870,7 @@ end;
 { Close window}
 procedure TMainForm.OnExit(Sender: TObject);
 begin
-    Close;
+    ExitApp;
 end;
 
 { Handle click event of label btn: logout }
@@ -980,7 +1022,8 @@ end;
 procedure TMainForm.MenuItemOpenClick(Sender: TObject);
 begin
     Show;
-    WindowState := wsNormal;
+    WindowState   := wsNormal;
+    ShowInTaskBar := stAlways;
 end;
 
 { Handle click event of menu item: reload current tab data }

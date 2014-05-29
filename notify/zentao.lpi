@@ -191,7 +191,7 @@
         <PackageName Value="LCL"/>
       </Item4>
     </RequiredPackages>
-    <Units Count="11">
+    <Units Count="12">
       <Unit0>
         <Filename Value="zentao.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -260,6 +260,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="StringsUnit"/>
       </Unit10>
+      <Unit11>
+        <Filename Value="closeconfirmformunit.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="CloseConfirmForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="CloseConfirmFormUnit"/>
+      </Unit11>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

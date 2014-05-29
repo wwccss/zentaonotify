@@ -80,7 +80,6 @@ msgid "请填写禅道地#229#157#227#130"
 msgstr "请填写禅道地"
 
 #: stringsunit.rsstory
-#, fuzzy
 #| msgid "需求"
 msgid "#233#156#230#177#130"
 msgstr "需求"
@@ -109,6 +108,30 @@ msgstr "访问禅道"
 #: taboutform.labelversion3.caption
 msgid "由禅道开源驱动"
 msgstr "由禅道开源驱动"
+
+#: tcloseconfirmform.button1.caption
+msgid "确认"
+msgstr "确认"
+
+#: tcloseconfirmform.caption
+msgid "请选择"
+msgstr "请选择"
+
+#: tcloseconfirmform.checkbox1.caption
+msgid "不再询问"
+msgstr "不再询问"
+
+#: tcloseconfirmform.label1.caption
+msgid "当点击关闭按钮时"
+msgstr "当点击关闭按钮时"
+
+#: tcloseconfirmform.radiobutton1.caption
+msgid "直接退出"
+msgstr "直接退出"
+
+#: tcloseconfirmform.radiobutton2.caption
+msgid "最小化"
+msgstr "最小化"
 
 #: tlocalizedform.caption
 msgid "LocalizedForm"
@@ -643,4 +666,3 @@ msgstr ""
 msgctxt "TPOPWINDOW.STRINGGRIDDATALIST.COLUMNS[1].TITLE.CAPTION"
 msgid "Title"
 msgstr ""
-

@@ -29,6 +29,7 @@ type
         AutoSignIn: boolean;
         RememberMe: boolean;
         Lang:       string;
+        CloseOption: Integer;
     end;
 
     { Handle result }
@@ -559,6 +560,7 @@ begin
         conf.FileName := CONFIG_FILE;
 
         lastLoginTime := conf.GetValue('/LastLoginTime', 0);
+        user.CloseOption:= conf.GetValue('/CloseOption', -1);
 
         if lastLoginTime > 0 then
         begin
@@ -594,6 +596,7 @@ begin
             conf.SetValue('/LastLoginTime', Now);
             conf.SetValue('/User/AutoSignIn', user.AutoSignIn);
             conf.SetValue('/User/Lang', user.Lang);
+            conf.SetValue('/CloseOption', user.CloseOption);
         end
         else
         begin
@@ -604,6 +607,7 @@ begin
             conf.SetValue('/LastLoginTime', 0);
             conf.SetValue('/User/AutoSignIn', False);
             conf.SetValue('/User/Lang', '');
+            conf.SetValue('/CloseOption', -1);
         end;
 
         conf.Flush;
