@@ -1,12 +1,12 @@
 inherited LoginForm: TLoginForm
-  Left = 637
+  Left = 701
   Height = 555
   Top = 259
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  ClientHeight = 0
-  ClientWidth = 0
+  ClientHeight = 555
+  ClientWidth = 286
   Icon.Data = {
     962500000000010004002020000001002000A810000046000000181800000100
     200088090000EE1000001414000001002000B8060000761A0000101000000100
@@ -2375,7 +2375,6 @@ inherited LoginForm: TLoginForm
     OnExit = EditExit
     ParentFont = False
     TabOrder = 0
-    Text = 'ABCabc123中文'
   end
   object ShapeUsername: TShape[3]
     Left = 33
