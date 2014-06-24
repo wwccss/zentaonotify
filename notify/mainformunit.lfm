@@ -1,9 +1,9 @@
 inherited MainForm: TMainForm
-  Left = 2180
+  Left = 2191
   Height = 680
-  Top = 196
+  Top = 49
   Width = 350
-  BorderStyle = bsToolWindow
+  BorderIcons = [biSystemMenu, biMinimize]
   ClientHeight = 680
   ClientWidth = 350
   Constraints.MaxHeight = 870
@@ -5456,9 +5456,9 @@ inherited MainForm: TMainForm
     object LabelMessageClose: TLabel
       Cursor = crHandPoint
       Left = 299
-      Height = 17
+      Height = 20
       Top = 9
-      Width = 37
+      Width = 45
       Caption = '× 关闭'
       Font.Color = clGray
       ParentColor = False

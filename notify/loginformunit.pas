@@ -9,10 +9,11 @@ uses
     cthreads,
     cmem, // the c memory manager is on some systems much faster for multi-threading
     {$endif}
-    Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
+    Classes, SysUtils,
+    FileUtil,
+    Forms, Controls, Graphics, Dialogs, StdCtrls,
     ExtCtrls, Buttons,
     md5,
-    fpjson, jsonparser,
     LCLIntf, Menus,
     ZentaoAPIUnit,
     AboutUnit,
@@ -79,6 +80,7 @@ var
     LoginForm: TLoginForm;
     FirstShow: boolean;
     PassMd5:   string;
+    LoginWorker: TBackgroundWorker;
 
 implementation
 
@@ -136,7 +138,8 @@ begin
         if Copy(user.Url,0,7) <> 'http://' then
            user.Url := 'http://' + user.Url;
 
-        TBackgroundWorker.Create(@Logining, @LoginCompleted);
+        if Assigned(LoginWorker) then LoginWorker.Free;
+        LoginWorker := TBackgroundWorker.Create(@Logining, @LoginCompleted);
     end;
 end;
 
@@ -209,6 +212,8 @@ procedure TLoginForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     // save config changed
     SaveConfig;
+    if LoginWorker <> Nil then LoginWorker.Free;
+    DestroyZentaoAPI;
 end;
 
 { Be called by background work on login completed }
@@ -292,6 +297,7 @@ begin
 
         if user.AutoSignIn then
         begin
+            if Assigned(LoginWorker) then LoginWorker.Free;
             TBackgroundWorker.Create(@Logining, @LoginCompleted);
             CheckBoxAutoSignIn.Checked := True;
         end;

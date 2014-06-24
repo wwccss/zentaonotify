@@ -65,7 +65,7 @@ type
 
 { Function declarations }
 procedure InitZentaoAPI();
-procedure Destroy();
+procedure DestroyZentaoAPI();
 function GetAPI(const Params: array of const): string;
 function CheckVersion(): HandleResult;
 function GetConfig(): HandleResult;
@@ -82,12 +82,12 @@ function ViewObject(objType: BrowseType; id: string): boolean;
 procedure SaveConfig();
 function LoadConfig(): boolean;
 function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
+function HttpGet(url: string): string;
 
 var
     user:           UserConfig;
     zentaoConfig:   TJSONObject;
     session:        TJSONObject;
-    http:           TFPHTTPClient;
     BrowseName:     array[BrowseType] of string;
     BrowseNames:    array[BrowseType] of string;
     BrowseTypes:    array[0..3] of BrowseType;
@@ -129,7 +129,6 @@ var
     Data, pageData: TJSONObject;
     url:       string;
     pager:     PageRecord;
-    pageNum:   integer;
     firstPage: boolean;
 begin
     Result         := TDataResult.Create;
@@ -180,7 +179,7 @@ begin
     Result.Message := 'Loading: ' + url;
 
     try
-        response := http.Get(url);
+        response := HttpGet(url);
         try
             (* prepare data *)
             Data := TJSONObject(TJSONParser.Create(response).Parse);
@@ -194,10 +193,12 @@ begin
 
             response := Data.Get('data', '');
             if response <> '' then
+            begin
+                Data.Free;
                 Data := TJSONObject(TJSONParser.Create(response).Parse);
+            end;
 
             pageData := Data.Objects['pager'];
-
             pager.PageID := pageData.Get('pageID', 1);
             if pager.PageID = 1 then
                 pager.PageID := StrToInt(pageData.Get('pageID', '1'));
@@ -211,7 +212,7 @@ begin
             end;
             Result.Pager := pager;
             BrowsePagers[obj, objType] := pager;
-
+            pageData.Free;
 
             Result.Data := Data;
         except
@@ -231,7 +232,7 @@ var
 begin
     Result.Result := True;
     try
-        configStr := http.Get(user.Url + '/index.php?mode=getconfig');
+        configStr := HttpGet(user.Url + '/index.php?mode=getconfig');
         if Length(configStr) > 0 then
         begin
             zentaoConfig := TJSONObject(TJSONParser.Create(configStr).Parse);
@@ -301,26 +302,27 @@ begin
             Result   := Result + 'm=user&f=login&account=' + user.Account +
                 '&password=' + password + '&' + session.Get('sessionName', '') +
                 '=' + session.Get('sessionID', '') + '&t=json';
+            config.Free;
             Exit;
         end;
 
         Result := Result + 'm=' + moduleName + '&f=' + methodName;
 
+        nameSet := TStringList.Create;
+        nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
         if (moduleName = 'api') and (LowerCase(methodName) = 'getmodel') then
         begin
             Result  := Result + '&moduleName=' + config.Get('moduleName', '') +
                 '&methodName=' + config.Get('methodName', '') + '&params=';
-            nameSet := TStringList.Create;
-            nameSet.CommaText :=
-                ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
+                
             // for item in config do
             // begin
             //     if (nameSet.indexOf(item.Key) > 0) then
             //         continue;
             //     Result := Result + item.Key + '=' + item.Value.AsString + '&';
             // end;
-            nameSet.Free;
         end;
+        nameSet.Free;
 
         if moduleName = 'my' then
             Result := Result + '&type=' + config.Get('type', '');
@@ -359,6 +361,7 @@ begin
             Result   := Result + 'user-login.json?account=' +
                 user.Account + '&password=' + password + '&' +
                 session.Get('sessionName', 'sid') + '=' + session.Get('sessionID', '');
+            config.Free;
             Exit;
         end;
 
@@ -373,21 +376,21 @@ begin
         if moduleName = 'my' then
             Result := Result + config.Get('type', '') + '-';
 
+        nameSet           := TStringList.Create;
+        nameSet.CommaText :=
+            ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
         for i := 0 to (config.Count - 1) do
         begin
             item := config.items[i];
             key  := config.Names[i];
 
-            nameSet           := TStringList.Create;
-            nameSet.CommaText :=
-                ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
             if (nameSet.indexOf(key) > 0) then
                 continue;
             if (methodName <> 'view') or (key <> 'id') then
                 Result := Result + key + '=';
             Result     := Result + item.AsString + '-';
-            nameSet.Free;
         end;
+        nameSet.Free;
 
         pageID := config.Get('pageID', '');
         if pageID <> '' then
@@ -415,6 +418,7 @@ begin
                 '=' + session.Get('sessionID', '');
         end;
     end;
+    config.Free;
 end;
 
 (* Get session *)
@@ -424,13 +428,15 @@ var
 begin
     Result.Result := True;
     try
-        sessionStr := http.Get(GetAPI(['module', 'api', 'method', 'getSessionID']));
+        sessionStr := HttpGet(GetAPI(['module', 'api', 'method', 'getSessionID']));
         if Length(sessionStr) > 0 then
         begin
+            if Assigned(session) then session.Free;
             session := TJSONObject(TJSONParser.Create(sessionStr).Parse);
             if session.Get('status', '') = 'success' then
             begin
                 sessionStr := session.Get('data', '');
+                session.Free;
                 session    := TJSONObject(TJSONParser.Create(sessionStr).Parse);
             end
             else
@@ -454,7 +460,7 @@ var
 begin
     Result.Result := True;
     try
-        response := http.Get(GetAPI(['module', 'user', 'method', 'login']));
+        response := HttpGet(GetAPI(['module', 'user', 'method', 'login']));
         if Length(response) > 0 then
         begin
             status := TJSONObject(TJSONParser.Create(response).Parse);
@@ -462,6 +468,7 @@ begin
             begin
                 Result.Result := False;
             end;
+            status.Free;
         end
         else
             Result.Result := False;
@@ -476,11 +483,11 @@ end;
 function GetRole(): HandleResult;
 var
     response: string;
-    role:     TJSONObject;
+    role, roleValue:     TJSONObject;
 begin
     Result.Result := True;
     try
-        response := http.Get(GetAPI(['module', 'api', 'method', 'getmodel',
+        response := HttpGet(GetAPI(['module', 'api', 'method', 'getmodel',
             'moduleName', 'user', 'methodName', 'getById', 'account', user.Account]));
         if Length(response) > 0 then
         begin
@@ -491,9 +498,11 @@ begin
             end
             else
             begin
-                role      := TJSONObject(TJSONParser.Create(role.Get('data', '')).Parse);
-                user.Role := role.Get('role', '');
+                roleValue      := TJSONObject(TJSONParser.Create(role.Get('data', '')).Parse);
+                user.Role := roleValue.Get('role', '');
+                roleValue.Free;
             end;
+            role.Free;
         end
         else
             Result.Result := False;
@@ -515,7 +524,7 @@ begin
     url := GetAPI(['module', 'user', 'method', 'logout']);
 
     try
-        response := http.Get(url);
+        response := HttpGet(url);
     except
         Result.Message := '注销时发生了错误。 Url: ' + url + '||' + response;
     end;
@@ -524,6 +533,7 @@ end;
 (* Try login in *)
 function TryLogin(): HandleResult;
 begin
+    if Assigned(session) then session.Free;
     session := TJSONObject.Create(['undefined', True]);
 
     Result := GetConfig();
@@ -616,12 +626,21 @@ begin
     end;
 end;
 
+function HttpGet(url: string): string;
+begin
+    With TFPHttpClient.Create(Nil) do
+    try
+      Result := Get(url);
+    finally
+      Free;
+    end;
+end;
+
 { Init zentao API }
 procedure InitZentaoAPI();
 begin
+    if Assigned(session) then session.Free;
     session := TJSONObject.Create(['undefined', True]);
-
-    http := TFPHTTPClient.Create(nil);
 
     (* init browsename *)
     BrowseName[btTodo]  := 'todo';
@@ -663,9 +682,11 @@ begin
 end;
 
 { Destory resources }
-procedure Destroy();
+procedure DestroyZentaoAPI();
 begin
-    http.Free;
+    zentaoConfig.Free;
+    session.Free;
+    PopWindowData.Free;
 end;
 
 { Get max one between two intergers }
@@ -703,7 +724,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 0, 0, 1]);
+        Result := Format(formatStr, [2, 1, 0, 1]);
     end;
     // todo: get the real version info with os api.
 

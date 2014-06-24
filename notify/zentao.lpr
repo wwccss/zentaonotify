@@ -2,10 +2,11 @@ program zentao;
 
 {$mode objfpc}{$H+}
 
-uses {$ifdef unix}
+uses
+    {$ifdef unix}
     cthreads,
     cmem, // the c memory manager is on some systems much faster for multi-threading
- {$endif}
+    {$endif}
     Interfaces, // this includes the LCL widgetset
     Forms,
     runtimetypeinfocontrols,

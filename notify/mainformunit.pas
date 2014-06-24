@@ -15,7 +15,7 @@ uses
     PopWindowUnit,
     AboutUnit,
     LocalizedForms,
-    Translations, DefaultTranslator,
+    DefaultTranslator,
     StringsUnit,
     CloseConfirmFormUnit,
     BackgroundWorkerUnit;
@@ -188,7 +188,7 @@ type
     end;
 
 const
-    TryLoadTabInterval = 5.0 / (24 * 60);
+    TryLoadTabInterval = 9.0 / (24 * 60);
 
 var
     MainForm:           TMainForm;
@@ -203,6 +203,7 @@ var
     IsTabLoading:       boolean;
     AverageWaitingTime: double; // days
     StartLoadingTime, StopLoadingTime: TDateTime;
+    LastLoaderThread:   TBackgroundWorker;
 
 implementation
 
@@ -235,9 +236,10 @@ end;
 procedure TMainForm.LoadTabData(tabName: BrowseType; pageID: string = '';
     mute: boolean = False);
 var
-    dataLoader:     TBackgroundWorker;
     dataLoaderArgs: TLoadDataListArgs;
 begin
+    HideMessage;
+
     if NotReady then
     begin
         if (not mute) then
@@ -259,8 +261,13 @@ begin
     IsTabLoading := True;
     TimerLoadingAnimate.Enabled := True;
 
-    dataLoader := TBackgroundWorker.Create(@LoadingTabData, @LoadTabDataCompleted, True);
-    dataLoader.RunWorkerAsync(dataLoaderArgs);
+    // if Assigned(LastLoaderThread) then
+    // begin
+    //     LastLoaderThread.Free;
+    //     LastLoaderThread := Nil;
+    // end;
+    LastLoaderThread := TBackgroundWorker.Create(@LoadingTabData, @LoadTabDataCompleted, True);
+    LastLoaderThread.RunWorkerAsync(dataLoaderArgs);
 end;
 
 { Handle tab load completed }
@@ -287,8 +294,7 @@ var
     dataLoaderArgs: TLoadDataListArgs;
 begin
     dataLoaderArgs := arg as TLoadDataListArgs;
-    Data           := LoadDataList(dataLoaderArgs.Tab, dataLoaderArgs.SubType,
-        dataLoaderArgs.PageID);
+    Data           := LoadDataList(dataLoaderArgs.Tab, dataLoaderArgs.SubType, dataLoaderArgs.PageID);
 
     Result.Tag     := Ord(dataLoaderArgs.tab);
     Result.Result  := Data.Result;
@@ -571,12 +577,12 @@ end;
 { Handle event before window form close }
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 var
-    closeOption: Integer;
+    closeOption: integer;
 begin
     if user.CloseOption <= 0 then
     begin
-        CloseConfirmForm.Left := Left + Trunc((Width-CloseConfirmForm.Width)/2);
-        CloseConfirmForm.Top := Top;
+        CloseConfirmForm.Left := Left + Trunc((Width - CloseConfirmForm.Width) / 2);
+        CloseConfirmForm.Top  := Top;
         CloseConfirmForm.ShowModal;
         closeOption := CloseConfirmForm.ModalResult;
     end
@@ -587,8 +593,8 @@ begin
 
     if closeOption = 2 then
     begin
-        CloseAction := caMinimize;
-        WindowState := wsMinimized;
+        CloseAction   := caMinimize;
+        WindowState   := wsMinimized;
         ShowInTaskBar := stNever;
         Exit;
     end;
@@ -604,10 +610,10 @@ begin
     Logout;
     try
         begin
-            BrowseTrack[btTodo].Create;
-            BrowseTrack[btBug].Create;
-            BrowseTrack[btTask].Create;
-            BrowseTrack[btStory].Create;
+            BrowseTrack[btTodo].Free;
+            BrowseTrack[btBug].Free;
+            BrowseTrack[btTask].Free;
+            BrowseTrack[btStory].Free;
         end;
     finally
     end;

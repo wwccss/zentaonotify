@@ -1,7 +1,7 @@
 inherited LoginForm: TLoginForm
-  Left = 701
+  Left = 2576
   Height = 555
-  Top = 259
+  Top = 174
   Width = 286
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -2375,6 +2375,7 @@ inherited LoginForm: TLoginForm
     OnExit = EditExit
     ParentFont = False
     TabOrder = 0
+    Text = '33434343'
   end
   object ShapeUsername: TShape[3]
     Left = 33
@@ -2479,10 +2480,10 @@ inherited LoginForm: TLoginForm
   end
   object LabelBtnLanguage: TLabel[10]
     Cursor = crHandPoint
-    Left = 207
-    Height = 17
+    Left = 190
+    Height = 20
     Top = 8
-    Width = 73
+    Width = 90
     Alignment = taRightJustify
     Anchors = [akTop, akRight]
     Caption = 'Language ▼'
@@ -2495,10 +2496,10 @@ inherited LoginForm: TLoginForm
   end
   object LabelBtnAbout: TLabel[11]
     Cursor = crHandPoint
-    Left = 172
-    Height = 17
+    Left = 166
+    Height = 20
     Top = 8
-    Width = 24
+    Width = 30
     Alignment = taRightJustify
     Anchors = [akTop, akRight]
     Caption = '关于'
@@ -2521,18 +2522,18 @@ inherited LoginForm: TLoginForm
     TabOrder = 4
     object CheckBoxRememberMe: TCheckBox
       Left = 36
-      Height = 21
+      Height = 24
       Top = 0
-      Width = 70
+      Width = 84
       Caption = '保存密码'
       OnChange = CheckBoxRememberMeChange
       TabOrder = 0
     end
     object CheckBoxAutoSignIn: TCheckBox
       Left = 144
-      Height = 21
+      Height = 24
       Top = 0
-      Width = 70
+      Width = 84
       Caption = '自动登录'
       OnChange = CheckBoxAutoSignInChange
       TabOrder = 1

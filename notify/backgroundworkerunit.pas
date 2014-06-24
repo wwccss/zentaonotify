@@ -114,23 +114,10 @@ procedure TBackgroundWorker.Execute;
 var
     r: TRunWorkerCompletedEventArgs;
 begin
-    ReportStatusEventArgs.Message := 'Execute begin!';
-    Synchronize(@OnReportStatus);
-
     if Assigned(DoWorkEventHandler) then
     begin
-        ReportStatusEventArgs.Message :=
-            'Assigned DoWorkEventHandler! DoWorkEventArgs.Message=';
-        Synchronize(@OnReportStatus);
-
         RunWorkerCompletedEventArgs := DoWorkEventHandler(DoWorkArgs);
-
-        ReportStatusEventArgs.Message := 'Completed DoWorkEventHandler!';
-        Synchronize(@OnReportStatus);
     end;
-
-    ReportStatusEventArgs.Message := 'Excute complted! RunWorkerCompletedEventArgs.';
-    Synchronize(@OnReportStatus);
 end;
 
 end.
