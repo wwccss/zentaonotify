@@ -1,8 +1,9 @@
 inherited CloseConfirmForm: TCloseConfirmForm
-  Left = 2053
+  Left = 1006
   Height = 164
-  Top = 441
+  Top = 423
   Width = 265
+  BorderStyle = bsDialog
   Caption = '请选择'
   ClientHeight = 164
   ClientWidth = 265
@@ -14,7 +15,7 @@ inherited CloseConfirmForm: TCloseConfirmForm
     Left = 40
     Height = 23
     Top = 48
-    Width = 74
+    Width = 76
     Caption = '直接退出'
     Checked = True
     OnClick = RadioButton1Click
@@ -26,7 +27,7 @@ inherited CloseConfirmForm: TCloseConfirmForm
     Left = 40
     Height = 23
     Top = 80
-    Width = 61
+    Width = 63
     Caption = '最小化'
     OnClick = RadioButton1Click
     TabOrder = 0
@@ -43,7 +44,7 @@ inherited CloseConfirmForm: TCloseConfirmForm
     Left = 24
     Height = 23
     Top = 124
-    Width = 74
+    Width = 76
     Caption = '不再询问'
     Checked = True
     State = cbChecked

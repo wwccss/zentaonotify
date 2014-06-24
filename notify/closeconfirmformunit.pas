@@ -60,7 +60,7 @@ end;
 
 procedure TCloseConfirmForm.FormCreate(Sender: TObject);
 begin
-    slectionValue := 0;
+    slectionValue := 1;
 end;
 
 end.

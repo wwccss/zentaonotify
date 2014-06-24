@@ -3,7 +3,7 @@ inherited AboutForm: TAboutForm
   Height = 280
   Top = 348
   Width = 500
-  BorderStyle = bsToolWindow
+  BorderStyle = bsDialog
   Caption = '关于禅道桌面提醒工具'
   ClientHeight = 280
   ClientWidth = 500
