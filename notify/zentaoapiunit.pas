@@ -765,7 +765,7 @@ function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 begin
     if formatStr = '%s' then
     begin
-        Result := 'beta';
+        Result := 'Release';
     end
     else
     begin
