@@ -149,7 +149,7 @@ type
         procedure MenuItemOpenClick(Sender: TObject);
         procedure MenuItemReloadTabClick(Sender: TObject);
         procedure MenuItemViewObjectClick(Sender: TObject);
-        procedure ShowMessage(Message: string; msgType: string = 'danger');
+        procedure DisplayMessage(Message: string; msgType: string = 'danger');
         procedure HideMessage();
         procedure LoadTabData(tabName: BrowseType; pageID: string = '';
             mute: boolean = False);
@@ -243,13 +243,13 @@ begin
     if NotReady then
     begin
         if (not mute) then
-            ShowMessage(rsNotReadyMessage);
+            DisplayMessage(rsNotReadyMessage);
         Exit;
     end;
 
     if IsTabLoading and (not mute) then
     begin
-        ShowMessage(rsIsBusy, 'warning');
+        DisplayMessage(rsIsBusy, 'warning');
         Exit;
     end;
 
@@ -261,11 +261,6 @@ begin
     IsTabLoading := True;
     TimerLoadingAnimate.Enabled := True;
 
-    // if Assigned(LastLoaderThread) then
-    // begin
-    //     LastLoaderThread.Free;
-    //     LastLoaderThread := Nil;
-    // end;
     LastLoaderThread := TBackgroundWorker.Create(@LoadingTabData, @LoadTabDataCompleted, True);
     LastLoaderThread.RunWorkerAsync(dataLoaderArgs);
 end;
@@ -491,7 +486,7 @@ begin
     end
     else
     begin
-        ShowMessage(dataResult.Message);
+        DisplayMessage(dataResult.Message);
     end;
 end;
 
@@ -607,9 +602,9 @@ begin
     TrayIconMain.Visible := False;
 
     // Destroy;
-    Logout;
     try
         begin
+            Logout;
             BrowseTrack[btTodo].Free;
             BrowseTrack[btBug].Free;
             BrowseTrack[btTask].Free;
@@ -743,11 +738,6 @@ begin
     menuParent  := labelSender.Parent as TPanel;
     tab         := BrowseTypes[menuParent.Tag];
     subMenu     := BrowseSubTypes[labelSender.Tag];
-
-    if tab <> CurrentTab then
-    begin
-        // todo: changed tab
-    end;
 
     if ActiveSubMenu[tab] <> subMenu then
     begin
@@ -888,15 +878,15 @@ begin
 
     if r.Result then
     begin
-        LoginForm.Show;
-        LoginForm.WindowState := wsNormal;
-        MainForm.Hide;
         NotReady := True;
         TrayIconMain.Visible := False;
+        MainForm.Hide;
+        LoginForm.Show;
+        LoginForm.WindowState := wsNormal;
     end
     else
     begin
-        ShowMessage(r.Message, 'danger');
+        DisplayMessage(r.Message, 'danger');
     end;
 end;
 
@@ -1051,7 +1041,7 @@ begin
 end;
 
 { Show message }
-procedure TMainForm.ShowMessage(Message: string; msgType: string = 'danger');
+procedure TMainForm.DisplayMessage(Message: string; msgType: string = 'danger');
 begin
     LabelMessage.Caption := Message;
     PanelMessage.Visible := True;

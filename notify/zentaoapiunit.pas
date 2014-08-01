@@ -6,6 +6,7 @@ interface
 
 uses
     Classes, SysUtils,
+    Windows,
     md5,
     fphttpclient,
     LCLIntf,
@@ -83,6 +84,7 @@ procedure SaveConfig();
 function LoadConfig(): boolean;
 function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 function HttpGet(url: string): string;
+procedure DInfo(text: string);
 
 var
     user:           UserConfig;
@@ -102,6 +104,7 @@ const
     ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
     ONEDAYSECONDS        = 24 * 60 * 60;
     CONFIG_FILE          = 'config.json';
+    DEBUG_MODE           = 1;
 
 implementation
 
@@ -110,6 +113,20 @@ begin
     IsNew     := False;
     Result    := True;
     FirstPage := False;
+end;
+
+procedure DInfo(text: string);
+begin
+    if DEBUG_MODE > 0 then
+    begin
+        if not IsConsole then
+        begin
+            AllocConsole;
+            IsConsole := True; // in System unit
+            SysInitStdIO;      // in System unit
+        end;
+        writeln('> ' + text);
+    end;
 end;
 
 (* View object in browser *)
@@ -292,7 +309,6 @@ begin
     moduleName := config.Get('module', '');
     methodName := config.Get('method', '');
     requestType:= LowerCase(zentaoConfig.Get('requestType', ''));
-    requestType := 'get';
 
     if  requestType = 'get' then
     begin
@@ -462,6 +478,7 @@ var
     response: string;
     status:   TJSONObject;
 begin
+    DInfo('BEGIN: LoginCompleted');
     Result.Result := True;
     try
         response := HttpGet(GetAPI(['module', 'user', 'method', 'login']));
@@ -643,6 +660,7 @@ end;
 { Init zentao API }
 procedure InitZentaoAPI();
 begin
+    DInfo('BEGIN: InitZentaoAPI');
     if Assigned(session) then session.Free;
     session := TJSONObject.Create(['undefined', True]);
 
@@ -683,14 +701,20 @@ begin
     BrowseSubTypes[7] := closedBy;
     BrowseSubTypes[8] := finishedBy;
     BrowseSubTypes[9] := resolvedBy;
+
+    DInfo('END: InitZentaoAPI');
 end;
 
 { Destory resources }
 procedure DestroyZentaoAPI();
 begin
+    DInfo('BEGIN: DestroyZentaoAPI');
+
     zentaoConfig.Free;
     session.Free;
     PopWindowData.Free;
+
+    DInfo('END: DestroyZentaoAPI');
 end;
 
 { Get max one between two intergers }

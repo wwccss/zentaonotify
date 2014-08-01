@@ -1,5 +1,5 @@
 inherited AboutForm: TAboutForm
-  Left = 2243
+  Left = 1402
   Height = 280
   Top = 348
   Width = 500

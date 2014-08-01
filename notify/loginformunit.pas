@@ -11,7 +11,8 @@ uses
     {$endif}
     Classes, SysUtils,
     FileUtil,
-    Forms, Controls, Graphics, Dialogs, StdCtrls,
+    Dialogs,
+    Forms, Controls, Graphics, StdCtrls,
     ExtCtrls, Buttons,
     md5,
     LCLIntf, Menus,
@@ -138,7 +139,12 @@ begin
         if Copy(user.Url,0,7) <> 'http://' then
            user.Url := 'http://' + user.Url;
 
-        if Assigned(LoginWorker) then LoginWorker.Free;
+        if Assigned(LoginWorker) then
+        begin
+            ShowMessage('FREE 11111');
+            LoginWorker.Free;
+            ShowMessage('FREE 22222');
+        end;
         LoginWorker := TBackgroundWorker.Create(@Logining, @LoginCompleted);
     end;
 end;
@@ -212,7 +218,6 @@ procedure TLoginForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
     // save config changed
     SaveConfig;
-    if LoginWorker <> Nil then LoginWorker.Free;
     DestroyZentaoAPI;
 end;
 
@@ -221,6 +226,8 @@ procedure TLoginForm.LoginCompleted(e: TRunWorkerCompletedEventArgs);
 var
     r: HandleResult;
 begin
+    DInfo('BEGIN: LoginCompleted');
+    
     BitBtnLogin.Caption := rsLogin;
     BitBtnLogin.Enabled := True;
 
@@ -237,6 +244,8 @@ begin
         LoginForm.Hide;
         MainForm.Show;
     end;
+
+    DInfo('END: LoginCompleted');
 end;
 
 { Be called by background work on running }
@@ -245,6 +254,7 @@ var
     r: HandleResult;
 begin
     r := TryLogin;
+    ShowMessage('Logined!' + r.Message);
     Result.Result := r.Result;
     Result.Message := r.Message;
 end;

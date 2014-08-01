@@ -160,10 +160,6 @@ msgctxt "tloginform.editaddress.hint"
 msgid "禅道地址 (http://zentao.net)"
 msgstr "禅道地址 (http://zentao.net)"
 
-#: tloginform.editaddress.text
-msgid "123abcABC 中文"
-msgstr ""
-
 #: tloginform.editpassword.hint
 msgctxt "TLOGINFORM.EDITPASSWORD.HINT"
 msgid "密码"
@@ -182,10 +178,6 @@ msgstr "关于"
 #: tloginform.labelbtnlanguage.caption
 msgid "Language ▼"
 msgstr ""
-
-#: tloginform.labelresult.caption
-msgid "请填写禅道地址"
-msgstr "请填写禅道地址"
 
 #: tloginform.labelresult1.caption
 msgid "www.zentao.net"
@@ -666,3 +658,4 @@ msgstr ""
 msgctxt "TPOPWINDOW.STRINGGRIDDATALIST.COLUMNS[1].TITLE.CAPTION"
 msgid "Title"
 msgstr ""
+

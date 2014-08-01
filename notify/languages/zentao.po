@@ -97,6 +97,30 @@ msgstr ""
 msgid "由禅道开源驱动"
 msgstr ""
 
+#: tcloseconfirmform.button1.caption
+msgid "确认"
+msgstr ""
+
+#: tcloseconfirmform.caption
+msgid "请选择"
+msgstr ""
+
+#: tcloseconfirmform.checkbox1.caption
+msgid "不再询问"
+msgstr ""
+
+#: tcloseconfirmform.label1.caption
+msgid "当点击关闭按钮时"
+msgstr ""
+
+#: tcloseconfirmform.radiobutton1.caption
+msgid "直接退出"
+msgstr ""
+
+#: tcloseconfirmform.radiobutton2.caption
+msgid "最小化"
+msgstr ""
+
 #: tlocalizedform.caption
 msgid "LocalizedForm"
 msgstr ""
@@ -124,10 +148,6 @@ msgctxt "tloginform.editaddress.hint"
 msgid "禅道地址 (http://zentao.net)"
 msgstr ""
 
-#: tloginform.editaddress.text
-msgid "123abcABC 中文"
-msgstr ""
-
 #: tloginform.editpassword.hint
 msgctxt "TLOGINFORM.EDITPASSWORD.HINT"
 msgid "密码"
@@ -145,10 +165,6 @@ msgstr ""
 
 #: tloginform.labelbtnlanguage.caption
 msgid "Language ▼"
-msgstr ""
-
-#: tloginform.labelresult.caption
-msgid "请填写禅道地址"
 msgstr ""
 
 #: tloginform.labelresult1.caption
