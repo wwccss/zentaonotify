@@ -6,7 +6,7 @@ interface
 
 uses
     Classes, SysUtils,
-    {$ifdef unix}
+    {$ifdef WINDOWS}
     Windows,
     {$endif}
     md5,
@@ -122,7 +122,7 @@ procedure DInfo(textOrName: string; text: string = '`');
 begin
     if DEBUG_MODE > 0 then
     begin
-        {$ifdef unix}
+        {$ifdef WINDOWS}
         if not IsConsole then
         begin
             AllocConsole;
