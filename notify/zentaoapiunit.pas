@@ -281,7 +281,7 @@ end;
 function GetAPI(const Params: array of const): string;
 var
     config:  TJSONObject;
-    viewType, moduleName, methodName, password, pageID: string;
+    viewType, requestType, moduleName, methodName, password, pageID: string;
     item:    TJSONData;
     i:       integer;
     key:     string;
@@ -291,8 +291,10 @@ begin
     viewType   := config.Get('viewType', 'json');
     moduleName := config.Get('module', '');
     methodName := config.Get('method', '');
+    requestType:= LowerCase(zentaoConfig.Get('requestType', ''));
+    requestType := 'get';
 
-    if LowerCase(zentaoConfig.Get('requestType', '')) = 'get' then
+    if  requestType = 'get' then
     begin
         Result := user.Url + '/index.php?';
         if (moduleName = 'user') and (methodName = 'login') then
@@ -308,39 +310,41 @@ begin
 
         Result := Result + 'm=' + moduleName + '&f=' + methodName;
 
-        nameSet := TStringList.Create;
-        nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,';
         if (moduleName = 'api') and (LowerCase(methodName) = 'getmodel') then
         begin
             Result  := Result + '&moduleName=' + config.Get('moduleName', '') +
                 '&methodName=' + config.Get('methodName', '') + '&params=';
-                
-            // for item in config do
-            // begin
-            //     if (nameSet.indexOf(item.Key) > 0) then
-            //         continue;
-            //     Result := Result + item.Key + '=' + item.Value.AsString + '&';
-            // end;
+            nameSet := TStringList.Create;
+            nameSet.CommaText := ',viewType,module,method,moduleName,methodName,pageID,type,recTotal,recPerPage,id,';
+            for i := 0 to (config.Count - 1) do
+            begin
+                item := config.items[i];
+                key  := config.Names[i];
+                if (nameSet.indexOf(Key) > 0) then
+                    continue;
+                Result := Result + Key + '=' + item.AsString + '&';
+            end;
+            nameSet.Free;
         end;
-        nameSet.Free;
 
         if moduleName = 'my' then
             Result := Result + '&type=' + config.Get('type', '');
         if methodName = 'view' then
-            Result := Result + '&' + moduleName + 'ID=' + config.Get('ID', '');
+            Result := Result + '&' + moduleName + 'ID=' + config.Get('id', '');
 
         pageID := config.Get('pageID', '');
         if pageID <> '' then
         begin
             if methodName = 'todo' then
             begin
-                Result := Result +
-                    '&account=&status=all&orderBy=date_desc,status,begin&';
+                Result := Result + '&account=&status=all&orderBy=date_desc,status,begin&';
             end
             else
             begin
-                // Result := Result + '&orderBy=id_desc&recTotal=' + pager.recTotal + '&recPerPage=' + pager.recPerPage + '&pageID=' + pageID;
+                Result := Result + '&&orderBy=id_desc&';
             end;
+            
+            Result := Result + 'recTotal=' + config.Get('recTotal', '') + '&recPerPage=' + config.Get('recPerPage', '') + '&pageID=' + pageID;
         end;
 
         Result := Result + '&t=' + viewType;
@@ -449,7 +453,7 @@ begin
     end;
 
     if not Result.Result then
-        Result.Message := '无法获取Session。';
+        Result.Message := '无法获取Session。' + GetAPI(['module', 'api', 'method', 'getSessionID']);
 end;
 
 (* Login *)
