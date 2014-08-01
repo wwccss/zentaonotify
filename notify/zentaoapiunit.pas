@@ -84,7 +84,7 @@ procedure SaveConfig();
 function LoadConfig(): boolean;
 function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 function HttpGet(url: string): string;
-procedure DInfo(text: string);
+procedure DInfo(textOrName: string; text: string = '`');
 
 var
     user:           UserConfig;
@@ -104,7 +104,7 @@ const
     ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
     ONEDAYSECONDS        = 24 * 60 * 60;
     CONFIG_FILE          = 'config.json';
-    DEBUG_MODE           = 1;
+    DEBUG_MODE           = 0;
 
 implementation
 
@@ -115,7 +115,8 @@ begin
     FirstPage := False;
 end;
 
-procedure DInfo(text: string);
+{ Display debug info into console window. }
+procedure DInfo(textOrName: string; text: string = '`');
 begin
     if DEBUG_MODE > 0 then
     begin
@@ -125,6 +126,16 @@ begin
             IsConsole := True; // in System unit
             SysInitStdIO;      // in System unit
         end;
+
+        if text = '`' then
+        begin
+            text := textOrName;
+        end
+        else
+        begin
+            text := textOrName + ': ' + text;
+        end;
+
         writeln('> ' + text);
     end;
 end;
@@ -321,6 +332,7 @@ begin
                 '&password=' + password + '&' + session.Get('sessionName', '') +
                 '=' + session.Get('sessionID', '') + '&t=json';
             config.Free;
+            DInfo('GetAPI', Result);
             Exit;
         end;
 
@@ -382,6 +394,7 @@ begin
                 user.Account + '&password=' + password + '&' +
                 session.Get('sessionName', 'sid') + '=' + session.Get('sessionID', '');
             config.Free;
+            DInfo('GetAPI', Result);
             Exit;
         end;
 
@@ -439,6 +452,7 @@ begin
         end;
     end;
     config.Free;
+    DInfo('GetAPI', Result);
 end;
 
 (* Get session *)
@@ -478,7 +492,7 @@ var
     response: string;
     status:   TJSONObject;
 begin
-    DInfo('BEGIN: LoginCompleted');
+    DInfo('BEGIN: Login');
     Result.Result := True;
     try
         response := HttpGet(GetAPI(['module', 'user', 'method', 'login']));
@@ -498,6 +512,7 @@ begin
     end;
     if not Result.Result then
         Result.Message := '登录失败。请检查用户名和密码。';
+    DInfo('END: Login ||' + Result.Message);
 end;
 
 (* Get role *)
@@ -752,7 +767,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 1, 0, 1]);
+        Result := Format(formatStr, [2, 1, 1, 1]);
     end;
     // todo: get the real version info with os api.
 

@@ -139,12 +139,6 @@ begin
         if Copy(user.Url,0,7) <> 'http://' then
            user.Url := 'http://' + user.Url;
 
-        if Assigned(LoginWorker) then
-        begin
-            ShowMessage('FREE 11111');
-            LoginWorker.Free;
-            ShowMessage('FREE 22222');
-        end;
         LoginWorker := TBackgroundWorker.Create(@Logining, @LoginCompleted);
     end;
 end;
@@ -254,7 +248,6 @@ var
     r: HandleResult;
 begin
     r := TryLogin;
-    ShowMessage('Logined!' + r.Message);
     Result.Result := r.Result;
     Result.Message := r.Message;
 end;
@@ -307,7 +300,6 @@ begin
 
         if user.AutoSignIn then
         begin
-            if Assigned(LoginWorker) then LoginWorker.Free;
             TBackgroundWorker.Create(@Logining, @LoginCompleted);
             CheckBoxAutoSignIn.Checked := True;
         end;
