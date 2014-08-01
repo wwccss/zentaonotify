@@ -162,6 +162,7 @@ begin
     Result         := TDataResult.Create;
     Result.Tab     := obj;
     Result.SubType := objType;
+    DInfo('BEGIN: LoadDataList' + LineEnding);
 
     (* init page *)
     pager  := BrowsePagers[obj, objType];
@@ -204,7 +205,6 @@ begin
     url := GetAPI(['module', 'my', 'method', BrowseName[obj],
         'type', BrowseSubName[objType], 'pageID', pageID, 'recTotal',
         IntToStr(pager.Total), 'recPerPage', IntToStr(pager.PerPage)]);
-    Result.Message := 'Loading: ' + url;
 
     try
         response := HttpGet(url);
@@ -251,6 +251,8 @@ begin
         Result.Result  := False;
         Result.Message := '无法连接到服务器。';
     end;
+
+    DInfo('END: LoadDataList' + LineEnding );
 end;
 
 (* Get config *)
