@@ -14,7 +14,6 @@ uses
     ZentaoAPIUnit,
     MainFormUnit,
     SysUtils,
-    Windows,
     BackgroundWorkerUnit,
     PopWindowUnit,
     AboutUnit,

@@ -6,7 +6,9 @@ interface
 
 uses
     Classes, SysUtils,
+    {$ifdef unix}
     Windows,
+    {$endif}
     md5,
     fphttpclient,
     LCLIntf,
@@ -120,12 +122,14 @@ procedure DInfo(textOrName: string; text: string = '`');
 begin
     if DEBUG_MODE > 0 then
     begin
+        {$ifdef unix}
         if not IsConsole then
         begin
             AllocConsole;
             IsConsole := True; // in System unit
             SysInitStdIO;      // in System unit
         end;
+        {$endif}
 
         if text = '`' then
         begin
