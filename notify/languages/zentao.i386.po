@@ -10,6 +10,34 @@ msgctxt "stringsunit.rsbug"
 msgid "Bug"
 msgstr ""
 
+#: stringsunit.rserrorcannotconnect
+msgid "无法连接到服务器#227#130#232#175+"
+msgstr ""
+
+#: stringsunit.rserrorcannotconnectzentao
+msgid "无法获取禅道配置信息#227#130#232#175#183#230#163查禅道地#229#157#229#185#182#231#161#174#232#174#164#231#189#145+"
+msgstr ""
+
+#: stringsunit.rserrorcannotgetroleconfig
+msgid "获取角色信息失败#227#130#232+"
+msgstr ""
+
+#: stringsunit.rserrorcannotgetsession
+msgid "无法获取Session#227#130#232#175#183#231#161#174#228#191#157#229#189#147+"
+msgstr ""
+
+#: stringsunit.rserrordatareturned
+msgid "服务器返回的数据不正确#227#130#232#175#183#231#161#174#228#191#157#230#139#165+"
+msgstr ""
+
+#: stringsunit.rserrorloginfailed
+msgid "登录失败#227#130#232#175#183#230#163查用户名和密码#227#130"
+msgstr ""
+
+#: stringsunit.rserrorneednewerversion
+msgid "您当前版本是%s，请升级至%s以上版本"
+msgstr ""
+
 #: stringsunit.rsfirstpage
 msgid "首页"
 msgstr ""
@@ -211,6 +239,7 @@ msgid "今日"
 msgstr ""
 
 #: tmainform.labelmenu1.hint
+msgctxt "tmainform.labelmenu1.hint"
 msgid "today"
 msgstr ""
 
@@ -279,6 +308,33 @@ msgstr ""
 #: tmainform.labelmenu16.hint
 msgctxt "TMAINFORM.LABELMENU16.HINT"
 msgid "closedBy"
+msgstr ""
+
+#: tmainform.labelmenu17.caption
+msgid "更多帮助："
+msgstr ""
+
+#: tmainform.labelmenu17.hint
+msgctxt "TMAINFORM.LABELMENU17.HINT"
+msgid "today"
+msgstr ""
+
+#: tmainform.labelmenu18.caption
+msgid "权限分配"
+msgstr ""
+
+#: tmainform.labelmenu18.hint
+msgctxt "TMAINFORM.LABELMENU18.HINT"
+msgid "today"
+msgstr ""
+
+#: tmainform.labelmenu19.caption
+msgid "禅道API机制"
+msgstr ""
+
+#: tmainform.labelmenu19.hint
+msgctxt "TMAINFORM.LABELMENU19.HINT"
+msgid "today"
 msgstr ""
 
 #: tmainform.labelmenu2.caption
@@ -357,10 +413,6 @@ msgstr ""
 #: tmainform.labelmenuicon.hint
 msgctxt "TMAINFORM.LABELMENUICON.HINT"
 msgid "bug"
-msgstr ""
-
-#: tmainform.labelmessage.caption
-msgid ":)"
 msgstr ""
 
 #: tmainform.labelmessageclose.caption

@@ -13,6 +13,7 @@ uses
     fphttpclient,
     LCLIntf,
     jsonconf,
+    StringsUnit,
     Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons, ActnList,
     fpjson, jsonparser;
 
@@ -39,6 +40,7 @@ type
     HandleResult = record
         Result:  boolean;
         Message: string;
+        OnlineHelp: string;
         Sender:  TObject;
     end;
 
@@ -249,11 +251,11 @@ begin
             Result.Data := Data;
         except
             Result.Result  := False;
-            Result.Message := '服务器返回的数据不正确。 URL: ' + url;
+            Result.Message := rsErrorDataReturned;
         end;
     except
         Result.Result  := False;
-        Result.Message := '无法连接到服务器。';
+        Result.Message := rsErrorCannotConnect;
     end;
 
     DInfo('END: LoadDataList' + LineEnding );
@@ -277,7 +279,7 @@ begin
         Result.Result := False;
     end;
     if not Result.Result then
-        Result.Message := '无法获取禅道配置信息。';
+        Result.Message := rsErrorCannotConnectZentao;
 end;
 
 (* Check version *)
@@ -301,11 +303,11 @@ begin
 
     if isPro and (verNum <= 1.3) then
     begin
-        Result.Message := Format('您当前版本是%s，请升级至%s以上版本', [version, 'pro1.3']);
+        Result.Message := Format(rsErrorNeedNewerVersion, [version, 'pro1.3']);
     end
     else if not isPro and (verNum < 4) then
     begin
-        Result.Message := Format('您当前版本是%s，请升级至%s以上版本', [version, '4.0']);
+        Result.Message := Format(rsErrorNeedNewerVersion, [version, '4.0']);
     end
     else
         Result.Result := True;
@@ -489,7 +491,7 @@ begin
     end;
 
     if not Result.Result then
-        Result.Message := '无法获取Session。' + GetAPI(['module', 'api', 'method', 'getSessionID']);
+        Result.Message := rsErrorCannotGetSession;
 end;
 
 (* Login *)
@@ -517,7 +519,7 @@ begin
         Result.Result := False;
     end;
     if not Result.Result then
-        Result.Message := '登录失败。请检查用户名和密码。';
+        Result.Message := rsErrorLoginFailed;
     DInfo('END: Login ||' + Result.Message);
 end;
 
@@ -553,7 +555,7 @@ begin
     end;
 
     if not Result.Result then
-        Result.Message := '获取角色信息失败。';
+        Result.Message := rsErrorCannotGetRoleConfig;
 end;
 
 { Logout }
@@ -568,7 +570,7 @@ begin
     try
         response := HttpGet(url);
     except
-        Result.Message := '注销时发生了错误。 Url: ' + url + '||' + response;
+        Result.Message := 'Url: ' + url;
     end;
 end;
 
@@ -773,7 +775,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 1, 1, 1]);
+        Result := Format(formatStr, [2, 1, 2, 0]);
     end;
     // todo: get the real version info with os api.
 

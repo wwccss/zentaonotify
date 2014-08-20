@@ -2,11 +2,11 @@ inherited LoginForm: TLoginForm
   Left = 964
   Height = 555
   Top = 186
-  Width = 286
+  Width = 285
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 555
-  ClientWidth = 286
+  ClientWidth = 285
   Icon.Data = {
     962500000000010004002020000001002000A810000046000000181800000100
     200088090000EE1000001414000001002000B8060000761A0000101000000100
@@ -318,7 +318,7 @@ inherited LoginForm: TLoginForm
     Left = 0
     Height = 555
     Top = 0
-    Width = 295
+    Width = 294
     Anchors = [akTop, akLeft, akRight, akBottom]
     Picture.Data = {
       1754506F727461626C654E6574776F726B47726170686963C6FC000089504E47
@@ -2353,7 +2353,7 @@ inherited LoginForm: TLoginForm
     Left = 33
     Height = 30
     Top = 234
-    Width = 221
+    Width = 220
     Anchors = [akTop, akLeft, akRight]
     Brush.Color = clNone
     Pen.Color = 13527554
@@ -2364,7 +2364,7 @@ inherited LoginForm: TLoginForm
     Height = 19
     Hint = '禅道地址 (http://zentao.net)'
     Top = 239
-    Width = 209
+    Width = 208
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
@@ -2381,7 +2381,7 @@ inherited LoginForm: TLoginForm
     Left = 33
     Height = 30
     Top = 269
-    Width = 221
+    Width = 220
     Anchors = [akTop, akLeft, akRight]
     Brush.Color = clNone
     Pen.Color = 13527554
@@ -2392,7 +2392,7 @@ inherited LoginForm: TLoginForm
     Height = 19
     Hint = '用户名'
     Top = 274
-    Width = 209
+    Width = 208
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
@@ -2409,7 +2409,7 @@ inherited LoginForm: TLoginForm
     Height = 30
     Hint = '密码'
     Top = 304
-    Width = 221
+    Width = 220
     Anchors = [akTop, akLeft, akRight]
     Brush.Color = clNone
     Pen.Color = 13527554
@@ -2420,7 +2420,7 @@ inherited LoginForm: TLoginForm
     Height = 19
     Hint = '密码'
     Top = 310
-    Width = 209
+    Width = 208
     Anchors = [akTop, akLeft, akRight]
     BorderStyle = bsNone
     Color = clNone
@@ -2439,35 +2439,19 @@ inherited LoginForm: TLoginForm
     Height = 37
     Hint = '登录'
     Top = 339
-    Width = 221
+    Width = 220
     Anchors = [akTop, akLeft, akRight]
     Caption = '登录'
     Default = True
     OnClick = BitBtnLoginClick
     TabOrder = 3
   end
-  object LabelResult: TLabel[8]
-    Left = 0
-    Height = 40
-    Top = 184
-    Width = 286
-    Alignment = taCenter
-    Anchors = [akTop, akLeft, akRight]
-    AutoSize = False
-    Color = clRed
-    Font.Color = clWhite
-    Layout = tlCenter
-    ParentColor = False
-    ParentFont = False
-    Transparent = False
-    Visible = False
-  end
-  object LabelResult1: TLabel[9]
+  object LabelResult1: TLabel[8]
     Cursor = crHandPoint
     Left = 0
     Height = 36
     Top = 485
-    Width = 286
+    Width = 285
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     AutoSize = False
@@ -2478,9 +2462,9 @@ inherited LoginForm: TLoginForm
     ParentFont = False
     OnClick = LabelResult1Click
   end
-  object LabelBtnLanguage: TLabel[10]
+  object LabelBtnLanguage: TLabel[9]
     Cursor = crHandPoint
-    Left = 190
+    Left = 189
     Height = 20
     Top = 8
     Width = 90
@@ -2494,9 +2478,9 @@ inherited LoginForm: TLoginForm
     PopupMenu = PopupMenuLang
     OnClick = LabelBtnLanguageClick
   end
-  object LabelBtnAbout: TLabel[11]
+  object LabelBtnAbout: TLabel[10]
     Cursor = crHandPoint
-    Left = 166
+    Left = 165
     Height = 20
     Top = 8
     Width = 30
@@ -2509,7 +2493,7 @@ inherited LoginForm: TLoginForm
     ParentFont = False
     OnClick = LabelBtnAboutClick
   end
-  object Panel1: TPanel[12]
+  object Panel1: TPanel[11]
     Left = 1
     Height = 29
     Top = 389
@@ -2538,6 +2522,21 @@ inherited LoginForm: TLoginForm
       OnChange = CheckBoxAutoSignInChange
       TabOrder = 1
     end
+  end
+  object MemoMessager: TMemo[12]
+    Left = 0
+    Height = 42
+    Top = 185
+    Width = 286
+    Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Around = 10
+    BorderStyle = bsNone
+    Color = 15395583
+    Font.Color = 200
+    ParentFont = False
+    TabOrder = 5
+    Visible = False
   end
   object PopupMenuLang: TPopupMenu[13]
     left = 8

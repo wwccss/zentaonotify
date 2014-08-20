@@ -18,7 +18,7 @@ uses
     DefaultTranslator,
     StringsUnit,
     CloseConfirmFormUnit,
-    BackgroundWorkerUnit;
+    BackgroundWorkerUnit, types;
 
 type
 
@@ -26,10 +26,12 @@ type
 
     TMainForm = class(TLocalizedForm)
         ImageListPopupMenu: TImageList;
+        LabelMenu17: TLabel;
+        LabelMenu18: TLabel;
+        LabelMenu19: TLabel;
         LabelTodoSepLine: TLabel;
         LabelLoadingProgressbar: TLabel;
         LabelMessageClose: TLabel;
-        LabelMessage:    TLabel;
         LabelPagerTaskInfo: TLabel;
         LabelPagerBugInfo: TLabel;
         LabelPagerStoryInfo: TLabel;
@@ -71,6 +73,7 @@ type
         LabelTodoSepLine2: TLabel;
         LabelTodoSepLine3: TLabel;
         Memo1:           TMemo;
+        MemoMessager: TMemo;
         MenuItem1:       TMenuItem;
         MenuItem4:       TMenuItem;
         MenuItem5:       TMenuItem;
@@ -125,6 +128,8 @@ type
         procedure FormWindowStateChange(Sender: TObject);
         procedure LabelBtnMouseLeave(Sender: TObject);
         procedure LabelBtnMouseEnter(Sender: TObject);
+        procedure LabelMenu18Click(Sender: TObject);
+        procedure LabelMenu19Click(Sender: TObject);
         procedure LabelMenuClick(Sender: TObject);
         procedure LabelMenuIconClick(Sender: TObject);
         procedure LabelMenuIconMouseEnter(Sender: TObject);
@@ -725,6 +730,17 @@ begin
     labelSender.Color := 13392660;
 end;
 
+procedure TMainForm.LabelMenu18Click(Sender: TObject);
+begin
+
+    OpenUrl('http://www.zentao.net/book/zentaopmshelp/71.html');
+end;
+
+procedure TMainForm.LabelMenu19Click(Sender: TObject);
+begin
+    OpenUrl('http://www.zentao.net/book/zentaopmshelp/43.html');
+end;
+
 { Handle click event of lable: changed tab and load it }
 procedure TMainForm.LabelMenuClick(Sender: TObject);
 var
@@ -1043,44 +1059,52 @@ end;
 { Show message }
 procedure TMainForm.DisplayMessage(Message: string; msgType: string = 'danger');
 begin
-    LabelMessage.Caption := Message;
+    MemoMessager.Caption := Message;
     PanelMessage.Visible := True;
     PanelMessage.Top     := 40;
-
+    PanelMessage.Height  := 70;
     case Lowercase(msgType) of
         'success':
         begin
             PanelMessage.Color      := $00E6FFE5;
+            MemoMessager.Color      := $00E6FFE5;
             PanelMessage.Font.Color := $00249F23;
         end;
         'danger':
         begin
             PanelMessage.Color      := $00e5E6ff;
+            MemoMessager.Color      := $00e5E6ff;
             PanelMessage.Font.Color := $002D32D2;
+            PanelMessage.Height     := 100;
         end;
         'warning':
         begin
             PanelMessage.Color      := $00E5F4FF;
+            MemoMessager.Color      := $00E5F4FF;
             PanelMessage.Font.Color := $000086E4;
         end;
         'info':
         begin
             PanelMessage.Color      := $00FFF9E5;
+            MemoMessager.Color      := $00FFF9E5;
             PanelMessage.Font.Color := $00D7B339;
         end;
         'important':
         begin
+            MemoMessager.Color      := $00E5F3FF;
             PanelMessage.Color      := $00E5F3FF;
             PanelMessage.Font.Color := $001C5181;
         end;
         'special':
         begin
             PanelMessage.Color      := $00FFE5F7;
+            MemoMessager.Color      := $00FFE5F7;
             PanelMessage.Font.Color := $00A15789;
         end;
         else
         begin
             PanelMessage.Color      := $00F1F1F1;
+            MemoMessager.Color      := $00F1F1F1;
             PanelMessage.Font.Color := $00333333;
         end;
     end;

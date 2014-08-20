@@ -1,7 +1,7 @@
 inherited MainForm: TMainForm
-  Left = 2191
+  Left = 522
   Height = 680
-  Top = 49
+  Top = 256
   Width = 350
   BorderIcons = [biSystemMenu, biMinimize]
   ClientHeight = 680
@@ -5429,12 +5429,12 @@ inherited MainForm: TMainForm
   end
   object PanelMessage: TPanel[5]
     Left = 0
-    Height = 40
+    Height = 100
     Top = 80
     Width = 350
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
-    ClientHeight = 40
+    ClientHeight = 100
     ClientWidth = 350
     Color = 15073254
     Font.Color = 2268964
@@ -5442,17 +5442,6 @@ inherited MainForm: TMainForm
     ParentFont = False
     TabOrder = 5
     Visible = False
-    object LabelMessage: TLabel
-      Left = 10
-      Height = 40
-      Top = 0
-      Width = 283
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = False
-      Caption = ':)'
-      Layout = tlCenter
-      ParentColor = False
-    end
     object LabelMessageClose: TLabel
       Cursor = crHandPoint
       Left = 299
@@ -5464,6 +5453,63 @@ inherited MainForm: TMainForm
       ParentColor = False
       ParentFont = False
       OnClick = LabelMessageCloseClick
+    end
+    object LabelMenu17: TLabel
+      Cursor = crHandPoint
+      Left = 7
+      Height = 19
+      Hint = 'today'
+      Top = 77
+      Width = 65
+      Caption = '更多帮助：'
+      Font.Color = clGray
+      Font.Height = -13
+      ParentColor = False
+      ParentFont = False
+      OnClick = LabelMenuClick
+      OnMouseEnter = LabelMenuMouseEnter
+      OnMouseLeave = LabelMenuMouseLeave
+    end
+    object LabelMenu18: TLabel
+      Cursor = crHandPoint
+      Left = 80
+      Height = 19
+      Hint = 'today'
+      Top = 77
+      Width = 52
+      Caption = '权限分配'
+      Font.Color = 13392660
+      Font.Height = -13
+      ParentColor = False
+      ParentFont = False
+      OnClick = LabelMenu18Click
+      OnMouseEnter = LabelMenuMouseEnter
+      OnMouseLeave = LabelMenuMouseLeave
+    end
+    object LabelMenu19: TLabel
+      Cursor = crHandPoint
+      Left = 150
+      Height = 19
+      Hint = 'today'
+      Top = 77
+      Width = 73
+      Caption = '禅道API机制'
+      Font.Color = 13392660
+      Font.Height = -13
+      ParentColor = False
+      ParentFont = False
+      OnClick = LabelMenu19Click
+      OnMouseEnter = LabelMenuMouseEnter
+      OnMouseLeave = LabelMenuMouseLeave
+    end
+    object MemoMessager: TMemo
+      Left = 7
+      Height = 66
+      Top = 7
+      Width = 280
+      BorderStyle = bsNone
+      Color = 15073254
+      TabOrder = 0
     end
   end
   object PopupMenuStringGrid: TPopupMenu[6]

@@ -32,9 +32,9 @@ type
         EditPassword:  TEdit;
         ImageBackground: TImage;
         LabelBtnAbout: TLabel;
-        LabelResult:   TLabel;
         LabelResult1:  TLabel;
         LabelBtnLanguage: TLabel;
+        MemoMessager: TMemo;
         MenuItemLangZHTW: TMenuItem;
         MenuItemLangEN: TMenuItem;
         MenuItemLangZHCN: TMenuItem;
@@ -109,7 +109,7 @@ begin
     end
     else
     begin
-        LabelResult.Visible := False;
+        MemoMessager.Visible := False;
         Result := True;
     end;
 end;
@@ -337,14 +337,14 @@ end;
 { Hide result message }
 procedure TLoginForm.HideResultMessage();
 begin
-    LabelResult.Visible := False;
+    MemoMessager.Visible := False;
 end;
 
 { Show result message }
 procedure TLoginForm.ShowResultMessage(message: string);
 begin
-    LabelResult.Caption := message;
-    LabelResult.Visible := True;
+    MemoMessager.Text := message;
+    MemoMessager.Visible := True;
 end;
 
 procedure TLoginForm.UpdateTranslation(ALang: string);

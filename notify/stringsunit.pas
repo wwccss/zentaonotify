@@ -28,6 +28,19 @@ resourcestring
   rsTask = '任务';
   rsStory = '需求';
   rsPopWindowTitle = '新的条目: %s [%d]';
+  rsErrorDataReturned = '服务器返回的数据不正确。 '
+      +'请确保拥有权限读取数据。';
+  rsErrorCannotConnect = '无法连接到服务器。请检查网络。';
+  rsErrorCannotConnectZentao = '无法获取禅道配置信息。请检查禅'
+      +'道地址并确认网络连接畅通。';
+  rsErrorNeedNewerVersion = '您当前版本是%s，请升级至%s以上版本';
+  rsErrorCannotGetSession = '无法获取Session。请确保当前账户拥有'
+      +'超级model权限。参考：http://www.zentao.net/book/zentaopmshelp/'
+      +'71.html';
+  rsErrorLoginFailed = '登录失败。请检查用户名和密码。';
+  rsErrorCannotGetRoleConfig = '获取角色信息失败。请确保当前账'
+      +'户拥有超级model权限。参考：http://www.zentao.net/book/'
+      +'zentaopmshelp/71.html';
 
 implementation
 
