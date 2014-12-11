@@ -265,10 +265,14 @@ end;
 function GetConfig(): HandleResult;
 var
     configStr: string;
+    url      : string;
 begin
+    url := user.Url + '/index.php?mode=getconfig';
+    DInfo('BEGIN: GetConfig:' + url + LineEnding );
     Result.Result := True;
     try
-        configStr := HttpGet(user.Url + '/index.php?mode=getconfig');
+        configStr := HttpGet(url);
+        DInfo('response: ' + configStr);
         if Length(configStr) > 0 then
         begin
             zentaoConfig := TJSONObject(TJSONParser.Create(configStr).Parse);
@@ -280,6 +284,8 @@ begin
     end;
     if not Result.Result then
         Result.Message := rsErrorCannotConnectZentao;
+
+    DInfo('END: GetConfig' + LineEnding );
 end;
 
 (* Check version *)
@@ -542,8 +548,10 @@ begin
             end
             else
             begin
+                DInfo('success:' + role.AsJSON);
                 roleValue      := TJSONObject(TJSONParser.Create(role.Get('data', '')).Parse);
                 user.Role := roleValue.Get('role', '');
+                DInfo('role:' + roleValue.AsJSON);
                 roleValue.Free;
             end;
             role.Free;
@@ -592,9 +600,9 @@ begin
     if not Result.Result then
         Exit;
 
-    Result := GetRole();
-    if not Result.Result then
-        Exit;
+    // Result := GetRole();
+    // if not Result.Result then
+    //     Exit;
 
     if Result.Result then
     begin
@@ -775,7 +783,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 1, 2, 0]);
+        Result := Format(formatStr, [2, 1, 3, 0]);
     end;
     // todo: get the real version info with os api.
 

@@ -29,6 +29,7 @@ type
         LabelMenu17: TLabel;
         LabelMenu18: TLabel;
         LabelMenu19: TLabel;
+        LabelTab4: TLabel;
         LabelTodoSepLine: TLabel;
         LabelLoadingProgressbar: TLabel;
         LabelMessageClose: TLabel;
@@ -204,7 +205,7 @@ var
     ActiveSubMenu:      array[BrowseType] of BrowseSubType;
     StringGrids:        array[BrowseType] of TStringGrid;
     BrowseTrack:        array[BrowseType] of TStringList;
-    TabGroup:           array[1..3] of BrowseType;
+    TabGroup:           array[1..4] of BrowseType;
     IsTabLoading:       boolean;
     AverageWaitingTime: double; // days
     StartLoadingTime, StopLoadingTime: TDateTime;
@@ -635,35 +636,13 @@ end;
 procedure TMainForm.InitTabMenu();
 begin
     TabGroup[1]          := btTodo;
+    TabGroup[2]          := btTask;
+    TabGroup[3]          := btBug;
+    TabGroup[4]          := btStory;
     BrowseTrack[btTodo]  := TStringList.Create;
     BrowseTrack[btBug]   := TStringList.Create;
     BrowseTrack[btTask]  := TStringList.Create;
     BrowseTrack[btStory] := TStringList.Create;
-
-    if (user.Role = 'qa') or (user.Role = 'qd') then
-    begin
-        LabelTab2.Caption := rsStory;
-        LabelTab2.Hint    := 'story';
-        LabelTab2.Tag     := 3;
-        LabelTab3.Caption := rsBug;
-        LabelTab3.Hint    := 'bug';
-        LabelTab3.Tag     := 2;
-
-        TabGroup[2] := btStory;
-        TabGroup[3] := btBug;
-    end
-    else //if (user.Role = 'po') or (user.Role = 'pd') then
-    begin
-        LabelTab2.Caption := rsBug;
-        LabelTab2.Hint    := 'bug';
-        LabelTab2.Tag     := 2;
-        LabelTab3.Caption := rsTask;
-        LabelTab3.Hint    := 'task';
-        LabelTab3.Tag     := 1;
-
-        TabGroup[2] := btBug;
-        TabGroup[3] := btTask;
-    end;
 
     IsTabLoading := False;
 
@@ -973,6 +952,8 @@ begin
     LabelTab2.Font.Color := clWhite;
     LabelTab3.Color      := 13392660;
     LabelTab3.Font.Color := clWhite;
+    LabelTab4.Color      := 13392660;
+    LabelTab4.Font.Color := clWhite;
 
     { changed current tab color }
     tabLabel.Color      := 16380651;
@@ -1119,16 +1100,9 @@ procedure TMainForm.UpdateTranslation(ALang: string);
 begin
     inherited;
 
-    if (user.Role = 'po') or (user.Role = 'pd') then
-    begin
-        LabelTab2.Caption := rsStory;
-        LabelTab3.Caption := rsBug;
-    end
-    else// if (user.Role = 'qa') or (user.Role = 'qd') then
-    begin
-        LabelTab2.Caption := rsBug;
-        LabelTab3.Caption := rsTask;
-    end;
+    LabelTab2.Caption := rsTask;
+    LabelTab3.Caption := rsBug;
+    LabelTab4.Caption := rsStory;
 
     case ALang of
         'zh_cn': MenuItem5.Checked := True;

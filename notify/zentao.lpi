@@ -21,6 +21,7 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="2"/>
       <MinorVersionNr Value="1"/>
+      <RevisionNr Value="3"/>
       <BuildNr Value="3"/>
       <StringTable CompanyName="zentao.net" ProductVersion=""/>
     </VersionInfo>
@@ -288,6 +289,9 @@
       </Optimizations>
     </CodeGeneration>
     <Linking>
+      <Debugging>
+        <GenerateDebugInfo Value="False"/>
+      </Debugging>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>

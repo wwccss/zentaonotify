@@ -1,7 +1,7 @@
 inherited MainForm: TMainForm
-  Left = 522
+  Left = 501
   Height = 680
-  Top = 256
+  Top = 215
   Width = 350
   BorderIcons = [biSystemMenu, biMinimize]
   ClientHeight = 680
@@ -4343,7 +4343,7 @@ inherited MainForm: TMainForm
       Height = 32
       Hint = 'todo'
       Top = 8
-      Width = 80
+      Width = 70
       Alignment = taCenter
       AutoSize = False
       Caption = '待办'
@@ -4361,11 +4361,11 @@ inherited MainForm: TMainForm
     object LabelTab2: TLabel
       Tag = 1
       Cursor = crHandPoint
-      Left = 89
+      Left = 79
       Height = 32
       Hint = 'task'
       Top = 8
-      Width = 80
+      Width = 70
       Alignment = taCenter
       AutoSize = False
       Caption = '任务'
@@ -4383,11 +4383,11 @@ inherited MainForm: TMainForm
     object LabelTab3: TLabel
       Tag = 2
       Cursor = crHandPoint
-      Left = 171
+      Left = 151
       Height = 32
       Hint = 'bug'
       Top = 8
-      Width = 80
+      Width = 70
       Alignment = taCenter
       AutoSize = False
       Caption = 'Bug'
@@ -4474,6 +4474,28 @@ inherited MainForm: TMainForm
       Color = 16547890
       ParentColor = False
       Transparent = False
+    end
+    object LabelTab4: TLabel
+      Tag = 3
+      Cursor = crHandPoint
+      Left = 224
+      Height = 32
+      Hint = 'story'
+      Top = 8
+      Width = 70
+      Alignment = taCenter
+      AutoSize = False
+      Caption = '需求'
+      Color = 13392660
+      Font.Color = clWhite
+      Font.Height = -17
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+      OnClick = LabelTabClick
+      OnMouseEnter = LabelTabMouseEnter
+      OnMouseLeave = LabelTabMouseLeave
     end
   end
   object PanelNavTodo: TPanel[1]
