@@ -506,6 +506,15 @@ msgctxt "tmainform.labeltab3.hint"
 msgid "bug"
 msgstr ""
 
+#: tmainform.labeltab4.caption
+msgid "需求"
+msgstr ""
+
+#: tmainform.labeltab4.hint
+msgctxt "tmainform.labeltab4.hint"
+msgid "story"
+msgstr ""
+
 #: tmainform.menuitem1.caption
 msgctxt "TMAINFORM.MENUITEM1.CAPTION"
 msgid "-"
