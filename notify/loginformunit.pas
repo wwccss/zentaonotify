@@ -136,7 +136,7 @@ begin
         user.PassMd5 := PassMd5;
         user.Url     := EditAddress.Text;
 
-        if Copy(user.Url,0,7) <> 'http://' then
+        if ((Copy(user.Url,0,7) <> 'http://') and (Copy(user.Url,0,8) <> 'https://')) then
            user.Url := 'http://' + user.Url;
 
         LoginWorker := TBackgroundWorker.Create(@Logining, @LoginCompleted);

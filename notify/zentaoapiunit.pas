@@ -10,10 +10,11 @@ uses
     Windows,
     {$endif}
     md5,
-    fphttpclient,
     LCLIntf,
     jsonconf,
     StringsUnit,
+    lazlogger,
+    httpsend,synacode, ssl_openssl,
     Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons, ActnList,
     fpjson, jsonparser;
 
@@ -26,22 +27,22 @@ type
 
     { User config }
     UserConfig = record
-        Url:        string;
-        Account:    string;
-        PassMd5:    string;
-        Role:       string;
-        AutoSignIn: boolean;
-        RememberMe: boolean;
-        Lang:       string;
-        CloseOption: Integer;
+        Url         : string;
+        Account     : string;
+        PassMd5     : string;
+        Role        : string;
+        AutoSignIn  : boolean;
+        RememberMe  : boolean;
+        Lang        : string;
+        CloseOption : Integer;
     end;
 
     { Handle result }
     HandleResult = record
-        Result:  boolean;
-        Message: string;
-        OnlineHelp: string;
-        Sender:  TObject;
+        Result     : boolean;
+        Message    : string;
+        OnlineHelp : string;
+        Sender     : TObject;
     end;
 
     { Page record }
@@ -56,14 +57,14 @@ type
 
     { Date result }
     TDataResult = class(TObject)
-        Result:    boolean;
-        Message:   string;
-        Data:      TJSONObject;
-        Pager:     PageRecord;
-        IsNew:     boolean;
-        FirstPage: boolean;
-        Tab:       BrowseType;
-        SubType:   BrowseSubType;
+        Result    : boolean;
+        Message   : string;
+        Data      : TJSONObject;
+        Pager     : PageRecord;
+        IsNew     : boolean;
+        FirstPage : boolean;
+        Tab       : BrowseType;
+        SubType   : BrowseSubType;
 
         constructor Create;
     end;
@@ -76,7 +77,6 @@ function CheckVersion(): HandleResult;
 function GetConfig(): HandleResult;
 function GetSession(): HandleResult;
 function Login(): HandleResult;
-function GetRole(): HandleResult;
 function TryLogin(): HandleResult;
 function Logout(): HandleResult;
 function LoadDataList(obj: BrowseType; objType: BrowseSubType;
@@ -103,6 +103,7 @@ var
     BrowseMd5:      array[BrowseType] of string;
     PopWindowData:  TDataResult;
     MainFormWindow: TForm;
+    SynHttp:        THTTPSend;
 
 const
     ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
@@ -118,6 +119,7 @@ begin
     Result    := True;
     FirstPage := False;
 end;
+
 
 { Display debug info into console window. }
 procedure DInfo(textOrName: string; text: string = '`');
@@ -142,6 +144,7 @@ begin
             text := textOrName + ': ' + text;
         end;
 
+        // DebugLn('> ' + text);
         writeln('> ' + text);
     end;
 end;
@@ -159,11 +162,11 @@ end;
 function LoadDataList(obj: BrowseType; objType: BrowseSubType;
     pageID: string = ''): TDataResult;
 var
-    response, md5: string;
-    Data, pageData: TJSONObject;
-    url:       string;
-    pager:     PageRecord;
-    firstPage: boolean;
+    response, md5  : string;
+    Data, pageData : TJSONObject;
+    url            : string;
+    pager          : PageRecord;
+    firstPage      : boolean;
 begin
     Result         := TDataResult.Create;
     Result.Tab     := obj;
@@ -255,7 +258,7 @@ begin
         end;
     except
         Result.Result  := False;
-        Result.Message := rsErrorCannotConnect;
+        Result.Message := rsErrorCannotConnect + LineEnding + 'Request get: ' + url + LineEnding + 'Server returned: ' + response;
     end;
 
     DInfo('END: LoadDataList' + LineEnding );
@@ -283,7 +286,7 @@ begin
         Result.Result := False;
     end;
     if not Result.Result then
-        Result.Message := rsErrorCannotConnectZentao;
+        Result.Message := rsErrorCannotConnectZentao + LineEnding + 'Request get: ' + url + LineEnding + 'Server returned: ' + configStr;
 
     DInfo('END: GetConfig' + LineEnding );
 end;
@@ -335,16 +338,18 @@ begin
     methodName := config.Get('method', '');
     requestType:= LowerCase(zentaoConfig.Get('requestType', ''));
 
+    DInfo('>>> RequestType', requestType);
+
     if  requestType = 'get' then
     begin
         Result := user.Url + '/index.php?';
         if (moduleName = 'user') and (methodName = 'login') then
         begin
             password := MD5Print(MD5String(user.PassMd5 +
-                IntToStr(session.Int64s['rand'])));
+                IntToStr(zentaoConfig.Int64s['rand'])));
             Result   := Result + 'm=user&f=login&account=' + user.Account +
-                '&password=' + password + '&' + session.Get('sessionName', '') +
-                '=' + session.Get('sessionID', '') + '&t=json';
+                '&password=' + password + '&' + zentaoConfig.Get('sessionName', '') +
+                '=' + zentaoConfig.Get('sessionID', '') + '&t=json';
             config.Free;
             DInfo('GetAPI', Result);
             Exit;
@@ -391,10 +396,10 @@ begin
 
         Result := Result + '&t=' + viewType;
 
-        if not session.Get('undefined', False) then
+        if not zentaoConfig.Get('sessionID', False) then
         begin
-            Result := Result + '&' + session.Get('sessionName', '') +
-                '=' + session.Get('sessionID', '');
+            Result := Result + '&' + zentaoConfig.Get('sessionName', '') +
+                '=' + zentaoConfig.Get('sessionID', '');
         end;
     end
     else
@@ -403,10 +408,10 @@ begin
         if (moduleName = 'user') and (methodName = 'login') then
         begin
             password := MD5Print(MD5String(user.PassMd5 +
-                IntToStr(session.Int64s['rand'])));
+                IntToStr(zentaoConfig.Int64s['rand'])));
             Result   := Result + 'user-login.json?account=' +
                 user.Account + '&password=' + password + '&' +
-                session.Get('sessionName', 'sid') + '=' + session.Get('sessionID', '');
+                zentaoConfig.Get('sessionName', 'sid') + '=' + zentaoConfig.Get('sessionID', '');
             config.Free;
             DInfo('GetAPI', Result);
             Exit;
@@ -459,10 +464,10 @@ begin
 
         Result := Result + '.' + viewType;
 
-        if not session.Get('undefined', False) then
+        if not zentaoConfig.Get('sessionID', False) then
         begin
-            Result := Result + '?' + session.Get('sessionName', '') +
-                '=' + session.Get('sessionID', '');
+            Result := Result + '?' + zentaoConfig.Get('sessionName', '') +
+                '=' + zentaoConfig.Get('sessionID', '');
         end;
     end;
     config.Free;
@@ -477,6 +482,7 @@ begin
     Result.Result := True;
     try
         sessionStr := HttpGet(GetAPI(['module', 'api', 'method', 'getSessionID']));
+        DInfo('Get session: ' + sessionStr);
         if Length(sessionStr) > 0 then
         begin
             if Assigned(session) then session.Free;
@@ -505,14 +511,18 @@ function Login(): HandleResult;
 var
     response: string;
     status:   TJSONObject;
+    url:      string;
 begin
     DInfo('BEGIN: Login');
     Result.Result := True;
+    url := GetAPI(['module', 'user', 'method', 'login']);
     try
-        response := HttpGet(GetAPI(['module', 'user', 'method', 'login']));
+        response := HttpGet(url);
+        DInfo('Login response:' + response);
         if Length(response) > 0 then
         begin
             status := TJSONObject(TJSONParser.Create(response).Parse);
+
             if status.get('status', '') = 'failed' then
             begin
                 Result.Result := False;
@@ -525,45 +535,8 @@ begin
         Result.Result := False;
     end;
     if not Result.Result then
-        Result.Message := rsErrorLoginFailed;
+        Result.Message := rsErrorLoginFailed + LineEnding + 'Request get: ' + url + LineEnding + 'Server returned: ' + response;
     DInfo('END: Login ||' + Result.Message);
-end;
-
-(* Get role *)
-function GetRole(): HandleResult;
-var
-    response: string;
-    role, roleValue:     TJSONObject;
-begin
-    Result.Result := True;
-    try
-        response := HttpGet(GetAPI(['module', 'api', 'method', 'getmodel',
-            'moduleName', 'user', 'methodName', 'getById', 'account', user.Account]));
-        if Length(response) > 0 then
-        begin
-            role := TJSONObject(TJSONParser.Create(response).Parse);
-            if role.get('status', '') = 'failed' then
-            begin
-                Result.Result := False;
-            end
-            else
-            begin
-                DInfo('success:' + role.AsJSON);
-                roleValue      := TJSONObject(TJSONParser.Create(role.Get('data', '')).Parse);
-                user.Role := roleValue.Get('role', '');
-                DInfo('role:' + roleValue.AsJSON);
-                roleValue.Free;
-            end;
-            role.Free;
-        end
-        else
-            Result.Result := False;
-    except
-        Result.Result := False;
-    end;
-
-    if not Result.Result then
-        Result.Message := rsErrorCannotGetRoleConfig;
 end;
 
 { Logout }
@@ -585,24 +558,13 @@ end;
 (* Try login in *)
 function TryLogin(): HandleResult;
 begin
-    if Assigned(session) then session.Free;
-    session := TJSONObject.Create(['undefined', True]);
-
     Result := GetConfig();
-    if not Result.Result then
-        Exit;
-
-    Result := GetSession();
     if not Result.Result then
         Exit;
 
     Result := Login();
     if not Result.Result then
         Exit;
-
-    // Result := GetRole();
-    // if not Result.Result then
-    //     Exit;
 
     if Result.Result then
     begin
@@ -678,13 +640,41 @@ begin
     end;
 end;
 
+// function HttpGet(url: string): string;
+// begin
+//     if not Assigned(httpClient) then httpClient := TFPHttpClient.Create(Nil);
+//     try
+//       Result := httpClient.Get(url);
+//     finally
+//       DInfo('Error get ' + url);
+//     end;
+// end;
+
 function HttpGet(url: string): string;
+var
+    data: TStringList;
 begin
-    With TFPHttpClient.Create(Nil) do
+    data := TStringList.Create;
+    // if not Assigned(SynHttp) then SynHttp := THTTPSend.Create;
+    SynHttp := THTTPSend.Create;
     try
-      Result := Get(url);
+        if (Copy(url,0,8) = 'https://') then
+        begin
+            SynHttp.Sock.CreateWithSSL(TSSLOpenSSL);
+            SynHttp.Sock.SSLAcceptConnection;
+            SynHttp.Sock.SSLDoConnect();
+            DInfo('IS HTTPS ' + url);
+        end;
+        if SynHttp.HTTPMethod('GET', url) then
+        begin
+            data.LoadFromStream(SynHttp.Document);
+            Result := data.text;
+        end else begin
+            DInfo('Error connect ' + url);
+        end;
     finally
-      Free;
+        data.Free;
+        SynHttp.Free;
     end;
 end;
 
@@ -783,7 +773,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 1, 3, 0]);
+        Result := Format(formatStr, [2, 2, 0, 0]);
     end;
     // todo: get the real version info with os api.
 
