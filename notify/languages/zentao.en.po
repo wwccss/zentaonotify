@@ -22,27 +22,27 @@ msgid "Bug"
 msgstr "Bug"
 
 #: stringsunit.rserrorcannotconnect
-msgid "无法连接到服务器#227#130#232#175+"
+msgid "无法连接到服务器。请检查网络。"
 msgstr ""
 
 #: stringsunit.rserrorcannotconnectzentao
-msgid "无法获取禅道配置信息#227#130#232#175#183#230#163查禅道地#229#157#229#185#182#231#161#174#232#174#164#231#189#145+"
+msgid "无法获取禅道配置信息。请检查禅道地址并确认网络连接畅通。"
 msgstr ""
 
 #: stringsunit.rserrorcannotgetroleconfig
-msgid "获取角色信息失败#227#130#232+"
+msgid "获取角色信息失败。请确保当前账户拥有超级model权限。参考：http://www.zentao.net/book/zentaopmshelp/71.html"
 msgstr ""
 
 #: stringsunit.rserrorcannotgetsession
-msgid "无法获取Session#227#130#232#175#183#231#161#174#228#191#157#229#189#147+"
+msgid "无法获取Session。请确保当前账户拥有超级model权限。参考：http://www.zentao.net/book/zentaopmshelp/71.html"
 msgstr ""
 
 #: stringsunit.rserrordatareturned
-msgid "服务器返回的数据不正确#227#130#232#175#183#231#161#174#228#191#157#230#139#165+"
+msgid "服务器返回的数据不正确。 请确保拥有权限读取数据。"
 msgstr ""
 
 #: stringsunit.rserrorloginfailed
-msgid "登录失败#227#130#232#175#183#230#163查用户名和密码#227#130"
+msgid "登录失败。请检查用户名和密码。"
 msgstr ""
 
 #: stringsunit.rserrorneednewerversion
@@ -54,7 +54,9 @@ msgid "首页"
 msgstr "First"
 
 #: stringsunit.rsisbusy
-msgid "应用正忙，请稍后再试#227+"
+#, fuzzy
+#| msgid "应用正忙，请稍后再试#227+"
+msgid "应用正忙，请稍后再试。"
 msgstr "Busy now, try again later."
 
 #: stringsunit.rslastpage
@@ -72,15 +74,21 @@ msgid "登录中..."
 msgstr "Loging..."
 
 #: stringsunit.rsnextpage
-msgid "下#228#184#233#161#181"
+#, fuzzy
+#| msgid "下#228#184#233#161#181"
+msgid "下一页"
 msgstr "Next"
 
 #: stringsunit.rsnodatamessage
-msgid "暂时没有数据#227#130"
+#, fuzzy
+#| msgid "暂时没有数据#227#130"
+msgid "暂时没有数据。"
 msgstr "No data"
 
 #: stringsunit.rsnotreadymessage
-msgid "您还没有登录，无法获取数据#227#130"
+#, fuzzy
+#| msgid "您还没有登录，无法获取数据#227#130"
+msgid "您还没有登录，无法获取数据。"
 msgstr "Can not get data when you has not login  in."
 
 #: stringsunit.rspagerinfoformat
@@ -92,24 +100,33 @@ msgid "新的条目: %s [%d]"
 msgstr "New item(s): %s [%d]"
 
 #: stringsunit.rsprevpage
-msgid "上#228#184#233#161#181"
+#, fuzzy
+#| msgid "上#228#184#233#161#181"
+msgid "上一页"
 msgstr "Prev"
 
 #: stringsunit.rsrequirepassword
-msgid "请填写禅道密码#227#130"
+#, fuzzy
+#| msgid "请填写禅道密码#227#130"
+msgid "请填写禅道密码。"
 msgstr "Password required."
 
 #: stringsunit.rsrequireusername
-msgid "请填写用户名#227#130"
+#, fuzzy
+#| msgid "请填写用户名#227#130"
+msgid "请填写用户名。"
 msgstr "Username required."
 
 #: stringsunit.rsrequirezentaoaddress
-msgid "请填写禅道地#229#157#227#130"
+#, fuzzy
+#| msgid "请填写禅道地#229#157#227#130"
+msgid "请填写禅道地址。"
 msgstr "Zentao address required."
 
 #: stringsunit.rsstory
-#| msgid "需求"
-msgid "#233#156#230#177#130"
+#, fuzzy
+#| msgid "#233#156#230#177#130"
+msgid "需求"
 msgstr "Story"
 
 #: stringsunit.rstask
@@ -524,7 +541,7 @@ msgstr ""
 
 #: tmainform.labeltab4.caption
 msgid "需求"
-msgstr ""
+msgstr "Story"
 
 #: tmainform.labeltab4.hint
 msgctxt "tmainform.labeltab4.hint"
@@ -645,66 +662,6 @@ msgstr "Synchronize"
 #: tmainform.menuitemviewobject.caption
 msgid "在浏览器中查看"
 msgstr "Open in browser"
-
-#: tmainform.stringgridbug.columns[0].title.caption
-msgctxt "TMAINFORM.STRINGGRIDBUG.COLUMNS[0].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridbug.columns[1].title.caption
-msgctxt "TMAINFORM.STRINGGRIDBUG.COLUMNS[1].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridbug.columns[2].title.caption
-msgctxt "TMAINFORM.STRINGGRIDBUG.COLUMNS[2].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridstory.columns[0].title.caption
-msgctxt "TMAINFORM.STRINGGRIDSTORY.COLUMNS[0].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridstory.columns[1].title.caption
-msgctxt "TMAINFORM.STRINGGRIDSTORY.COLUMNS[1].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridstory.columns[2].title.caption
-msgctxt "TMAINFORM.STRINGGRIDSTORY.COLUMNS[2].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridtask.columns[0].title.caption
-msgctxt "TMAINFORM.STRINGGRIDTASK.COLUMNS[0].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridtask.columns[1].title.caption
-msgctxt "TMAINFORM.STRINGGRIDTASK.COLUMNS[1].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridtask.columns[2].title.caption
-msgctxt "TMAINFORM.STRINGGRIDTASK.COLUMNS[2].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridtodo.columns[0].title.caption
-msgctxt "tmainform.stringgridtodo.columns[0].title.caption"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridtodo.columns[1].title.caption
-msgctxt "TMAINFORM.STRINGGRIDTODO.COLUMNS[1].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tmainform.stringgridtodo.columns[2].title.caption
-msgctxt "TMAINFORM.STRINGGRIDTODO.COLUMNS[2].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
 
 #: tpopwindow.label1.hint
 msgid "打开主窗口"
