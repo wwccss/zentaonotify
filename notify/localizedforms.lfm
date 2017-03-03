@@ -1,7 +1,7 @@
 object LocalizedForm: TLocalizedForm
-  Left = 662
+  Left = 469
   Height = 240
-  Top = 435
+  Top = 356
   Width = 320
-  LCLVersion = '1.2.2.0'
+  LCLVersion = '1.6.4.0'
 end

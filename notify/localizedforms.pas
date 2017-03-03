@@ -17,7 +17,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls,
-  Translations, DefaultTranslator, Graphics, Dialogs;
+  Translations, LCLTranslator, Graphics, Dialogs;
 
 type
   TLocalizedForm = class(TForm)
