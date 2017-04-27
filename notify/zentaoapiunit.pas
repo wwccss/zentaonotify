@@ -151,11 +151,15 @@ end;
 
 (* View object in browser *)
 function ViewObject(objType: BrowseType; id: string): boolean;
+var
+    url : string;
 begin
     if Copy(id, 1, 1) = '#' then
         id := Copy(id, 2, Length(id) - 1);
-    Result := OpenURL(GetAPI(['module', BrowseName[objType], 'method',
-        'view', 'id', id, 'viewType', 'html']));
+    url    := GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']);
+    // DInfo('>>>>api:' + GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']));
+    // DInfo('>>>>url:' + url);
+    Result := OpenURL(url);
 end;
 
 (* Load Data from server with zentao api and return in a list *)
@@ -640,16 +644,6 @@ begin
     end;
 end;
 
-// function HttpGet(url: string): string;
-// begin
-//     if not Assigned(httpClient) then httpClient := TFPHttpClient.Create(Nil);
-//     try
-//       Result := httpClient.Get(url);
-//     finally
-//       DInfo('Error get ' + url);
-//     end;
-// end;
-
 function HttpGet(url: string): string;
 var
     data: TStringList;
@@ -773,7 +767,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 2, 0, 0]);
+        Result := Format(formatStr, [2, 2, 1, 0]);
     end;
     // todo: get the real version info with os api.
 

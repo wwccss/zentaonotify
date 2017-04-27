@@ -24,6 +24,7 @@ type
         StringGridDataList: TStringGrid;
         Timer1:       TTimer;
         procedure FormCreate(Sender: TObject);
+        procedure FormHide(Sender: TObject);
         procedure FormShow(Sender: TObject);
         procedure Label1lClick(Sender: TObject);
         procedure Label1MouseEnter(Sender: TObject);
@@ -157,6 +158,7 @@ begin
     PopTop         := Screen.PrimaryMonitor.Height;
     Left           := Screen.PrimaryMonitor.WorkareaRect.right - Width;
     Timer1.Enabled := True;
+    ShowInTaskBar  := stNever;
 end;
 
 { Handle click event of label: open main window}
@@ -186,11 +188,17 @@ begin
     Top := Screen.PrimaryMonitor.Height;
 end;
 
+procedure TPopWindow.FormHide(Sender: TObject);
+begin
+    ShowInTaskBar  := stNever;
+end;
+
 { Hide popup window }
 procedure TPopWindow.HideWindow();
 begin
-    Hide;
     Top := Screen.PrimaryMonitor.Height;
+    Hide;
+
 end;
 
 end.

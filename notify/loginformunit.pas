@@ -56,6 +56,7 @@ type
         procedure EditPasswordExit(Sender: TObject);
         procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
+        procedure FormHide(Sender: TObject);
         procedure FormShow(Sender: TObject);
         procedure LabelBtnAboutClick(Sender: TObject);
         procedure LabelBtnLanguageClick(Sender: TObject);
@@ -263,6 +264,11 @@ begin
     InitZentaoAPI();
 end;
 
+procedure TLoginForm.FormHide(Sender: TObject);
+begin
+  ShowInTaskBar  := stNever;
+end;
+
 { Handle event on from show }
 procedure TLoginForm.FormShow(Sender: TObject);
 begin
@@ -282,6 +288,8 @@ begin
         'zh_tw': MenuItemLangZHTW.Checked := True;
         'en': MenuItemLangEN.Checked      := True;
     end;
+
+    ShowInTaskBar  := stDefault;
 end;
 
 { Load config and try login }
