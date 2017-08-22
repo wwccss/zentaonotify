@@ -156,7 +156,12 @@ var
 begin
     if Copy(id, 1, 1) = '#' then
         id := Copy(id, 2, Length(id) - 1);
-    url    := GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']);
+
+    if objType = BrowseType.btTodo then begin
+        url := GetAPI(['module', 'my', 'method', 'todo', 'viewType', 'html']) + '#todo-' + id;
+    end else begin
+        url := GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']);
+    end;
     // DInfo('>>>>api:' + GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']));
     // DInfo('>>>>url:' + url);
     Result := OpenURL(url);
