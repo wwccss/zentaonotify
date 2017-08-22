@@ -121,12 +121,6 @@ msgstr "請填寫用戶名"
 msgid "请填写禅道地址。"
 msgstr "請填寫禪道地"
 
-#: stringsunit.rsstory
-#, fuzzy
-#| msgid "#233#156#230#177#130"
-msgid "需求"
-msgstr "需求"
-
 #: stringsunit.rstask
 msgctxt "stringsunit.rstask"
 msgid "任务"

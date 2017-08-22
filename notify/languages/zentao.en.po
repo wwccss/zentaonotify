@@ -23,31 +23,31 @@ msgstr "Bug"
 
 #: stringsunit.rserrorcannotconnect
 msgid "无法连接到服务器。请检查网络。"
-msgstr ""
+msgstr "Cannot connect to server."
 
 #: stringsunit.rserrorcannotconnectzentao
 msgid "无法获取禅道配置信息。请检查禅道地址并确认网络连接畅通。"
-msgstr ""
+msgstr "Cannot get zentao config from the  server."
 
 #: stringsunit.rserrorcannotgetroleconfig
 msgid "获取角色信息失败。请确保当前账户拥有超级model权限。参考：http://www.zentao.net/book/zentaopmshelp/71.html"
-msgstr ""
+msgstr "Cannot get server role."
 
 #: stringsunit.rserrorcannotgetsession
 msgid "无法获取Session。请确保当前账户拥有超级model权限。参考：http://www.zentao.net/book/zentaopmshelp/71.html"
-msgstr ""
+msgstr "Cannot get session id."
 
 #: stringsunit.rserrordatareturned
 msgid "服务器返回的数据不正确。 请确保拥有权限读取数据。"
-msgstr ""
+msgstr "The server return wrong data."
 
 #: stringsunit.rserrorloginfailed
 msgid "登录失败。请检查用户名和密码。"
-msgstr ""
+msgstr "Login failed, check your account and password."
 
 #: stringsunit.rserrorneednewerversion
 msgid "您当前版本是%s，请升级至%s以上版本"
-msgstr ""
+msgstr "You version is %s, upgrade to version %s+."
 
 #: stringsunit.rsfirstpage
 msgid "首页"
@@ -122,12 +122,6 @@ msgstr "Username required."
 #| msgid "请填写禅道地#229#157#227#130"
 msgid "请填写禅道地址。"
 msgstr "Zentao address required."
-
-#: stringsunit.rsstory
-#, fuzzy
-#| msgid "#233#156#230#177#130"
-msgid "需求"
-msgstr "Story"
 
 #: stringsunit.rstask
 msgctxt "stringsunit.rstask"
@@ -345,7 +339,7 @@ msgstr ""
 
 #: tmainform.labelmenu17.caption
 msgid "更多帮助："
-msgstr ""
+msgstr "Help..."
 
 #: tmainform.labelmenu17.hint
 msgctxt "tmainform.labelmenu17.hint"
@@ -521,7 +515,6 @@ msgid "todo"
 msgstr ""
 
 #: tmainform.labeltab2.caption
-msgctxt "tmainform.labeltab2.caption"
 msgid "任务"
 msgstr "Task"
 
@@ -532,7 +525,7 @@ msgstr ""
 #: tmainform.labeltab3.caption
 msgctxt "tmainform.labeltab3.caption"
 msgid "Bug"
-msgstr "Bug"
+msgstr "Bug2"
 
 #: tmainform.labeltab3.hint
 msgctxt "tmainform.labeltab3.hint"
@@ -540,6 +533,7 @@ msgid "bug"
 msgstr ""
 
 #: tmainform.labeltab4.caption
+msgctxt "tmainform.labeltab4.caption"
 msgid "需求"
 msgstr "Story"
 
