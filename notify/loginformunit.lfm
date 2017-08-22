@@ -1,10 +1,9 @@
 inherited LoginForm: TLoginForm
-  Left = 625
+  Left = 280
   Height = 555
-  Top = 565
+  Top = 298
   Width = 285
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
   ClientHeight = 555
   ClientWidth = 285
   Icon.Data = {
@@ -312,8 +311,11 @@ inherited LoginForm: TLoginForm
   }
   OnClose = FormClose
   OnCreate = FormCreate
+  OnHide = FormHide
   OnShow = FormShow
-  Position = poScreenCenter
+  ParentBiDiMode = False
+  Position = poDesktopCenter
+  ShowInTaskBar = stNever
   object ImageBackground: TImage[0]
     Left = 0
     Height = 555

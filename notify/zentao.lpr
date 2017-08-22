@@ -1,6 +1,8 @@
 program zentao;
 
 {$mode objfpc}{$H+}
+{$apptype console}
+
 
 uses
     {$ifdef unix}
@@ -18,7 +20,8 @@ uses
     PopWindowUnit,
     AboutUnit,
     localizedforms,
-    StringsUnit, CloseConfirmFormUnit;
+    StringsUnit,
+    CloseConfirmFormUnit;
 
 {$R *.res}
 

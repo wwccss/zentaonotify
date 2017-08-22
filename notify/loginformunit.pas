@@ -289,7 +289,7 @@ begin
         'en': MenuItemLangEN.Checked      := True;
     end;
 
-    ShowInTaskBar  := stDefault;
+    ShowInTaskBar  := stNever;
 end;
 
 { Load config and try login }

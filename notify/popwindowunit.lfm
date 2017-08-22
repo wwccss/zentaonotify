@@ -1,7 +1,7 @@
 inherited PopWindow: TPopWindow
-  Left = 746
+  Left = 396
   Height = 224
-  Top = 496
+  Top = 319
   Width = 270
   AlphaBlend = True
   BorderStyle = bsNone
@@ -4317,8 +4317,12 @@ inherited PopWindow: TPopWindow
     0000800100000000000000000000000000000000000000000000000000000000
     00000000000080010000C0030000E0070000F00F0000
   }
+  OnClose = FormClose
   OnCreate = FormCreate
+  OnHide = FormHide
   OnShow = FormShow
+  ParentBiDiMode = False
+  ShowInTaskBar = stNever
   object Panel1: TPanel[0]
     Left = 0
     Height = 224

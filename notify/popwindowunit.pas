@@ -23,6 +23,7 @@ type
         SpeedButton1: TSpeedButton;
         StringGridDataList: TStringGrid;
         Timer1:       TTimer;
+        procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
         procedure FormCreate(Sender: TObject);
         procedure FormHide(Sender: TObject);
         procedure FormShow(Sender: TObject);
@@ -48,6 +49,8 @@ var
     StartTime: TDateTime;
 
 implementation
+
+uses LoginFormUnit;
 
 {$R *.lfm}
 
@@ -159,6 +162,7 @@ begin
     Left           := Screen.PrimaryMonitor.WorkareaRect.right - Width;
     Timer1.Enabled := True;
     ShowInTaskBar  := stNever;
+    LoginForm.ShowInTaskBar  := stNever;
 end;
 
 { Handle click event of label: open main window}
@@ -188,17 +192,22 @@ begin
     Top := Screen.PrimaryMonitor.Height;
 end;
 
+procedure TPopWindow.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+    LoginForm.ShowInTaskBar  := stNever;
+end;
+
 procedure TPopWindow.FormHide(Sender: TObject);
 begin
     ShowInTaskBar  := stNever;
+    LoginForm.ShowInTaskBar  := stNever;
 end;
 
 { Hide popup window }
 procedure TPopWindow.HideWindow();
 begin
     Top := Screen.PrimaryMonitor.Height;
-    Hide;
-
+    Close();
 end;
 
 end.
