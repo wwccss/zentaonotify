@@ -106,9 +106,18 @@ end;
 
 { Handle event of data grid: view object with default browser }
 procedure TPopWindow.StringGridDataListClick(Sender: TObject);
+var
+    id: string;
 begin
-    ViewObject(PopWindowData.Tab, StringGridDataList.Cells[0,
-        StringGridDataList.Selection.Bottom]);
+    if StringGridDataList.RowCount > 0 then begin
+       id := StringGridDataList.Cells[0,
+        StringGridDataList.Selection.Bottom];
+       if id <> '' then begin
+          DInfo('>>> row count', INTTOSTR(StringGridDataList.RowCount));
+          DInfo('>>> row SELECT', id);
+          ViewObject(PopWindowData.Tab, id);
+       end;
+    end;
 end;
 
 { Handle event when animate timer start }
@@ -194,13 +203,13 @@ end;
 
 procedure TPopWindow.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-    LoginForm.ShowInTaskBar  := stNever;
+    // LoginForm.ShowInTaskBar  := stNever;
 end;
 
 procedure TPopWindow.FormHide(Sender: TObject);
 begin
-    ShowInTaskBar  := stNever;
-    LoginForm.ShowInTaskBar  := stNever;
+    // ShowInTaskBar  := stNever;
+    // LoginForm.ShowInTaskBar  := stNever;
 end;
 
 { Hide popup window }

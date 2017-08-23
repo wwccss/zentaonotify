@@ -1,7 +1,7 @@
 inherited MainForm: TMainForm
   Left = 585
   Height = 680
-  Top = 254
+  Top = 224
   Width = 350
   BorderIcons = [biSystemMenu, biMinimize]
   ClientHeight = 680

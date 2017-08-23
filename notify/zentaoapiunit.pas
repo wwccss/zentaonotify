@@ -109,7 +109,7 @@ const
     ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
     ONEDAYSECONDS        = 24 * 60 * 60;
     CONFIG_FILE          = 'config.json';
-    DEBUG_MODE           = 0;
+    DEBUG_MODE           = 2;
 
 implementation
 

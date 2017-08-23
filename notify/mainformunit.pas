@@ -580,25 +580,29 @@ procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 var
     closeOption: integer;
 begin
+    DInfo('FormClose', '关闭窗口');
     if user.CloseOption <= 0 then
     begin
         CloseConfirmForm.Left := Left + Trunc((Width - CloseConfirmForm.Width) / 2);
         CloseConfirmForm.Top  := Top;
         CloseConfirmForm.ShowModal;
         closeOption := CloseConfirmForm.ModalResult;
-    end
-    else
-    begin
+    end else begin
         closeOption := user.CloseOption;
     end;
+
+    DInfo('FormClose', 'CloseOption=' + INTTOSTR(closeOption));
 
     if closeOption = 2 then
     begin
         CloseAction   := caMinimize;
         WindowState   := wsMinimized;
         ShowInTaskBar := stNever;
+        DInfo('FormClose', '最小化');
         Exit;
     end;
+
+    DInfo('FormClose', '准备直接退出');
 
     ExitApp;
 end;
@@ -619,7 +623,12 @@ begin
     finally
     end;
 
+    DInfo('ExitApp', '关闭登录窗口');
+
     LoginForm.Close;
+
+    DInfo('ExitApp', '关闭弹出窗口');
+    PopWindow.Close;
 end;
 
 { Handle event on form create }

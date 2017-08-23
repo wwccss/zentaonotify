@@ -3,7 +3,6 @@ program zentao;
 {$mode objfpc}{$H+}
 {$apptype console}
 
-
 uses
     {$ifdef unix}
     cthreads,
