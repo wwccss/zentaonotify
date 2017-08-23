@@ -635,13 +635,3 @@ msgstr ""
 msgid "打开主窗口"
 msgstr ""
 
-#: tpopwindow.stringgriddatalist.columns[0].title.caption
-msgctxt "TPOPWINDOW.STRINGGRIDDATALIST.COLUMNS[0].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
-#: tpopwindow.stringgriddatalist.columns[1].title.caption
-msgctxt "TPOPWINDOW.STRINGGRIDDATALIST.COLUMNS[1].TITLE.CAPTION"
-msgid "Title"
-msgstr ""
-
