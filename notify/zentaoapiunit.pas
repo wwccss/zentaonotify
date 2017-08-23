@@ -154,16 +154,17 @@ function ViewObject(objType: BrowseType; id: string): boolean;
 var
     url : string;
 begin
-    if Copy(id, 1, 1) = '#' then
+    if (id <> '') AND (Copy(id, 1, 1) = '#') then
         id := Copy(id, 2, Length(id) - 1);
 
+    DInfo('>>>> ViewObject: ' + BrowseName[objType] + ', ' + id);
+
     if objType = BrowseType.btTodo then begin
-        url := GetAPI(['module', 'my', 'method', 'todo', 'viewType', 'html']) + '#todo-' + id;
+        url := GetAPI(['module', 'my', 'method', 'todo', 'type', 'today', 'viewType', 'html']) + '#todo-' + id;
     end else begin
         url := GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']);
     end;
-    // DInfo('>>>>api:' + GetAPI(['module', BrowseName[objType], 'method', 'view', 'id', id, 'viewType', 'html']));
-    // DInfo('>>>>url:' + url);
+    DInfo('>>>> ViewObject url:' + url);
     Result := OpenURL(url);
 end;
 
