@@ -413,7 +413,7 @@ begin
     end
     else
     begin
-        Result := Result + user.Url + '/';
+        Result := user.Url + '/';
         if (moduleName = 'user') and (methodName = 'login') then
         begin
             password := MD5Print(MD5String(user.PassMd5 +
