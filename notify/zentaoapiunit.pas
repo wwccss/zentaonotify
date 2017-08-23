@@ -731,8 +731,10 @@ begin
     DInfo('BEGIN: DestroyZentaoAPI');
 
     zentaoConfig.Free;
+
+    DInfo('BEGIN: zentaoConfig.Free');
+
     session.Free;
-    PopWindowData.Free;
 
     DInfo('END: DestroyZentaoAPI');
 end;
