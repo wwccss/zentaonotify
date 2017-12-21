@@ -775,7 +775,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 2, 3, 0]);
+        Result := Format(formatStr, [2, 3, 0, 0]);
     end;
     // todo: get the real version info with os api.
 
