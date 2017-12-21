@@ -109,7 +109,7 @@ const
     ONEDAYMILLIONSECONDS = 24 * 60 * 60 * 1000;
     ONEDAYSECONDS        = 24 * 60 * 60;
     CONFIG_FILE          = 'config.json';
-    DEBUG_MODE           = 2;
+    DEBUG_MODE           = 0;
 
 implementation
 
@@ -775,7 +775,7 @@ begin
     end
     else
     begin
-        Result := Format(formatStr, [2, 2, 1, 0]);
+        Result := Format(formatStr, [2, 2, 3, 0]);
     end;
     // todo: get the real version info with os api.
 

@@ -21,9 +21,9 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="2"/>
       <MinorVersionNr Value="2"/>
-      <RevisionNr Value="2"/>
+      <RevisionNr Value="3"/>
       <Language Value="0804"/>
-      <StringTable CompanyName="zentao.net" ProductVersion="2.2.2"/>
+      <StringTable CompanyName="zentao.net" ProductVersion="2.2.3"/>
     </VersionInfo>
     <BuildModes Count="5">
       <Item1 Name="Default" Default="True"/>
