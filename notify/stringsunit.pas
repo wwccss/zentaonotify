@@ -10,7 +10,6 @@ uses
 
 resourcestring
   rsAppName = '禅道桌面提醒工具';
-  
   rsRequireZentaoAddress = '请填写禅道地址。';
   rsRequireUsername = '请填写用户名。';
   rsRequirePassword = '请填写禅道密码。';

@@ -54,8 +54,6 @@ msgid "首页"
 msgstr "首頁"
 
 #: stringsunit.rsisbusy
-#, fuzzy
-#| msgid "应用正忙，请稍后再试#227+"
 msgid "应用正忙，请稍后再试。"
 msgstr "應用正忙，請稍後再試"
 
@@ -74,20 +72,14 @@ msgid "登录中..."
 msgstr "登錄中..."
 
 #: stringsunit.rsnextpage
-#, fuzzy
-#| msgid "下#228#184#233#161#181"
 msgid "下一页"
 msgstr "下一页"
 
 #: stringsunit.rsnodatamessage
-#, fuzzy
-#| msgid "暂时没有数据#227#130"
 msgid "暂时没有数据。"
 msgstr "暫時沒有數據"
 
 #: stringsunit.rsnotreadymessage
-#, fuzzy
-#| msgid "您还没有登录，无法获取数据#227#130"
 msgid "您还没有登录，无法获取数据。"
 msgstr "您還沒有登錄，無法獲取數據"
 
@@ -104,20 +96,14 @@ msgid "上一页"
 msgstr ""
 
 #: stringsunit.rsrequirepassword
-#, fuzzy
-#| msgid "请填写禅道密码#227#130"
 msgid "请填写禅道密码。"
 msgstr "請填寫禪道密碼"
 
 #: stringsunit.rsrequireusername
-#, fuzzy
-#| msgid "请填写用户名#227#130"
 msgid "请填写用户名。"
 msgstr "請填寫用戶名"
 
 #: stringsunit.rsrequirezentaoaddress
-#, fuzzy
-#| msgid "请填写禅道地#229#157#227#130"
 msgid "请填写禅道地址。"
 msgstr "請填寫禪道地"
 
@@ -533,7 +519,7 @@ msgstr ""
 
 #: tmainform.labeltab4.caption
 msgid "需求"
-msgstr ""
+msgstr "需求"
 
 #: tmainform.labeltab4.hint
 msgctxt "tmainform.labeltab4.hint"

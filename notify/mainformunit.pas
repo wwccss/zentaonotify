@@ -1109,9 +1109,10 @@ procedure TMainForm.UpdateTranslation(ALang: string);
 begin
     inherited;
 
-    LabelTab2.Caption := rsTask;
-    LabelTab3.Caption := rsBug;
-    LabelTab4.Caption := rsStory;
+    // LabelTab2.Caption := rsTask;
+    // LabelTab3.Caption := rsBug;
+    // LabelTab4.Caption := rsStory;
+    TrayIconMain.Hint := rsAppName;
 
     case ALang of
         'zh_cn': MenuItem5.Checked := True;
@@ -1119,7 +1120,11 @@ begin
         'en': MenuItem7.Checked    := True;
     end;
 
+    Caption := rsAppName + ' ' + GetBuildVersion('%d.%d');
+
     user.Lang := ALang;
+
+    LoadAllTabsData;
 end;
 
 end.

@@ -54,8 +54,6 @@ msgid "首页"
 msgstr "首页"
 
 #: stringsunit.rsisbusy
-#, fuzzy
-#| msgid "应用正忙，请稍后再试#227+"
 msgid "应用正忙，请稍后再试。"
 msgstr "应用正忙，请稍后再试"
 
@@ -78,14 +76,10 @@ msgid "下一页"
 msgstr ""
 
 #: stringsunit.rsnodatamessage
-#, fuzzy
-#| msgid "暂时没有数据#227#130"
 msgid "暂时没有数据。"
 msgstr "暂时没有数据"
 
 #: stringsunit.rsnotreadymessage
-#, fuzzy
-#| msgid "您还没有登录，无法获取数据#227#130"
 msgid "您还没有登录，无法获取数据。"
 msgstr "您还没有登录，无法获取数据"
 
@@ -98,32 +92,22 @@ msgid "新的条目: %s [%d]"
 msgstr "新的条目: %s [%d]"
 
 #: stringsunit.rsprevpage
-#, fuzzy
-#| msgid "上#228#184#233#161#181"
 msgid "上一页"
 msgstr "上一页"
 
 #: stringsunit.rsrequirepassword
-#, fuzzy
-#| msgid "请填写禅道密码#227#130"
 msgid "请填写禅道密码。"
 msgstr "请填写禅道密码"
 
 #: stringsunit.rsrequireusername
-#, fuzzy
-#| msgid "请填写用户名#227#130"
 msgid "请填写用户名。"
 msgstr "请填写用户名"
 
 #: stringsunit.rsrequirezentaoaddress
-#, fuzzy
-#| msgid "请填写禅道地#229#157#227#130"
 msgid "请填写禅道地址。"
 msgstr "请填写禅道地"
 
 #: stringsunit.rsstory
-#, fuzzy
-#| msgid "#233#156#230#177#130"
 msgid "需求"
 msgstr "需求"
 
@@ -539,7 +523,7 @@ msgstr ""
 
 #: tmainform.labeltab4.caption
 msgid "需求"
-msgstr ""
+msgstr "需求"
 
 #: tmainform.labeltab4.hint
 msgctxt "tmainform.labeltab4.hint"

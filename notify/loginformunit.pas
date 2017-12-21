@@ -365,6 +365,8 @@ begin
         'en': MenuItemLangEN.Checked      := True;
     end;
 
+    Caption := rsAppName + ' ' + GetBuildVersion('%d.%d');
+
     user.Lang := ALang;
 end;
 

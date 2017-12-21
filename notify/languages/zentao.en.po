@@ -14,7 +14,7 @@ msgstr ""
 
 #: stringsunit.rsappname
 msgid "禅道桌面提醒工具"
-msgstr "Zentao notify"
+msgstr "Zentao Notification"
 
 #: stringsunit.rsbug
 msgctxt "stringsunit.rsbug"
@@ -54,8 +54,6 @@ msgid "首页"
 msgstr "First"
 
 #: stringsunit.rsisbusy
-#, fuzzy
-#| msgid "应用正忙，请稍后再试#227+"
 msgid "应用正忙，请稍后再试。"
 msgstr "Busy now, try again later."
 
@@ -74,20 +72,14 @@ msgid "登录中..."
 msgstr "Loging..."
 
 #: stringsunit.rsnextpage
-#, fuzzy
-#| msgid "下#228#184#233#161#181"
 msgid "下一页"
 msgstr "Next"
 
 #: stringsunit.rsnodatamessage
-#, fuzzy
-#| msgid "暂时没有数据#227#130"
 msgid "暂时没有数据。"
 msgstr "No data"
 
 #: stringsunit.rsnotreadymessage
-#, fuzzy
-#| msgid "您还没有登录，无法获取数据#227#130"
 msgid "您还没有登录，无法获取数据。"
 msgstr "Can not get data when you has not login  in."
 
@@ -100,26 +92,18 @@ msgid "新的条目: %s [%d]"
 msgstr "New item(s): %s [%d]"
 
 #: stringsunit.rsprevpage
-#, fuzzy
-#| msgid "上#228#184#233#161#181"
 msgid "上一页"
 msgstr "Prev"
 
 #: stringsunit.rsrequirepassword
-#, fuzzy
-#| msgid "请填写禅道密码#227#130"
 msgid "请填写禅道密码。"
 msgstr "Password required."
 
 #: stringsunit.rsrequireusername
-#, fuzzy
-#| msgid "请填写用户名#227#130"
 msgid "请填写用户名。"
 msgstr "Username required."
 
 #: stringsunit.rsrequirezentaoaddress
-#, fuzzy
-#| msgid "请填写禅道地#229#157#227#130"
 msgid "请填写禅道地址。"
 msgstr "Zentao address required."
 
@@ -525,7 +509,7 @@ msgstr ""
 #: tmainform.labeltab3.caption
 msgctxt "tmainform.labeltab3.caption"
 msgid "Bug"
-msgstr "Bug2"
+msgstr "Bug"
 
 #: tmainform.labeltab3.hint
 msgctxt "tmainform.labeltab3.hint"
