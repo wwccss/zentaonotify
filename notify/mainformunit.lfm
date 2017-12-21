@@ -1,7 +1,7 @@
 inherited MainForm: TMainForm
-  Left = 585
+  Left = 587
   Height = 680
-  Top = 224
+  Top = 225
   Width = 350
   BorderIcons = [biSystemMenu, biMinimize]
   ClientHeight = 680
@@ -6118,7 +6118,7 @@ inherited MainForm: TMainForm
       0000C00300008001000000000000000000000000000000000000000000000000
       0000000000000000000080010000C0030000E0070000F00F0000
     }
-    Hint = '禅道'
+    Hint = '禅道桌面提醒'
     OnDblClick = TrayIconMainDblClick
     left = 584
     top = 8

@@ -1,7 +1,7 @@
 inherited PopWindow: TPopWindow
-  Left = 396
+  Left = 397
   Height = 224
-  Top = 319
+  Top = 320
   Width = 270
   AlphaBlend = True
   BorderStyle = bsNone
@@ -4448,7 +4448,7 @@ inherited PopWindow: TPopWindow
     end
   end
   object Timer1: TTimer[1]
-    Interval = 40
+    Interval = 80
     OnTimer = Timer1Timer
     OnStartTimer = Timer1StartTimer
     OnStopTimer = Timer1StopTimer
