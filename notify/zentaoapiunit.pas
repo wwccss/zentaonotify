@@ -492,7 +492,7 @@ begin
         begin
             if methodName = 'todo' then
             begin
-                Result := Result + '&account=&status=all&orderBy=date_desc,status,begin&';
+                Result := Result + '&account=&status=all&orderBy=id_desc,status,begin&';
             end
             else
             begin
@@ -557,7 +557,7 @@ begin
         begin
             if methodName = 'todo' then
             begin
-                Result := Result + '-all-date_desc,status,begin-';
+                Result := Result + '-all-id_desc,status,begin-';
             end
             else
             begin

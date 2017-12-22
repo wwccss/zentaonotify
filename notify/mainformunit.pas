@@ -484,7 +484,8 @@ begin
         if isNew and (WindowState = wsMinimized) then
         begin
             PopWindowData := dataResult;
-            PopWindow.Show();
+            PopWindow.show();
+            DInfo('PopWindow showed.');
         end;
 
         LastSyncTime[tab] := Now;

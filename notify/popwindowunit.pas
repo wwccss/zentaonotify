@@ -203,13 +203,13 @@ end;
 
 procedure TPopWindow.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-    // LoginForm.ShowInTaskBar  := stNever;
+    LoginForm.ShowInTaskBar  := stNever;
 end;
 
 procedure TPopWindow.FormHide(Sender: TObject);
 begin
-    // ShowInTaskBar  := stNever;
-    // LoginForm.ShowInTaskBar  := stNever;
+    ShowInTaskBar  := stNever;
+    LoginForm.ShowInTaskBar  := stNever;
 end;
 
 { Hide popup window }
@@ -217,6 +217,7 @@ procedure TPopWindow.HideWindow();
 begin
     Top := Screen.PrimaryMonitor.Height;
     Close();
+    DInfo('PopWindow hided and close.');
 end;
 
 end.
