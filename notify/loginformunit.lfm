@@ -1,7 +1,7 @@
 inherited LoginForm: TLoginForm
-  Left = 281
+  Left = 284
   Height = 555
-  Top = 299
+  Top = 301
   Width = 285
   BorderIcons = [biSystemMenu, biMinimize]
   ClientHeight = 555

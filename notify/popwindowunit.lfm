@@ -1,7 +1,7 @@
 inherited PopWindow: TPopWindow
-  Left = 397
+  Left = 400
   Height = 224
-  Top = 320
+  Top = 323
   Width = 270
   AlphaBlend = True
   BorderStyle = bsNone

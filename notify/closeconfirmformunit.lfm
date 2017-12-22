@@ -1,7 +1,7 @@
 inherited CloseConfirmForm: TCloseConfirmForm
-  Left = 579
+  Left = 581
   Height = 164
-  Top = 373
+  Top = 376
   Width = 265
   BorderStyle = bsDialog
   Caption = '请选择'

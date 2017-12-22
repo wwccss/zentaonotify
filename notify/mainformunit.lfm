@@ -1,11 +1,11 @@
 inherited MainForm: TMainForm
-  Left = 587
+  Left = 612
   Height = 680
-  Top = 225
+  Top = 298
   Width = 350
   BorderIcons = [biSystemMenu, biMinimize]
-  ClientHeight = 680
-  ClientWidth = 350
+  ClientHeight = 0
+  ClientWidth = 0
   Constraints.MaxHeight = 870
   Constraints.MaxWidth = 350
   Constraints.MinHeight = 168
@@ -4329,11 +4329,11 @@ inherited MainForm: TMainForm
     Left = 0
     Height = 40
     Top = 0
-    Width = 350
+    Width = 0
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
     ClientHeight = 40
-    ClientWidth = 350
+    ClientWidth = 0
     Color = 13392660
     ParentColor = False
     TabOrder = 0
@@ -4500,12 +4500,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavTodo: TPanel[1]
     Left = 0
-    Height = 640
+    Height = 0
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 640
+    ClientHeight = 0
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -4513,7 +4513,7 @@ inherited MainForm: TMainForm
     TabOrder = 1
     object StringGridTodo: TStringGrid
       Left = 0
-      Height = 570
+      Height = 0
       Top = 40
       Width = 350
       AlternateColor = clNone
@@ -4652,7 +4652,7 @@ inherited MainForm: TMainForm
     object PanelPagerTodo: TPanel
       Left = 50
       Height = 30
-      Top = 610
+      Top = -30
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -4753,12 +4753,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavTask: TPanel[2]
     Left = 350
-    Height = 640
+    Height = 0
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 640
+    ClientHeight = 0
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -4766,7 +4766,7 @@ inherited MainForm: TMainForm
     object StringGridTask: TStringGrid
       Tag = 1
       Left = 0
-      Height = 570
+      Height = 0
       Top = 40
       Width = 350
       AlternateColor = clNone
@@ -4895,7 +4895,7 @@ inherited MainForm: TMainForm
       Tag = 1
       Left = 50
       Height = 30
-      Top = 610
+      Top = -30
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -4986,12 +4986,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavBug: TPanel[3]
     Left = 700
-    Height = 640
+    Height = 0
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 640
+    ClientHeight = 0
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -4999,7 +4999,7 @@ inherited MainForm: TMainForm
     object StringGridBug: TStringGrid
       Tag = 2
       Left = 0
-      Height = 570
+      Height = 0
       Top = 40
       Width = 350
       AlternateColor = clNone
@@ -5128,7 +5128,7 @@ inherited MainForm: TMainForm
       Tag = 2
       Left = 50
       Height = 30
-      Top = 610
+      Top = -30
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -5219,12 +5219,12 @@ inherited MainForm: TMainForm
   end
   object PanelNavStory: TPanel[4]
     Left = 1050
-    Height = 640
+    Height = 0
     Top = 40
     Width = 350
     Anchors = [akTop, akLeft, akBottom]
     BevelOuter = bvNone
-    ClientHeight = 640
+    ClientHeight = 0
     ClientWidth = 350
     Color = 16380651
     ParentColor = False
@@ -5232,7 +5232,7 @@ inherited MainForm: TMainForm
     object StringGridStory: TStringGrid
       Tag = 3
       Left = 0
-      Height = 570
+      Height = 0
       Top = 40
       Width = 350
       AlternateColor = clNone
@@ -5361,7 +5361,7 @@ inherited MainForm: TMainForm
       Tag = 3
       Left = 50
       Height = 30
-      Top = 610
+      Top = -30
       Width = 300
       Align = alCustom
       Anchors = [akLeft, akRight, akBottom]
@@ -5454,11 +5454,11 @@ inherited MainForm: TMainForm
     Left = 0
     Height = 100
     Top = 80
-    Width = 350
+    Width = 0
     Anchors = [akTop, akLeft, akRight]
     BevelOuter = bvNone
     ClientHeight = 100
-    ClientWidth = 350
+    ClientWidth = 0
     Color = 15073254
     Font.Color = 2268964
     ParentColor = False
@@ -5809,7 +5809,6 @@ inherited MainForm: TMainForm
     top = 8
   end
   object TimerAutoSync: TTimer[9]
-    Interval = 2000
     OnTimer = TimerAutoSyncTimer
     left = 456
     top = 8
