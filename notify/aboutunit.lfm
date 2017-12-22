@@ -1,7 +1,7 @@
 inherited AboutForm: TAboutForm
-  Left = 819
+  Left = 821
   Height = 280
-  Top = 448
+  Top = 451
   Width = 500
   BorderStyle = bsDialog
   Caption = '关于禅道桌面提醒工具'
