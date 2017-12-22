@@ -462,7 +462,7 @@ begin
             stringGrid.RowCount := index;
             stringGrid.Cells[0, index - 1] := '#' + id;
             stringGrid.Cells[1, index - 1] := title;
-            stringGrid.Cells[2, index - 1] := dataItem.Get('status', '-');
+            stringGrid.Cells[2, index - 1] := getStatusName(tab, dataItem.Get('status', ''));
 
             if dataResult.FirstPage then
             begin

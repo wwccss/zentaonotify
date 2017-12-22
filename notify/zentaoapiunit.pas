@@ -89,6 +89,7 @@ function LoadConfig(): boolean;
 function GetBuildVersion(formatStr: string = '%d.%d.%d'): string;
 function HttpGet(url: string): string;
 procedure DInfo(textOrName: string; text: string = '`');
+function getStatusName(tabType: BrowseType; status: String): String;
 
 var
     user:           UserConfig;
@@ -118,6 +119,103 @@ begin
     IsNew     := False;
     Result    := True;
     FirstPage := False;
+end;
+
+{ Get status name }
+function getStatusName(tabType: BrowseType; status: String): String;
+begin
+    Result := status;
+    if user.lang = 'en' then begin
+        if tabType = btTodo then begin
+            case status of
+                'wait': Result := 'Wait';
+                'doing': Result := 'Doing';
+                'done': Result := 'Done';
+            end;
+        end else if tabType = btTask then begin
+            case status of
+                'wait'   : Result := 'Wait';
+                'doing'  : Result := 'Doing';
+                'done'   : Result := 'Done';
+                'pause'  : Result := 'Paused';
+                'cancel' : Result := 'Cancel';
+                'closed' : Result := 'Closed';
+            end;
+        end else if tabType = btStory then begin
+            case status of
+                'draft'     : Result := 'Draft';
+                'active'    : Result := 'Active';
+                'closed'    : Result := 'Closed';
+                'changed'   : Result := 'Changed';
+            end;
+        end else if tabType = btBug then begin
+            case status of
+                'active'   : Result := 'Active';
+                'resolved' : Result := 'Resolved';
+                'closed'   : Result := 'Closed';
+            end;
+        end;
+    end else if user.lang = 'zh_tw' then begin
+        if tabType = btTodo then begin
+            case status of
+                'wait': Result := '未開始';
+                'doing': Result := '進行中';
+                'done': Result := '已完成';
+            end;
+        end else if tabType = btTask then begin
+            case status of
+                'wait'   : Result := '未開始';
+                'doing'  : Result := '進行中';
+                'done'   : Result := '已完成';
+                'pause'  : Result := '已暫停';
+                'cancel' : Result := '已取消';
+                'closed' : Result := '已關閉';
+            end;
+        end else if tabType = btStory then begin
+            case status of
+                'draft'     : Result := '草稿';
+                'active'    : Result := '激活';
+                'closed'    : Result := '已關閉';
+                'changed'   : Result := '已变更';
+            end;
+        end else if tabType = btBug then begin
+            case status of
+                'active'   : Result := '激活';
+                'resolved' : Result := '已解決';
+                'closed'   : Result := '已關閉';
+            end;
+        end;
+    end else begin
+        if tabType = btTodo then begin
+            case status of
+                'wait': Result := '未开始';
+                'doing': Result := '进行中';
+                'done': Result := '已完成';
+            end;
+        end else if tabType = btTask then begin
+            case status of
+                'wait'   : Result := '未开始';
+                'doing'  : Result := '进行中';
+                'done'   : Result := '已完成';
+                'pause'  : Result := '已暂停';
+                'cancel' : Result := '已取消';
+                'closed' : Result := '已关闭';
+            end;
+        end else if tabType = btStory then begin
+            case status of
+                'draft'     : Result := '草稿';
+                'active'    : Result := '激活';
+                'closed'    : Result := '已关闭';
+                'changed'   : Result := '已变更';
+            end;
+        end else if tabType = btBug then begin
+            case status of
+                'active'   : Result := '激活';
+                'resolved' : Result := '已解决';
+                'closed'   : Result := '已关闭';
+            end;
+        end;
+    end;
 end;
 
 
