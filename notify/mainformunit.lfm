@@ -4531,12 +4531,13 @@ inherited MainForm: TMainForm
         item
           Font.Color = clBlack
           Title.Caption = 'Title'
-          Width = 250
+          Width = 240
         end      
         item
           Font.Color = clGray
+          MaxSize = 200
           Title.Caption = 'Title'
-          Width = 50
+          Width = 60
         end>
       DefaultColWidth = 60
       DefaultRowHeight = 38
@@ -4783,12 +4784,12 @@ inherited MainForm: TMainForm
         item
           Font.Color = clBlack
           Title.Caption = 'Title'
-          Width = 250
+          Width = 240
         end      
         item
           Font.Color = clGray
           Title.Caption = 'Title'
-          Width = 50
+          Width = 60
         end>
       DefaultColWidth = 60
       DefaultRowHeight = 38
@@ -5016,12 +5017,12 @@ inherited MainForm: TMainForm
         item
           Font.Color = clBlack
           Title.Caption = 'Title'
-          Width = 250
+          Width = 240
         end      
         item
           Font.Color = clGray
           Title.Caption = 'Title'
-          Width = 50
+          Width = 60
         end>
       DefaultColWidth = 60
       DefaultRowHeight = 38
@@ -5249,12 +5250,12 @@ inherited MainForm: TMainForm
         item
           Font.Color = clBlack
           Title.Caption = 'Title'
-          Width = 250
+          Width = 240
         end      
         item
           Font.Color = clGray
           Title.Caption = 'Title'
-          Width = 50
+          Width = 60
         end>
       DefaultColWidth = 60
       DefaultRowHeight = 38
